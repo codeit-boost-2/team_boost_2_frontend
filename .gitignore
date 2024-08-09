@@ -1,0 +1,14 @@
+# Node modules
+/backend/node_modules/
+
+# Environment variables
+/backend/.env
+
+# Prisma migrations
+/backend/prisma/migrations/
+
+# Sessions
+/backend/sessions/
+
+# Logs
+*.log

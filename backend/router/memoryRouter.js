@@ -13,3 +13,5 @@ memoryRouter.get('/', asyncHandler(async (req, res) => {
   const memories = await prisma.memory.findMany();
   res.send(memories);
 }));
+
+export default memoryRouter;

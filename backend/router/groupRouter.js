@@ -13,3 +13,5 @@ groupRouter.get('/', asyncHandler(async (req, res) => {
   const groups = await prisma.group.findMany();
   res.send(groups);
 }));
+
+export default groupRouter;

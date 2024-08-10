@@ -13,3 +13,5 @@ commentRouter.get('/', asyncHandler(async (req, res) => {
   const comments = await prisma.comment.findMany();
   res.send(comments);
 }));
+
+export default commentRouter;

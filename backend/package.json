@@ -14,7 +14,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=production nodemon src/index.js",
+    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "prisma": {

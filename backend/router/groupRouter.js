@@ -14,4 +14,31 @@ groupRouter.get('/', asyncHandler(async (req, res) => {
   res.send(groups);
 }));
 
+// 그룹 생성
+groupRouter.post('/', asyncHandler(async (req, res) => {
+  const group = await prisma.group.create({
+    data: req.body,
+  });
+  res.status(201).send(group);
+}));
+
+// 그룹 수정
+app.patch('/:id', asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const group = await prisma.group.update({
+    where: { id },
+    data: req.body,
+  });
+  res.send(group);
+}));
+
+// 그룹 삭제
+app.delete('/:id', asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  await prisma.group.delete({
+    where: { id },
+  });
+  res.sendStatus(204);
+}));
+
 export default groupRouter;

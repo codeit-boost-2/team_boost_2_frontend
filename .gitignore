@@ -1,14 +1,28 @@
-# Node modules
-/backend/node_modules/
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
 
-# Environment variables
-/backend/.env
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
 
-# Prisma migrations
-/backend/prisma/migrations/
+# Local History for Visual Studio Code
+.history/
 
-# Sessions
-/backend/sessions/
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
 
-# Logs
+# Support for Project snippet scope
+!.vscode/*.code-snippets
+
+# nodejs
+node_modules
+dist/*
+build/*
 *.log
+.DS_Store

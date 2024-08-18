@@ -13,6 +13,14 @@ const style={
     alignItems:'center',
 
 };
+
+const feedstyle={
+    display:'grid',
+    gridTemplateColumns:'repeat(4, 1fr)',
+    gridAutoRows: '561px',
+    margin:'12px',
+    gap:'10px'
+};
 function GroupPage(){
     return(
     <>
@@ -23,9 +31,16 @@ function GroupPage(){
             <div style={{flexGrow:'1', display: 'flex', justifyContent:'center', alignItems:'center'}}>추억목록</div>
             <Button />
         </div>
-        
-        <div style={{display:"flex"}}><Tab /><Search /></div>
+        <div style={{display:"flex", marginBottom: '40px'}}><Tab /><Search /></div>
+        <div className='feed' style={feedstyle}>
         <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        </div>
+        
     </>
     );
 }

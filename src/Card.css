@@ -16,7 +16,7 @@
     text-align: center;
 }
 
-.info{
+.cardinfo{
     display: flex;
     flex-direction: row;
     margin: 10px 0;
@@ -41,16 +41,16 @@
 
 }
 
-.title{
+.cardTitle{
     font-weight: 700;
     padding-bottom: 10px;
 }
 
-.body{
+.cardBody{
     font-weight: 300;
     padding-bottom: 10px;
 }
 
-.footer{
+.cardFooter{
 
 }

@@ -1,0 +1,41 @@
+.infoImage{
+    margin: 10px;
+}
+
+.groupInfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.infoButton{
+    border : none;
+    background-color: white;
+}
+
+h2{
+    margin: 17px 0;
+}
+
+.infoTitle{
+    display: flex;
+    font-weight: 700;
+    
+}
+
+.titleHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+
+.infoBody{
+    font-weight: 400;
+    padding-bottom: 110px;
+}
+
+.badge{
+    display: flex;
+    justify-content: space-between;
+}

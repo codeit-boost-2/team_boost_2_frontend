@@ -11,9 +11,10 @@ const style={
     fontSize: "15px",
 };
 
-function Like(){
+function Like(props){
+    
     return(
-        <button style={style}>
+        <button style={style} onClick={props.handleLikeClick}>
             <img style={{padding : "4px"}} alt="icon" src={LikeIcon} />
             공감 보내기
         </button>

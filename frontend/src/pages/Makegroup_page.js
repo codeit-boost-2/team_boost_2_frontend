@@ -11,7 +11,6 @@ function MakeGroupPage() {
     <>
       <h2 style={titleStyle}>그룹 만들기</h2>
       <title>make group</title>
-      <div>make group</div>
     </>
   );
 }

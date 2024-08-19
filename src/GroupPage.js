@@ -1,4 +1,4 @@
-import Card from './Card.js';
+import Card from './CardMemory.js';
 import Info from './Info.js';
 import Gnb from './Gnb.js';
 import Button from './Button.js';

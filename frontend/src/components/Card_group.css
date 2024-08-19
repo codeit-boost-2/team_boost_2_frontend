@@ -1,0 +1,45 @@
+.cardGroup {
+  margin-right: 25px;
+  list-style-type: none;
+  gap: 20px;
+}
+
+.cardGroupItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 265px;
+  break-inside: avoid;
+  margin-bottom: 20px;
+  border: 1px solid #b8b8b8;
+  border-radius: 6px;
+  padding: 15px;
+  gap: 10px;
+}
+
+.cardGroupItem-img {
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.cardGroupItem-info {
+  display: flex;
+  gap: 20px;
+}
+
+.cardGroupItem-status {
+  display: flex;
+  gap: 10px;
+}
+
+@media (min-width: 950px) {
+  .cardGroup {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1250px) {
+  .cardGroup {
+    column-count: 4;
+  }
+}

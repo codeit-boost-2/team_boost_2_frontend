@@ -1,0 +1,23 @@
+.privateOptionTab {
+  font-weight: bold;
+  display: flex;
+  gap: 10px;
+}
+
+.privateOptionTab button {
+  height: 45px;
+  width: 78px;
+  border: none;
+  border-radius: 20px;
+  background-color: #fff;
+}
+
+.privateOptionTab button.active {
+  background-color: #282828;
+  color: white;
+}
+
+.privateOptionTab button:hover {
+  background-color: #e4e4e4;
+  color: #282828;
+}

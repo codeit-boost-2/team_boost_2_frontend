@@ -1,0 +1,41 @@
+.dropdown {
+  position: relative;
+  display: flex;
+}
+
+.dropdownButton {
+  width: 160px;
+  height: 45px;
+  background-color: none;
+  border: 1px solid #282828;
+  border-radius: 6px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: block;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  z-index: 1;
+  border-radius: 4px;
+  margin-top: 45px;
+  padding: 0;
+}
+
+/* 드롭다운 메뉴 항목 */
+.dropdown-menu li {
+  padding: 8px 12px;
+  text-align: left;
+  list-style: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #ddd;
+}

@@ -14,7 +14,7 @@ const styleB={
     color:'white',
     border:'none',
     fontFamily: "Spoqa Han Sans Neo, Sans-Serif",
-    fontWeight: "500",
+    fontWeight: "400",
 };
 
 function Tab(){

@@ -20,10 +20,15 @@ const feedstyle = {
   margin: "12px",
   gap: "10px",
 };
+
+const pageStyle = {
+  marginTop: "200px",
+};
+
 function GroupPage() {
   return (
-    <>
-      <Gnb />
+    <div style={pageStyle}>
+      {/* <Gnb /> */}
       <Info />
       <hr />
       <div style={style}>
@@ -51,7 +56,7 @@ function GroupPage() {
         <Card />
         <Card />
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import LikeIcon from "./assets/LikeIcon.jpg"
+import LikeIcon from "../assets/LikeIcon.jpg"
 
 const style={
     display: "flex",

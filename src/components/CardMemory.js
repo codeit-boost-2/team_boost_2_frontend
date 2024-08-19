@@ -1,4 +1,4 @@
-import sampleImg from './assets/img1.png';
+import sampleImg from '../assets/img1.png';
 import './Card.css';
 
 function Card(){

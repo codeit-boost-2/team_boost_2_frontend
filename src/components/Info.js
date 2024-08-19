@@ -1,5 +1,5 @@
 import Like from './Like.js';
-import sampleImg from './assets/img2.png'
+import sampleImg from '../assets/img2.png'
 import './Info.css';
 import { useState } from "react";
 

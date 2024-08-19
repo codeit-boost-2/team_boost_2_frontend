@@ -2,7 +2,7 @@ import Card from '../components/CardMemory.js';
 import Info from '../components/Info.js';
 import Gnb from '../components/Gnb.js';
 import Button from '../components/Button.js';
-import Tab from '../components/Tab.js';
+import Tab from '../components/oldTab.js';
 import Search from '../components/Search.js';
 const style={
     margin:'20px',

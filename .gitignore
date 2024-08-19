@@ -1,5 +1,6 @@
 # Node modules
 /backend/node_modules/
+/frontend/noed_modules/
 
 # Environment variables
 /backend/.env
@@ -9,6 +10,9 @@
 
 # Sessions
 /backend/sessions/
+
+#Rest Client
+/backend/group.http
 
 # Logs
 *.log

@@ -11,8 +11,8 @@
 # Sessions
 /backend/sessions/
 
-#Rest Client
-/backend/group.http
+# Rest Client
+/backend/http/
 
 # Logs
 *.log

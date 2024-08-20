@@ -12,7 +12,7 @@
 /backend/sessions/
 
 #Rest Client
-/backend/group.http
+/backend/http/
 
 # Logs
 *.log

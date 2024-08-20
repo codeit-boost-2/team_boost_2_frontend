@@ -1,0 +1,22 @@
+.loadMoreButton {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #282828;
+  border-radius: 6px;
+  background-color: #fff;
+  width: 1240px;
+  height: 60px;
+}
+
+.loadMoreButtonContainer {
+  color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadMoreButton:hover {
+  background-color: #e4e4e4;
+}

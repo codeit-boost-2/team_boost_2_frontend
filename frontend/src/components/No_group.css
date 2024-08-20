@@ -1,0 +1,16 @@
+.noGroup {
+  position: absolute;
+  margin-top: 150px;
+  color: #8d8d8d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.noGroup .makeGroupButton {
+  position: relative;
+  justify-content: center;
+  margin-bottom: 200px;
+  margin-left: 200px;
+}

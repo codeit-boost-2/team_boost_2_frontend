@@ -10,6 +10,15 @@
 # production
 /build
 
+# Environment variables
+/backend/.env
+
+# Prisma migrations
+/backend/prisma/migrations/
+
+# Sessions
+/backend/sessions/
+
 # Rest Client
 /backend/http/
 

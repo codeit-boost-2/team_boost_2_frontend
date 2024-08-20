@@ -10,6 +10,12 @@
 # production
 /build
 
+# testing
+/coverage
+
+# production
+/build
+
 # Environment variables
 /backend/.env
 

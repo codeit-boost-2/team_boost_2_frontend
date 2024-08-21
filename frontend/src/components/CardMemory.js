@@ -1,6 +1,9 @@
 import sampleImg from '../assets/img1.png';
-import './Card.css';
+import './CardMemory.css';
 
+
+
+// card/memory 컴포넌트
 function Card(){
     return(
         <>
@@ -8,8 +11,8 @@ function Card(){
             <div className='cardImg'>
                 <img src={sampleImg} alt="대표이미지"></img>
             </div>
-            <div className='cardinfo'>
-                <div className='dday'>D+364</div>
+            <div className='cardStatus'>
+                <div className='writer'>달봉이아들</div>
                 <div className='line'></div>
                 <div className='status'>공개</div>
             </div>
@@ -18,9 +21,10 @@ function Card(){
             </div>
             <div className='cardBody'>
                 서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.
-            </div>
+            </div>  
             <div className='cardFooter'>
-                획득뱃지, 추억, 그룹공감
+                <div>장소, 날짜</div> 
+                <div>공감 수, 댓글 수</div>
             </div>
         </div>
         </>

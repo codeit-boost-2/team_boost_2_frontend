@@ -1,7 +1,23 @@
 import Like from './Like.js';
-import sampleImg from '../assets/img2.png'
 import './Info.css';
 import { useState } from "react";
+
+//D day 계산
+function calculateDaysDifference(createdAt) {
+    const now = new Date();
+    const createdDate = new Date(createdAt);
+  
+    const difference = now - createdDate;
+  
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  
+    if (days === 0) {
+      return "D+0";
+    } else {
+      return `D+${days}`;
+    }
+  }
+  
 
 const style={
     boxSizing:'border-box',
@@ -10,26 +26,30 @@ const style={
     fontWeight: '400',
 };
 
-function Info(){
 
-    const [like, setLike] = useState(0);
+//그룹 정보 나타내는 info 컴포넌트
+function Info(mock){
+
+    const [like, setLike] = useState(mock.items.item.like);
     const handleLikeClick = () => {
         const afterLike = like +1;
         setLike(afterLike);
     }
-
+    const dday = calculateDaysDifference(mock.items.item.createdAt);
     return(
         <>
         <div style={style}>
             <div className='infoImage'>
-                <img alt='그룹이미지' src={sampleImg} />
-            </div>
+                {mock.items.item.option === "공개" && mock.items.item.img && (
+                <img src={mock.items.item.img} alt='그룹이미지' />
+                )}
+            </div>     
             <div style={{flexGrow:'1', margin:'10px'}}>
                 <div className='groupInfo'>
                     <div style={{display:'flex', flexDirection:'row'}}>
-                    <div className='dday'>D+364</div>
+                    <div className='dday'>{dday}</div>
                     <div className='line'></div>
-                    <div className='status'>공개</div>
+                    <div className='status'>{mock.items.item.option}</div>
                     </div>
                     <div>
                     <button className='infoButton'>그룹 정보 수정하기</button>
@@ -37,22 +57,22 @@ function Info(){
                     </div>
                 </div>
                 <div className='infoTitle'>
-                    <h2>달봉이네 가족</h2>
+                    <h2>{mock.items.item.title}</h2>
                     <div className='titleHeader'>
-                        <div style={{padding:'0 20px'}}>추억 8</div>
+                        <div style={{padding:'0 20px'}}>추억 {mock.items.item.memories}</div>
                         <div className='line'></div>
                         <div style={{paddingLeft:'10px'}}>그룹 공감 {like}</div>
                     </div>
                 </div>
                 <div className='infoBody'>
-                    서로 한마음으로 응원하고 아끼는 달봉이네 가족입니다.
+                    {mock.items.item.content}
                 </div>
                 <div className='infoFooter'>
                     <div style={{fontWeight:'600', paddingBottom:'15px', fontSize:'15px'}}>
                     획득 배지
                     </div>
                     <div className='badge'>
-                        <div>뱃지</div>
+                        <div>{mock.items.item.badges}</div>
                         <Like handleLikeClick={handleLikeClick} />
                     </div>
                 </div>

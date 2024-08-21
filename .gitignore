@@ -1,6 +1,6 @@
 # dependencies
 /backend/node_modules/
-/frontend/noed_modules/
+/frontend/node_modules/
 /.pnp
 .pnp.js
 
@@ -41,3 +41,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+node_modules

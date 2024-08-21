@@ -1,9 +1,10 @@
 import Card from "../components/CardMemory.js";
 import Info from "../components/Info.js";
-import Gnb from "../components/Gnb.js";
 import Button from "../components/Button.js";
 import Tab from "../components/oldTab.js";
 import Search from "../components/Search.js";
+import { useLocation } from 'react-router-dom';
+
 const style = {
   margin: "20px",
   display: "flex",
@@ -22,14 +23,18 @@ const feedstyle = {
 };
 
 const pageStyle = {
-  marginTop: "200px",
+  marginTop: "150px",
+  marginLeft: "20px",
+  marginRight: "20px"
 };
 
 function GroupPage() {
+  //Link 태그로 받은 mock items
+  const location=useLocation();
+  const mock=location.state;
   return (
     <div style={pageStyle}>
-      {/* <Gnb /> */}
-      <Info />
+      <Info items={mock}/>
       <hr />
       <div style={style}>
         <div

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./components/App";
 import GroupListPage from "./pages/Grouplist_page";
 import MakeGroupPage from "./pages/Makegroup_page";
-import GroupPage from "./pages/GroupPage";
+import GroupPage from "./pages/Group_page";
 //나머지 페이지도 import
 
 function Main() {

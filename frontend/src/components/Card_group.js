@@ -1,6 +1,7 @@
 // 공개 그룹 목록 페이지 - card/group 컴포넌트
 import React from "react";
 import "./Card_group.css";
+import { Link } from 'react-router-dom';
 
 // 시간계산 함수
 function calculateDaysDifference(createdAt) {
@@ -30,6 +31,7 @@ function CardGroupItem({ item }) {
   const optionStyle = { color: "#B8B8B8" };
 
   return (
+    <Link to='/GroupPage' state= {{item : item }} style={{ textDecoration: "none", color: 'inherit' }} >
     <div className="cardGroupItem">
       {option === "공개" && img && (
         <img src={img} alt={title} className="cardGroupItem-img" />
@@ -39,7 +41,9 @@ function CardGroupItem({ item }) {
         <div style={optionStyle}>|</div>
         <div style={optionStyle}>{option}</div>
       </div>
+      
       <div style={titleStyle}>{title}</div>
+      
       <div>{content}</div>
       <div className="cardGroupItem-info">
         <div>
@@ -55,12 +59,13 @@ function CardGroupItem({ item }) {
         <div>
           <div style={categoryNameStyle}>그룹 공감</div>
           <div>
-            <img src="./imgs/logo_16x16.svg" />
+            <img alt='공감아이콘' src="./imgs/logo_16x16.svg" />
             {like}
           </div>
         </div>
       </div>
     </div>
+    </Link>
   );
 }
 

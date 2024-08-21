@@ -1,0 +1,28 @@
+.inputInfo {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.inputItems {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.submitButton {
+  width: 410px;
+  height: 45px;
+  color: #fff;
+  background-color: #282828;
+  border-radius: 6px;
+}
+
+.submitButton:hover {
+  background-color: #e4e4e4;
+  border: none;
+  color: #282828;
+}

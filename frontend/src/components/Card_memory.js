@@ -1,5 +1,5 @@
 import sampleImg from '../assets/img1.png';
-import './CardMemory.css';
+import './Card_memory.css';
 
 
 

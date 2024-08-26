@@ -30,8 +30,10 @@ function CardGroupItem({ item }) {
   const titleStyle = { fontWeight: "bold" };
   const optionStyle = { color: "#B8B8B8" };
 
+  const isPublicPath = (option === "공개") ? "/GroupPage" : "/AutPage";
+
   return (
-    <Link to='/GroupPage' state= {{item : item }} style={{ textDecoration: "none", color: 'inherit' }} >
+    <Link to={isPublicPath} state= {{item : item }} style={{ textDecoration: "none", color: 'inherit' }} >
     <div className="cardGroupItem">
       {option === "공개" && img && (
         <img src={img} alt={title} className="cardGroupItem-img" />

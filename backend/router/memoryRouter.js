@@ -24,7 +24,7 @@ memoryRouter.route('/groups/:groupId/posts')
     const { nickname, title, content, password, imageUrl, location, moment, isPublic } = req.body;
 
     // 요청 양식 오류 확인
-    if (!nickname || !title || !content || (isPublic === false && !password)) {
+    if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
 
@@ -38,7 +38,7 @@ memoryRouter.route('/groups/:groupId/posts')
         image: imageUrl,
         location,
         isPublic,
-        password: isPublic ? null : password, // 비공개일 때만 비밀번호 설정
+        password,
         moment: new Date(moment),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -63,7 +63,7 @@ memoryRouter.route('/groups/:groupId/posts')
 
 memoryRouter.route('/posts/:id/verify-password')  
 
-  // 비공개 게시글 비밀번호 확인
+  // 게시글 조회 권한 확인
   .post(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;

@@ -6,8 +6,9 @@
   border: 1px solid #282828;
   border-radius: 6px;
   background-color: #fff;
-  width: 1240px;
+  width: 1680px;
   height: 60px;
+  margin-left: 40px;
 }
 
 .loadMoreButtonContainer {

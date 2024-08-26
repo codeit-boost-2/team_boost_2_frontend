@@ -26,6 +26,7 @@ function InputText({ label, value, onChange, required = false }) {
         {label}
         <input
           className="textInput"
+          type="text"
           placeholder="그룹명을 입력해주세요"
           value={value}
           onChange={handleChange}

@@ -1,4 +1,4 @@
-import Card from "../components/Card_memory.js";
+import Card from "../components/CardMemory.js";
 import Info from "../components/Info.js";
 import Button from "../components/Button.js";
 import Tab from "../components/oldTab.js";

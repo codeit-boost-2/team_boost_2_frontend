@@ -1,32 +1,35 @@
 //공개, 비공개 탭 기능
 import React, { useState, useEffect } from "react";
+// import { getGroups } from "../api/api.js";
 import items from "../api/mock.json";
 import "./Tab.css";
 
 function Tab({ onFilter }) {
-  const [filterOption, setFilterOption] = useState("공개");
+  const [filterOption, setFilterOption] = useState(true);
 
   useEffect(() => {
-    const filteredItems = items.filter((item) => item.option === filterOption);
+    const filteredItems = items.filter(
+      (item) => item.isPublic === filterOption
+    );
     onFilter(filteredItems);
   }, [filterOption, onFilter]);
 
-  const handleFilterClick = (option) => {
-    setFilterOption(option);
+  const handleFilterClick = (isPublic) => {
+    setFilterOption(isPublic);
   };
 
   return (
     <div>
-      <div className="privateOptionTab">
+      <div className="publicOptionTab">
         <button
-          onClick={() => handleFilterClick("공개")}
-          className={filterOption === "공개" ? "active" : ""}
+          onClick={() => handleFilterClick(true)}
+          className={filterOption === true ? "active" : ""}
         >
           공개
         </button>
         <button
-          onClick={() => handleFilterClick("비공개")}
-          className={filterOption === "비공개" ? "active" : ""}
+          onClick={() => handleFilterClick(false)}
+          className={filterOption === false ? "active" : ""}
         >
           비공개
         </button>

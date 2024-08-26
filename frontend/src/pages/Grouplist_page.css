@@ -6,14 +6,14 @@
 
 .sortBar {
   position: relative;
-  margin-left: 100px;
-  margin-right: 100px;
   top: 80px;
   display: grid;
   gap: 50px;
   grid-template-columns: 1fr 8fr 1fr;
   justify-content: center;
   align-items: center;
+  margin-left: 130px;
+  margin-right: 110px;
 }
 
 .cardGroupList {

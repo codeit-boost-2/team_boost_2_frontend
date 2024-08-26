@@ -1,17 +1,17 @@
 import React from "react";
 import "./Toggle.css";
 
-function Toggle({ isPrivate, onToggle }) {
+function Toggle({ isPublic, onToggle }) {
   return (
-    <div className="privateOption">
+    <div className="PublicOption">
       <div>그룹 공개 선택</div>
       <div className="toggle">
-        <span className="privacy-label">{isPrivate ? "비공개" : "공개"}</span>
+        <span className="privacy-label">{isPublic ? "공개" : "비공개"}</span>
         <label className="switch">
           <input
             type="checkbox"
-            checked={!isPrivate}
-            onChange={() => onToggle(!isPrivate)}
+            checked={isPublic}
+            onChange={() => onToggle(!isPublic)}
           />
           <span className="slider round"></span>
         </label>

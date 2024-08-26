@@ -1,6 +1,7 @@
 //import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import "./Makegroup_page.css";
+import axios from "axios";
 import InputText from "../components/Input_text";
 import FileInput from "../components/Input_img";
 import InputBox from "../components/Input_box";
@@ -18,7 +19,7 @@ function MakeGroupPage() {
   const [groupName, setGroupName] = useState("");
   const [groupImage, setGroupImage] = useState(null);
   const [groupDescription, setGroupDescription] = useState("");
-  const [isPrivate, setIsPrivate] = useState(true);
+  const [isPublic, setisPublic] = useState(true);
   const [password, setPassword] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
@@ -31,16 +32,17 @@ function MakeGroupPage() {
     formData.append("groupName", groupName);
     formData.append("groupImage", groupImage);
     formData.append("groupDescription", groupDescription);
-    formData.append("isPrivate", isPrivate);
+    formData.append("isPublic", isPublic);
     formData.append("password", password);
 
     // formData를 서버로 전송
-    // axios.post('/api/create-group', formData);
+    /*********************/
+    axios.post("/groups", formData);
     console.log("Form submitted:", {
       groupName,
       groupImage,
       groupDescription,
-      isPrivate,
+      isPublic,
       password: password,
     });
 
@@ -61,31 +63,20 @@ function MakeGroupPage() {
 
         <div className="inputInfo">
           <div className="inputItems">
-            <InputText
-              className="InputGroupName"
-              label="그룹명"
-              type="text"
-              value={groupName}
-              onChange={setGroupName}
-              required={true}
-            />
+            <InputText label="그룹명" onChange={setGroupName} required={true} />
 
             <FileInput onFileChange={setGroupImage} required={true} />
 
             <InputBox
-              className="GroupIntroduction"
               label="그룹 소개"
-              type="box"
               value={groupDescription}
               onChange={setGroupDescription}
               required={true}
             />
 
-            <Toggle isPrivate={isPrivate} onToggle={setIsPrivate} />
+            <Toggle isPublic={isPublic} onToggle={setisPublic} />
 
             <InputPW
-              className="password"
-              type="password"
               label="비밀번호"
               value={password}
               onChange={setPassword}

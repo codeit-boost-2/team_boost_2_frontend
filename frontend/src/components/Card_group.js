@@ -38,9 +38,12 @@ function CardGroupItem({ item }) {
   const nameStyle = { fontWeight: "bold" };
   const isPublicStyle = { color: "#B8B8B8" };
 
+  //공개 여부에 따라 경로 변경
+  const isPublicPath = (isPublic === true) ? "/GroupPage" : "/AutPage";
+  
   return (
     <Link
-      to="/GroupPage"
+      to={isPublicPath}
       state={{ item: item }}
       style={{ textDecoration: "none", color: "inherit" }}
     >

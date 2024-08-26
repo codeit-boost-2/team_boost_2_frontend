@@ -124,7 +124,7 @@ memoryRouter.route('/:id')
   }));
 
 memoryRouter.route('/:id/isPublic')
-
+  // 추억 공개 여부 확인
   .get(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const memory = prisma.memory.findUniqueOrThrow({

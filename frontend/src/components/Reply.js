@@ -1,5 +1,5 @@
 import React from "react";
-// import "./Reply.css";
+import "./Reply.css";
 // import { Link } from "react-router-dom";
 import /* getMemories 함수 만들기 */ "../api/api.js";
 
@@ -20,20 +20,32 @@ function formatDate(createdAt) {
   );
 }
 
+const hrStyle = {
+  border: "1px solid #DDDDDD",
+  margin: "20px 0",
+};
+
 function Reply({ name, createdAt, content }) {
   const publishedOn = formatDate(createdAt);
 
   return (
     <div className="Reply">
-      <div className="ReplyHeader">
-        <span className="ReplyName">{name}</span>
-        <formatDate className="ReplyDate">{publishedOn}</formatDate>
+      <div className="ReplyInfo">
+        <div className="ReplyHeader">
+          <span className="ReplyName">{name}</span>
+          <formatDate className="ReplyDate">{publishedOn}</formatDate>
+        </div>
+        <div>
+          <button className="ReplyEdit">
+            <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
+          </button>
+          <button className="ReplyDelete">
+            <img alt="댓글 삭제하기" src="../imgs/delete_button.svg" />
+          </button>
+        </div>
       </div>
       <div className="ReplyContent">{content}</div>
-      <div>
-        <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
-        <img alt="댓글 삭제하기" src="../imgs/delete_button.svg" />
-      </div>
+      <hr style={hrStyle} />
     </div>
   );
 }

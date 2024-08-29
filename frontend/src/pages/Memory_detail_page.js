@@ -31,10 +31,13 @@ const mockItem = {
 };
 
 const hrStyle = {
-  border: "1px solid #DDDDDD",
-  marginLeft: "200px",
-  marginRight: "200px",
-  marginTop: "50px",
+  border: "1px solid #dddddd",
+  margin: "20px 200px 20px 200px",
+};
+
+const hrReply = {
+  border: "1px solid #282828",
+  margin: "20px 200px 20px 200px",
 };
 
 function MemoryDetailPage() {
@@ -51,7 +54,7 @@ function MemoryDetailPage() {
       </button>
       <div className="Replies">
         <p className="ReplyCount">댓글 {mockItem.replies.length}</p>
-        <hr style={hrStyle} />
+        <hr style={hrReply} />
         {mockItem.replies.map((reply) => (
           <Reply
             key={reply.id}

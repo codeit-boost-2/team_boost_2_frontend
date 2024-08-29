@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Link to="/">
-        <img className="logoImg" src="./imgs/logo.svg" alt="logo" />
+        <img className="logoImg" src="../imgs/logo.svg" alt="logo" />
       </Link>
       <Outlet />
     </>

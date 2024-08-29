@@ -1,9 +1,9 @@
-import Card from "../components/CardMemory.js";
+import Card from "../components/Card_memory.js";
 import Info from "../components/Info.js";
 import Button from "../components/Button.js";
 import Tab from "../components/oldTab.js";
 import Search from "../components/Search.js";
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const style = {
   margin: "20px",
@@ -47,7 +47,9 @@ function GroupPage() {
         >
           추억목록
         </div>
-        <Button />
+        <Link to="/MemoryPost">
+          <Button />
+        </Link>
       </div>
       <div style={{ display: "flex", marginBottom: "40px" }}>
         <Tab />

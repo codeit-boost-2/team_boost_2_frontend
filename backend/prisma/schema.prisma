@@ -65,7 +65,7 @@ model Memory {
 // 댓글
 model Comment {
   // 댓글 아이디 (Primary Key)
-  id        String   @id @default(uuid())
+  commentId        String   @id @default(uuid())
   // 추억 아이디 (Forien Key)
   memoryId String
   // 댓글 작성자 닉네임

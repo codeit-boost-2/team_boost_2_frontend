@@ -8,7 +8,71 @@ const prisma = new PrismaClient();
 const commentRouter = express.Router();
 commentRouter.use(express.json());
 
+commentRouter.route('/posts/:memoryId/comments')
+
+  // 댓글 목록 조회 - 수정 필요
+  .get(asyncHandler(async (req, res) => {
+    const { memoryId } = req.params;
+    const { page = 1, pageSize = 20 } = req.query;
+
+    if (page <= 0 || pageSize <= 0) {
+      return res.status(400).json({ message: '잘못된 요청입니다' });
+    }
+
+    const [totalCount, comments] = await Promise.all([
+      prisma.comment.count({ where: { memoryId } }),
+      prisma.comment.findMany({
+        where: { memoryId },
+        skip: (page - 1) * pageSize,
+        take: Number(pageSize),
+        select: {
+          id: true,
+          nickname: true,
+          content: true,
+          createdAt: true
+        }
+      })
+    ]);
+
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    return res.status(200).json({
+      currentPage: Number(page),
+      totalPages,
+      totalItemCount: totalCount,
+      data: comments
+    });
+  }))
+
+  // 댓글 등록
+  .post(asyncHandler(async (req, res) => {
+    const { memoryId } = req.params;
+    const { nickname, content, password } = req.body;
+
+    if (!nickname || !content || !password) {
+      return res.status(400).json({ message: '잘못된 요청입니다' });
+    }
+
+    const newComment = await prisma.comment.create({
+      data: {
+        memoryId,
+        nickname,
+        content,
+        password
+      },
+      select: {
+        id: true,
+        nickname: true,
+        content: true,
+        createdAt: true
+      }
+    });
+
+    return res.status(200).json(newComment);
+  })); 
+
 commentRouter.route('/:commentId')
+
   // 댓글 수정
   .put(asyncHandler(async (req, res) => {
     const { commentId } = req.params;
@@ -39,6 +103,7 @@ commentRouter.route('/:commentId')
       res.status(403).send({ message: "비밀번호가 틀렸습니다" });
     };
   }))
+
   // 댓글 삭제
   .delete(asyncHandler(async (req, res) => {
     const { commentId } = req.params;

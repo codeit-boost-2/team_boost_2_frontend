@@ -39,8 +39,8 @@ function CardGroupItem({ item }) {
   const isPublicStyle = { color: "#B8B8B8" };
 
   //공개 여부에 따라 경로 변경
-  const isPublicPath = (isPublic === true) ? "/GroupPage" : "/AutPage";
-  
+  const isPublicPath = isPublic === true ? "/GroupPage" : "/AutPage";
+
   return (
     <Link
       to={isPublicPath}
@@ -59,18 +59,18 @@ function CardGroupItem({ item }) {
           </div>
         </div>
         <div style={nameStyle}>{name}</div>
-        <div>{description}</div>
+        {isPublic === true && memories && <div>{description}</div>}
         <div className="cardGroupItem-info">
-          <div>
-            <div style={categoryNameStyle}>획득배지</div>
-            <div>{badges}</div>
-          </div>
           {isPublic === true && memories && (
             <div>
-              <div style={categoryNameStyle}>추억</div>
-              <div>{memories}</div>
+              <div style={categoryNameStyle}>획득배지</div>
+              <div>{badges}</div>
             </div>
           )}
+          <div>
+            <div style={categoryNameStyle}>추억</div>
+            <div>{memories}</div>
+          </div>
           <div>
             <div style={categoryNameStyle}>그룹 공감</div>
             <div>

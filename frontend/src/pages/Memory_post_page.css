@@ -17,12 +17,16 @@
     border: none;
     background-color: transparent;
     position: absolute;
+    width: 40px;
+    height: 40px;
     right:300px;
+    cursor: pointer;
 }
 /* X 버튼 */
 .close:before, .close:after {
     position: absolute;
-    left: 15px;
+    left: 20px;
+    bottom: 1px;
     content:' ';
     height: 40px;
     width: 2px;

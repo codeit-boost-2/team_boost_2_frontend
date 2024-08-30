@@ -59,9 +59,6 @@ function GroupPage() {
         <Card />
         <Card />
         <Card />
-        <Card />
-        <Card />
-        <Card />
       </div>
     </div>
   );

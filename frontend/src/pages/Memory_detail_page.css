@@ -2,6 +2,61 @@
   margin-top: 200px;
 }
 
+.MemoryEdit {
+  display: flex;
+  gap: 30px;
+}
+
+.MemoryUpdate {
+  font-size: 16px;
+  background-color: #fff;
+  color: #8d8d8d;
+  border: none;
+}
+
+.MemoryUpdate:hover {
+  color: #282828;
+}
+
+.MemoryDelete {
+  font-size: 16px;
+  background-color: #fff;
+  color: #8d8d8d;
+  border: none;
+}
+
+.MemoryDelete:hover {
+  color: #282828;
+}
+
+.likeButton {
+  background-color: #fff;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.likeButton:hover {
+  background-color: #fff;
+  padding: 0;
+  border-radius: 6px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.MemoryButtons {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+}
+
+.MemoryHeader {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 200px;
+}
+
 .MainContents {
   display: flex;
   flex-direction: column;

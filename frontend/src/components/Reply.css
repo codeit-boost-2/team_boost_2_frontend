@@ -13,6 +13,7 @@
 .ReplyHeader {
   display: flex;
   gap: 10px;
+  margin-bottom: 15px;
 }
 
 .ReplyDate {
@@ -22,6 +23,7 @@
 .ReplyEdit {
   background-color: #fff;
   border: none;
+  margin-bottom: 15px;
 }
 .ReplyEdit:hover {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);

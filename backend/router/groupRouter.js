@@ -8,12 +8,71 @@ const prisma = new PrismaClient();
 const groupRouter = express.Router();
 groupRouter.use(express.json());
 
-groupRouter.route('/')
+groupRouter.route('/:page/:pageSize/:sortBy/:isPublic/:keyword')
 
   // 그룹 목록 조회 - 수정 필요
   .get(asyncHandler(async (req, res) => {
-    const groups = await prisma.group.findMany();
-    res.status(200).send(groups);
+    const { page, pageSize, sortBy, keyword, isPublic } = req.params;
+
+    // 그룹 검색
+    const where = {
+      isPublic: isPublic === 'true',
+      name: {
+        contains: keyword === 'null' ? '' : keyword,
+        mode: 'insensitive'
+      },
+    };
+
+    // 정렬 기준
+    let orderBy;
+    switch (sortBy) {
+      case 'mostPosted':
+        orderBy = { _count: { memories: 'desc' } };
+        break;
+      case 'mostLiked':
+        orderBy = { likeCount: 'desc' };
+        break;
+      default: // latest
+        orderBy = { createdAt: 'desc' };
+    }
+
+    const [totalItemCount, groups] = await Promise.all([
+      prisma.group.count({ where }),
+      prisma.group.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: Number(pageSize),
+        orderBy,
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          isPublic: true,
+          likeCount: true,
+          _count: { select: { memories: true } },
+          createdAt: true,
+          description: true,
+        },
+      }),
+    ]);
+
+    const data = groups.map(group => ({
+      id: group.id,
+      name: group.name,
+      image: group.image,
+      isPublic: group.isPublic,
+      likeCount: group.likeCount,
+      postCount: group._count.memories,
+      createdAt: group.createdAt,
+      introduction: group.description,
+    }));
+
+    res.status(200).json({
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalItemCount / pageSize),
+      totalItemCount,
+      data,
+    });
   }))
 
   // 그룹 등록

@@ -70,7 +70,7 @@ function Info(mock){
                     <div>
                     <button className='infoButton' onClick={() => setChangeModal(!changeModal)}>그룹 정보 수정하기</button>
                     {
-                        changeModal === true ? <InfoChangeModal setModal={setChangeModal}/> : null
+                        changeModal === true ? <InfoChangeModal items={mock.items.item} setModal={setChangeModal}/> : null
                     }
                     <button className='infoButton' onClick={() => setDeleteModal(!deleteModal)}>그룹 삭제하기</button>
                     {

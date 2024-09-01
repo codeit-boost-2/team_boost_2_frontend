@@ -96,7 +96,8 @@ function MemoryPostPage(){
                     <FileInput 
                     name="image" 
                     value={values.image} 
-                    onChange={handleChange}/> 
+                    onChange={handleChange}
+                    isChange={false}/> 
 
                     <br />
 

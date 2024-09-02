@@ -3,16 +3,19 @@ dotenv.config();
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js';
+import { getMemoryList } from './memoryRouter.js';
 
 const prisma = new PrismaClient();
 const groupRouter = express.Router();
 groupRouter.use(express.json());
 
-groupRouter.route('/:page/:pageSize/:sortBy/:isPublic/:keyword')
+groupRouter.route('/groups/:page/:pageSize/:sortBy/:isPublic/:keyword')
 
-  // 그룹 목록 조회 - 수정 필요
+  // 그룹 목록 조회
   .get(asyncHandler(async (req, res) => {
-    const { page, pageSize, sortBy, keyword, isPublic } = req.params;
+    const page = Number(req.params.page);
+    const pageSize = Number(req.params.pageSize);
+    const { sortBy, keyword, isPublic } = req.params;
 
     // 그룹 검색
     const where = {
@@ -73,7 +76,9 @@ groupRouter.route('/:page/:pageSize/:sortBy/:isPublic/:keyword')
       totalItemCount,
       data,
     });
-  }))
+  }));
+
+groupRouter.route('/groups')
 
   // 그룹 등록
   .post(asyncHandler(async (req, res) => {
@@ -95,7 +100,7 @@ groupRouter.route('/:page/:pageSize/:sortBy/:isPublic/:keyword')
     res.status(201).send(group);
   }));
 
-groupRouter.route('/:id')
+groupRouter.route('/groups/:id')
 
   // 그룹 수정
   .put(asyncHandler(async (req, res) => {
@@ -129,19 +134,6 @@ groupRouter.route('/:id')
     return res.status(200).json(updatedGroup);
   }))
 
-  // 그룹 상세 정보 조회
-  .get(asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const group = await prisma.group.findUniqueOrThrow({
-      where: { id },
-      include: {
-        memories: true,
-      },
-    });
-
-    res.status(200).send(group);
-  }))
-
   // 그룹 삭제
   .delete(asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -166,7 +158,7 @@ groupRouter.route('/:id')
     res.status(200).send({ message: "그룹 삭제 성공" });
   }));
 
-groupRouter.route('/:id/isPublic')
+groupRouter.route('/groups/:id/isPublic')
 
   // 그룹 공개 여부 확인
   .get(asyncHandler(async (req, res) => {
@@ -182,7 +174,7 @@ groupRouter.route('/:id/isPublic')
     res.status(200).send(group);
   }));
 
-groupRouter.route('/:id/like')
+groupRouter.route('/groups/:id/like')
 
   // 그룹 공감하기
   .post(asyncHandler(async (req, res) => {
@@ -208,12 +200,12 @@ groupRouter.route('/:id/like')
     res.status(200).send({ message: "그룹 공감하기 성공" });
   }));
 
-groupRouter.route('/:id/verifyPassword')
+groupRouter.route('/groups/:id/verifyPassword')
 
   // 그룹 조회 권한 확인
   .post(asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { password } = req.params;
+    const { password } = req.body;
     const group = await prisma.group.findUniqueOrThrow({
       where: { id },
       select: {
@@ -226,6 +218,43 @@ groupRouter.route('/:id/verifyPassword')
     } else {
       res.status(401).send({ message: "비밀번호가 틀렸습니다" });
     };
+  }));
+
+groupRouter.route('/groups/:id/:page/:pageSize/:sortBy/:keyword/:isPublic')
+
+  // 그룹 상세 정보 조회 (추억 목록 조회)
+  .get(asyncHandler(async (req, res) => {
+    const { id, page, pageSize, sortBy, keyword, isPublic } = req.params;
+
+    const group = await prisma.group.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    const memoriesResult = await getMemoryList({
+      groupId: id,
+      page: Number(page),
+      pageSize: Number(pageSize),
+      sortBy,
+      keyword: keyword === 'null' ? '' : keyword,
+      isPublic: isPublic === 'true',
+    });
+
+    res.status(200).json({
+      group,
+      memories: {
+        currentPage: Number(page),
+        totalPages: Math.ceil(memoriesResult.totalItemCount / Number(pageSize)),
+        totalItemCount: memoriesResult.totalItemCount,
+        data: memoriesResult.data,
+      },
+    }); 
   }));
 
 export default groupRouter;

@@ -8,13 +8,71 @@ const prisma = new PrismaClient();
 const memoryRouter = express.Router();
 memoryRouter.use(express.json());
 
-memoryRouter.route('/groups/:groupId/posts')
+// 추억 목록 조회 (그룹 상세 정보 조회를 위해 함수로 분리)
+export async function getMemoryList({ groupId, page, pageSize, sortBy, keyword, isPublic }) {
+  const where = {
+    groupId: Number(groupId),
+    isPublic: isPublic === 'true',
+    title: {
+      contains: keyword === 'null' ? '' : keyword,
+      mode: 'insensitive'
+    },
+  };
 
-  // 추억 목록 조회 - 수정 필요
-  .get(asyncHandler(async (req, res) => {
-    const memories = await prisma.memory.findMany();
-    res.send(memories);
-  }))
+  let orderBy;
+  switch (sortBy) {
+    case 'mostCommented':
+      orderBy = { _count: { comments: 'desc' } };
+      break;
+    case 'mostLiked':
+      orderBy = { likeCount: 'desc' };
+      break;
+    default: // latest
+      orderBy = { createdAt: 'desc' };
+  }
+
+  const [totalItemCount, posts] = await Promise.all([
+    prisma.memory.count({ where }),
+    prisma.memory.findMany({
+      where,
+      skip: (page - 1) * pageSize,
+      take: Number(pageSize),
+      orderBy,
+      select: {
+        id: true,
+        nickname: true,
+        title: true,
+        image: true,
+        location: true,
+        moment: true,
+        isPublic: true,
+        likeCount: true,
+        _count: { select: { comments: true } },
+        createdAt: true,
+      },
+    }),
+  ]);
+
+  const data = posts.map(post => ({
+    id: post.id,
+    nickname: post.nickname,
+    title: post.title,
+    image: post.image,
+    location: post.location,
+    moment: post.moment,
+    isPublic: post.isPublic,
+    likeCount: post.likeCount,
+    commentCount: post._count.comments,
+    createdAt: post.createdAt,
+  }));
+
+  return {
+    totalItemCount,
+    data,
+  };
+};
+  
+memoryRouter.route('/groups/:groupId/posts')
 
   // 추억 등록
   .post(asyncHandler(async (req, res) => {
@@ -27,7 +85,7 @@ memoryRouter.route('/groups/:groupId/posts')
 
     const newMemory = await prisma.memory.create({
       data: {
-        groupId,
+        groupId: Number(groupId),
         nickname,
         title,
         content,
@@ -36,8 +94,6 @@ memoryRouter.route('/groups/:groupId/posts')
         isPublic,
         password,
         moment: new Date(moment),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       }
     });
 
@@ -57,7 +113,7 @@ memoryRouter.route('/groups/:groupId/posts')
     });
   }));
 
-memoryRouter.route('/:id/verifyPassword')  
+memoryRouter.route('/posts/:id/verifyPassword')  
 
   // 추억 조회 권한 확인
   .post(asyncHandler(async (req, res) => {
@@ -78,7 +134,7 @@ memoryRouter.route('/:id/verifyPassword')
     }
   }));
 
-memoryRouter.route('/:id/like')
+memoryRouter.route('/posts/:id/like')
 
   // 추억 공감하기
   .post(asyncHandler(async (req, res) => {
@@ -104,7 +160,7 @@ memoryRouter.route('/:id/like')
     return res.status(200).json({ message: '게시글 공감하기 성공' });
   }));
 
-memoryRouter.route('/:id/isPublic')
+memoryRouter.route('/posts/:id/isPublic')
 
   // 추억 공개 여부 확인
   .get(asyncHandler(async (req, res) => {
@@ -120,7 +176,7 @@ memoryRouter.route('/:id/isPublic')
     res.status(200).send(memory)
   }));
 
-memoryRouter.route('/:id')
+memoryRouter.route('/posts/:id')
 
   // 추억 상세 정보 조회
   .get(asyncHandler(async (req, res) => {
@@ -172,7 +228,7 @@ memoryRouter.route('/:id')
     return res.status(200).json(updatedPost);
   }))
 
-  // 게시글 삭제
+  // 추억 삭제
   .delete(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;

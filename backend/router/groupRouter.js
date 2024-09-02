@@ -17,7 +17,6 @@ groupRouter.route('/groups/:page/:pageSize/:sortBy/:isPublic/:keyword')
     const pageSize = Number(req.params.pageSize);
     const { sortBy, keyword, isPublic } = req.params;
 
-    // 그룹 검색
     const where = {
       isPublic: isPublic === 'true',
       name: {
@@ -26,7 +25,6 @@ groupRouter.route('/groups/:page/:pageSize/:sortBy/:isPublic/:keyword')
       },
     };
 
-    // 정렬 기준
     let orderBy;
     switch (sortBy) {
       case 'mostPosted':
@@ -139,6 +137,10 @@ groupRouter.route('/groups/:id')
     const { id } = req.params;
     const { password } = req.body;
 
+    if (!password) {
+      return res.status(400).json({ message: '잘못된 요청입니다' });
+    }
+
     const group = await prisma.group.findUniqueOrThrow({
       where: { id },
     });
@@ -225,6 +227,10 @@ groupRouter.route('/groups/:id/:page/:pageSize/:sortBy/:keyword/:isPublic')
   // 그룹 상세 정보 조회 (추억 목록 조회)
   .get(asyncHandler(async (req, res) => {
     const { id, page, pageSize, sortBy, keyword, isPublic } = req.params;
+
+    if (!id || !page || !pageSize || !sortBy || isPublic === undefined) {
+      return res.status(400).json({ message: '잘못된 요청입니다' });
+    }
 
     const group = await prisma.group.findUnique({
       where: { id },

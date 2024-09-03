@@ -8,16 +8,16 @@ const prisma = new PrismaClient();
 const commentRouter = express.Router();
 commentRouter.use(express.json());
 
-commentRouter.route('/posts/:memoryId/comments')
+commentRouter.route('/posts/:memoryId/comments/:page/:pageSize')
 
   // 댓글 목록 조회 - 수정 필요
   .get(asyncHandler(async (req, res) => {
     const { memoryId } = req.params;
-    const { page = 1, pageSize = 20 } = req.query;
+    const { page = 1, pageSize = 10 } = req.query;
 
     if (page <= 0 || pageSize <= 0) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
-    }
+    } 
 
     const [totalCount, comments] = await Promise.all([
       prisma.comment.count({ where: { memoryId } }),

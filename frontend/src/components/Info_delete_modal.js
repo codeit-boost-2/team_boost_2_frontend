@@ -11,7 +11,7 @@ function InfoDeleteModal({ setModal }){
         <div className="modalContainer" style={{width:'500px', height:'300px'}}>
             <div className="modalHead">
             <h3 style={{marginBottom: '50px'}}>그룹 삭제</h3>
-            <button style={{border: "none", backgroundColor:"transparent", marginBottom: '50px', fontSize:"30px", position: 'absolute', right: '30px'}} onClick={closeModal}>x</button>
+            <button style={{border: "none", cursor:"pointer", backgroundColor:"transparent", marginBottom: '50px', fontSize:"30px", position: 'absolute', right: '30px'}} onClick={closeModal}>x</button>
             </div>
             <form>
                 <div className="MPinputDsc">삭제 권한 인증</div>

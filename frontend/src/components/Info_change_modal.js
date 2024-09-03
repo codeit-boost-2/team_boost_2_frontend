@@ -31,7 +31,7 @@ function InfoChangeModal({ setModal, items }){
         <div className="modalContainer">
             <div className="modalHead">
             <h3 style={{marginBottom: '50px'}}>그룹 정보 수정</h3>
-            <button style={{border: "none", backgroundColor:"transparent", marginBottom: '50px', fontSize:"30px", position: 'absolute', right: '30px'}} onClick={closeModal}>x</button>
+            <button style={{border: "none", backgroundColor:"transparent", cursor:"pointer", marginBottom: '50px', fontSize:"30px", position: 'absolute', right: '30px'}} onClick={closeModal}>x</button>
             </div>
             <form onSubmit={handleSubmit}>
                 <div className="MPinputDsc">그룹명</div>

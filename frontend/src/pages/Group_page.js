@@ -1,9 +1,11 @@
-import Card from "../components/Card_memory.js";
+import CardMemory from "../components/Card_memory.js";
 import Info from "../components/Info.js";
 import Button from "../components/Button.js";
 import Tab from "../components/oldTab.js";
 import Search from "../components/Search.js";
 import { useLocation, Link } from 'react-router-dom';
+import axios from "axios";
+import memories from "../api/memorymock.json";
 
 const style = {
   margin: "20px",
@@ -29,9 +31,14 @@ const pageStyle = {
 };
 
 function GroupPage() {
+  
   //Link 태그로 받은 mock items
-  const location=useLocation();
-  const mock=location.state;
+  const location = useLocation();
+  const mock = location.state;
+
+  //api 연동.. 해보기
+  //const res = await axios.get("memory_api");
+
   return (
     <div style={pageStyle}>
       <Info items={mock}/>
@@ -56,9 +63,11 @@ function GroupPage() {
         <Search />
       </div>
       <div className="feed" style={feedstyle}>
-        <Card />
-        <Card />
-        <Card />
+      {memories.length === 0 ? (
+            "<NoGroup />"
+          ) : (
+            <CardMemory items={memories} />
+          )}
       </div>
     </div>
   );

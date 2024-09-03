@@ -2,33 +2,73 @@ import sampleImg from "../assets/img1.png";
 import "./Card_memory.css";
 import { Link } from "react-router-dom";
 
-// card/memory 컴포넌트
-function Card(Memory) {
-  return (
-    <Link
-      to={`/GroupPage/${Memory.Id}`} //MemoryId는 추억상세페이지 주소
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
-      <div className="card">
-        <div className="cardImg">
-          <img src={sampleImg} alt="대표이미지"></img>
-        </div>
-        <div className="cardStatus">
-          <div className="writer">달봉이아들</div>
-          <div className="line"></div>
-          <div className="status">공개</div>
-        </div>
-        <div className="cardTitle">에델바이스</div>
-        <div className="cardBody">
-          서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.
-        </div>
-        <div className="cardFooter">
-          <div>장소, 날짜</div>
-          <div>공감 수, 댓글 수</div>
-        </div>
-      </div>
-    </Link>
-  );
+const feedstyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(4, 1fr)",
+  gridAutoRows: "561px",
+  margin: "12px",
+  gap: "10px",
+};
+
+function formatDate(value) {
+  const date = new Date(value);
+  return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
 }
 
-export default Card;
+function CardMemoryItems( { item }){
+  const {
+    nickname,
+    title,
+    image,
+    content,
+    location,
+    isPublic,
+    likeCount,
+    createdAt,
+  } = item;
+  const uploadDate = formatDate(createdAt);
+  return(
+    <>
+    <Link
+      to={`/GroupPage/${item.id}`} //MemoryId는 추억상세페이지 주소
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
+    <div className="card">
+        <div className="cardImg">
+          <img src={image} alt="대표이미지"></img>
+        </div>
+        <div className="cardStatus">
+          <div className="writer">{nickname}</div>
+          <div className="line"></div>
+          <div className="status">{(isPublic === true) ? "공개" : "비공개" }</div>
+        </div>
+        <div className="cardTitle">{title}</div>
+        <div className="cardBody">
+          {content}
+        </div>
+        <div className="cardFooter">
+          <div>{location} | {uploadDate}</div>
+          <div>{likeCount} | 댓글 수</div>
+        </div>
+      </div>
+      </Link>
+    </>
+  )
+}
+
+
+// 정렬 함수 작성
+// card/memory 컴포넌트
+function CardMemory( { items } ) {
+  return (
+      <ul style={{listStyle:"none", ...feedstyle}}>
+      {items.map((item) => (
+        <li key={item.id}>
+          <CardMemoryItems item={item} />
+        </li>
+      ))}
+    </ul>
+      );
+}
+
+export default CardMemory;

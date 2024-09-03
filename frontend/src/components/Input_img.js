@@ -19,7 +19,6 @@ function FileInput({ onFileChange, required = false }) {
 
   return (
     <div className="coverImg">
-      <div>대표 이미지</div>
       <div className="fileInput">
         <div className="fileName">{fileName}</div>
         <input

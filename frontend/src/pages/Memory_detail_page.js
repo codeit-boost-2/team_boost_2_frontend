@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import "./Memory_detail_page.css";
-import { getMemories, updateMemory, deleteMemory } from "../api/api.js";
+import { getMemories, editMemory, deleteMemory } from "../api/api.js";
 //import axios from "axios";
 import sampleImg from "../assets/img4.png";
 import CardMemoryInfo from "../components/Card_memory_info";
 import Reply from "../components/Reply";
 import DeleteMemoryPopup from "../components/Delete_memory_popup.js";
+import EditMemoryPopup from "../components/Edit_memory_popup.js";
+import ReplyMemoryPopup from "../components/Reply_popup.js";
 
 // 임의의 item 데이터 (추후 삭제)
 const mockItem = {
   Id: 1,
-  groupName: "예시 그룹",
+  name: "작성자 이름",
   isPublic: true,
   title: "추억 제목",
   tags: ["태그1", "태그2"],
-  name: "작성자 이름",
+  place: "장소",
   createdAt: 1605938471029,
   img: sampleImg,
   content: `인천 앞바다에서 월척을 낚았습니다!
@@ -27,8 +29,18 @@ const mockItem = {
   likeCount: 123,
   password: "userPassword", // 원글 작성 시 입력한 비밀번호
   replies: [
-    { id: 1, name: "eg1", createdAt: "1605938479029", content: "첫 번째 댓글" },
-    { id: 2, name: "eg2", createdAt: "1605958479029", content: "두 번째 댓글" },
+    {
+      id: 1,
+      name: "eg1",
+      createdAt: "1605938479029",
+      content: "첫 번째 댓글",
+    },
+    {
+      id: 2,
+      name: "eg2",
+      createdAt: "1605958479029",
+      content: "두 번째 댓글",
+    },
   ],
 };
 
@@ -44,8 +56,16 @@ const hrReply = {
 
 function MemoryDetailPage() {
   const [items, setItems] = useState([]);
-  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [isReplyPopupOpen, setIsReplyPopupOpen] = useState(false);
+
+  // 추억 수정 팝업 오픈
+  const openEditPopup = (id) => {
+    setSelectedItemId(id);
+    setIsEditPopupOpen(true);
+  };
 
   // 삭제 권한 인증 팝업 오픈
   const openDeletePopup = (id) => {
@@ -53,29 +73,54 @@ function MemoryDetailPage() {
     setIsDeletePopupOpen(true);
   };
 
-  // 비밀번호 일치시 삭제 진행
-  const handleDelete = async (id, password) => {
-    const result = await deleteMemory(id, password);
-    if (!result) return;
+  //댓글 등록 팝업 오픈
+  const openReplyPopup = () => {
+    setIsReplyPopupOpen(true);
+  };
 
-    const nextItems = items.filter((item) => item.Id !== id);
-    setItems(nextItems);
+  // 비밀번호 일치시 수정 진행
+  const handleEdit = async (updatedItem, password) => {
+    if (password === mockItem.password) {
+      const result = await editMemory(updatedItem);
+      if (result) {
+        setItems((prevItems) => {
+          const splitIdx = prevItems.findIndex(
+            (item) => item.Id === updatedItem.Id
+          );
+          return [
+            ...prevItems.slice(0, splitIdx),
+            updatedItem,
+            ...prevItems.slice(splitIdx + 1),
+          ];
+        });
+      }
+    } else {
+      alert("비밀번호가 일치하지 않습니다.");
+    }
+  };
+
+  // 비밀번호 일치시 삭제 진행
+  const handleDelete = async (password) => {
+    if (password === mockItem.password) {
+      const result = await deleteMemory(mockItem.Id, password);
+      if (result) {
+        setItems((prevItems) =>
+          prevItems.filter((item) => item.Id !== mockItem.Id)
+        );
+      }
+    } else {
+      alert("비밀번호가 일치하지 않습니다.");
+    }
+  };
+
+  // handleEdit 호출
+  const handleEditConfirmation = (password) => {
+    handleEdit(selectedItemId, password);
   };
 
   // handleDelete 호출
   const handleDeleteConfirmation = (password) => {
     handleDelete(selectedItemId, password);
-  };
-
-  const handleUpdateSuccess = (newItem) => {
-    setItems((prevItems) => {
-      const splitIdx = prevItems.findIndex((item) => item.id === newItem.id);
-      return [
-        ...prevItems.slice(0, splitIdx),
-        newItem,
-        ...prevItems.slice(splitIdx + 1),
-      ];
-    });
   };
 
   return (
@@ -84,7 +129,10 @@ function MemoryDetailPage() {
         <CardMemoryInfo item={mockItem} />
         <div className="MemoryButtons">
           <div className="MemoryEdit">
-            <button className="MemoryUpdate" onClick={handleUpdateSuccess}>
+            <button
+              className="MemoryUpdate"
+              onClick={() => openEditPopup(mockItem.Id)}
+            >
               추억 수정하기
             </button>
             <button
@@ -105,7 +153,7 @@ function MemoryDetailPage() {
         <p className="ContentMemory">{mockItem.content}</p>
       </div>
       <div>
-        <button className="ReplyButton">
+        <button className="ReplyButton" onClick={openReplyPopup}>
           <img src="../imgs/reply_button.svg" />
         </button>
       </div>
@@ -122,10 +170,24 @@ function MemoryDetailPage() {
         ))}
       </div>
 
+      {isEditPopupOpen && (
+        <EditMemoryPopup
+          onClose={() => setIsEditPopupOpen(false)}
+          onConfirm={handleEditConfirmation}
+        />
+      )}
+
       {isDeletePopupOpen && (
         <DeleteMemoryPopup
           onClose={() => setIsDeletePopupOpen(false)}
           onConfirm={handleDeleteConfirmation}
+        />
+      )}
+
+      {isReplyPopupOpen && (
+        <ReplyMemoryPopup
+          onClose={() => setIsReplyPopupOpen(false)}
+          onChange={() => {}}
         />
       )}
     </>

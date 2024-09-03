@@ -46,7 +46,7 @@ export async function getMemories({
 }
 
 // 추억 상세 페이지 수정
-export async function updateMemory(id, formData) {
+export async function editMemory(id, formData) {
   const response = await fetch(`${BASE_URL}/GroupPage/${id}`, {
     method: "PUT",
     body: formData,
@@ -69,4 +69,3 @@ export async function deleteMemory(id) {
   const body = await response.json();
   return body;
 }
-

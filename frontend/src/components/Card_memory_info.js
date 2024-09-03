@@ -22,16 +22,8 @@ function formatDate(createdAt) {
 }
 
 function CardMemoryInfo({ item }) {
-  const {
-    groupName,
-    isPublic,
-    title,
-    tags,
-    name, // 작성자 이름(nickName)
-    createdAt,
-    likeCount,
-    replies,
-  } = item;
+  const { name, isPublic, title, tags, place, createdAt, likeCount, replies } =
+    item;
 
   // 추억 작성 날짜
   const PublishedOn = formatDate(createdAt);
@@ -40,15 +32,11 @@ function CardMemoryInfo({ item }) {
     <div className="CardMemoryInfo">
       <div className="MemoryInfoHeader">
         <div className="GroupInfo">
-          <div>{groupName}</div>
+          <div>{name}</div>
           <div style={{ color: "#8D8D8D" }}>|</div>
           <div style={{ color: "#8D8D8D" }}>
             {isPublic === true ? "공개" : "비공개"}
           </div>
-        </div>
-        <div className="MemoryEdit">
-          <p>추억 수정하기</p>
-          <p>추억 삭제하기</p>
         </div>
       </div>
       <h1 className="MemoryTitle">{title}</h1>
@@ -63,7 +51,7 @@ function CardMemoryInfo({ item }) {
       <div className="MemoryInfoFooter">
         <div className="MemoryStatus">
           <div className="Bio" style={{ fontWeight: "bold" }}>
-            <div>{name}</div>
+            <div>{place}</div>
             <div>•</div>
             <div>{PublishedOn}</div>
           </div>
@@ -78,9 +66,6 @@ function CardMemoryInfo({ item }) {
             </div>
           </div>
         </div>
-        <button className="likeButton">
-          <img alt="공감보내기" src="../imgs/like_button.svg" />
-        </button>
       </div>
     </div>
   );

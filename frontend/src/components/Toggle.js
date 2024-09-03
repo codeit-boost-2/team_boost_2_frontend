@@ -4,7 +4,6 @@ import "./Toggle.css";
 function Toggle({ isPublic, onToggle }) {
   return (
     <div className="PublicOption">
-      <div>그룹 공개 선택</div>
       <div className="toggle">
         <span className="privacy-label">{isPublic ? "공개" : "비공개"}</span>
         <label className="switch">

@@ -10,24 +10,24 @@ function DeleteMemoryPopup({ onClose, onConfirm }) {
   };
 
   return (
-    <div className="popupOverlay">
-      <div className="popup">
-        <button className="cancel-button" onClick={onClose}>
+    <div className="DeletePopupOverlay">
+      <div className="DeletePopup">
+        <button className="Cancel-button" onClick={onClose}>
           <img alt="취소" src="../imgs/cancel_icon.svg" />
         </button>
         <div>
-          <h2 className="popup-title">추억 삭제</h2>
-          <div className="popup-inner">
+          <h2 className="DeletePopup-title">추억 삭제</h2>
+          <div className="DeletePopup-inner">
             <p>삭제 권한 인증</p>
             <input
-              className="password-input"
+              className="Password-input"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력해 주세요."
             />
           </div>
-          <button className="delete-button" onClick={handleConfirm}>
+          <button className="Delete-button" onClick={handleConfirm}>
             삭제하기
           </button>
         </div>

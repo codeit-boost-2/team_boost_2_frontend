@@ -74,7 +74,10 @@ function MakeGroupPage() {
           <div className="inputItems">
             <InputText label="그룹명" onChange={setGroupName} required={true} />
 
-            <FileInput onFileChange={setGroupImage} required={true} />
+            <div>
+              <div style={{ marginBottom: "10px" }}>대표 이미지</div>
+              <FileInput onFileChange={setGroupImage} required={true} />
+            </div>
 
             <InputBox
               label="그룹 소개"
@@ -83,7 +86,10 @@ function MakeGroupPage() {
               required={true}
             />
 
-            <Toggle isPublic={isPublic} onToggle={setisPublic} />
+            <div>
+              <div style={{ marginBottom: "10px" }}>그룹 공개 선택</div>
+              <Toggle isPublic={isPublic} onToggle={setisPublic} />
+            </div>
 
             <InputPW
               label="비밀번호"

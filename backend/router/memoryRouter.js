@@ -3,6 +3,7 @@ dotenv.config();
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js';
+import { getCommentList } from './commentRouter.js';
 
 const prisma = new PrismaClient();
 const memoryRouter = express.Router();
@@ -178,16 +179,6 @@ memoryRouter.route('/posts/:id/isPublic')
 
 memoryRouter.route('/posts/:id')
 
-  // 추억 상세 정보 조회
-  .get(asyncHandler(async (req, res) => {
-    const { id } = req.params
-    const memory = await prisma.memory.findUniqueOrThrow({
-      where: { id },
-    });
-
-    res.status(200).send(memory);
-  }))
-
   // 추억 수정
   .put(asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -259,4 +250,33 @@ memoryRouter.route('/posts/:id')
     return res.status(200).json({ message: '게시글 삭제 성공' });
   }));
 
+memoryRouter.route('/posts/:id/comments/:page/:pageSize')
+
+  // 추억 상세 정보 조회 
+  .get(asyncHandler(async (req, res) => {
+    const { id, page, pageSize } = req.params
+    
+    if ( !id || !page || !pageSize) {
+      return res.status(400).send({ message: "잘못된 요청입니다" });
+    };
+
+    const memory = await prisma.memory.findUniqueOrThrow({
+      where: { id },
+    });
+
+    const commentResult = await getCommentList({
+      commentId: id
+    });
+
+    res.status(200).send({
+      memory,
+      comments: {
+        currentPage: Number(page),
+        totalPages: Math.ceil(commentResult.totalCommentCount / Number(pageSize)),
+        totalcommentCount: commentResult.totalCommentCount,
+        data: commentResult.data,
+      },
+    });
+  }));
+  
 export default memoryRouter;

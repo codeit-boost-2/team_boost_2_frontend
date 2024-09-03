@@ -8,33 +8,43 @@ const prisma = new PrismaClient();
 const commentRouter = express.Router();
 commentRouter.use(express.json());
 
+// 댓글 목록 조회 (추억 정보 상세 조회를 위해 함수로 분리)
+export async function getCommentList({ memoryId }) {
+
+  const [totalCommentCount, comments] = await Promise.all([
+    prisma.comment.count({ where: { memoryId } }),
+    prisma.comment.findMany({
+      where: { memoryId },
+      skip: (page - 1) * pageSize,
+      take: Number(pageSize),
+      select: {
+        id: true,
+        nickname: true,
+        content: true,
+        createdAt: true
+      }
+    })
+  ]);
+  
+  const data = comments.map(comment => ({
+    id: comment.id,
+    nickname: comment.nickname,
+    content: comment.content,
+    createdAt: comment.createdAt,
+  }));
+
+  return {
+    totalCommentCount,
+    data
+  };
+}
+
 commentRouter.route('/posts/:memoryId/comments/:page/:pageSize')
 
   // 댓글 목록 조회 - 수정 필요
   .get(asyncHandler(async (req, res) => {
     const { memoryId } = req.params;
     const { page = 1, pageSize = 10 } = req.query;
-
-    if (page <= 0 || pageSize <= 0) {
-      return res.status(400).json({ message: '잘못된 요청입니다' });
-    } 
-
-    const [totalCount, comments] = await Promise.all([
-      prisma.comment.count({ where: { memoryId } }),
-      prisma.comment.findMany({
-        where: { memoryId },
-        skip: (page - 1) * pageSize,
-        take: Number(pageSize),
-        select: {
-          id: true,
-          nickname: true,
-          content: true,
-          createdAt: true
-        }
-      })
-    ]);
-
-    const totalPages = Math.ceil(totalCount / pageSize);
 
     return res.status(200).json({
       currentPage: Number(page),

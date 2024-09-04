@@ -20,11 +20,10 @@
 
 .Cancel-button {
   position: absolute;
-  top: 10px;
-  right: 0;
-  background-color: #fff;
-  border: none;
+  right: 15px;
+  top: 15px;
   cursor: grab;
+  color: #282828;
 }
 
 .ReplyPopup-title {

@@ -13,7 +13,7 @@ function DeleteMemoryPopup({ onClose, onConfirm }) {
     <div className="DeletePopupOverlay">
       <div className="DeletePopup">
         <button className="Cancel-button" onClick={onClose}>
-          <img alt="취소" src="../imgs/cancel_icon.svg" />
+          X
         </button>
         <div>
           <h2 className="DeletePopup-title">추억 삭제</h2>

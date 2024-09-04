@@ -11,13 +11,13 @@ const prisma = new PrismaClient();
 const groupRouter = express.Router();
 groupRouter.use(express.json());
 
-groupRouter.route('/:page/:pageSize/:sortBy/:isPublic/:keyword')
+groupRouter.route('/:page/:pageSize')
 
   // 그룹 목록 조회
   .get(asyncHandler(async (req, res) => {
     const page = Number(req.params.page);
     const pageSize = Number(req.params.pageSize);
-    const { sortBy, keyword, isPublic } = req.params;
+    const { sortBy, isPublic, keyword } = req.query;
 
     const where = {
       isPublic: isPublic === 'true',

@@ -3,9 +3,8 @@ import path from 'path';
 
 const fileFilter = (req, file, cb) => {
     if (
-        file.type === "image/png" ||
-        file.type === "image/jpg" ||
-        file.type === "image/jpeg"
+        file.mimetype === "image/png" ||
+        file.mimetype === "image/jpeg"
     ) {
         cb(null, true);
     } else {

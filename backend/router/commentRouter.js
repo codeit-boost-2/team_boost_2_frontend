@@ -40,48 +40,6 @@ export async function getCommentList({ memoryId }) {
   };
 }
 
-commentRouter.route('/posts/:memoryId/comments/:page/:pageSize')
-
-  // 댓글 목록 조회 - 수정 필요
-  .get(asyncHandler(async (req, res) => {
-    const { memoryId } = req.params;
-    const { page = 1, pageSize = 10 } = req.query;
-
-    return res.status(200).json({
-      currentPage: Number(page),
-      totalPages,
-      totalItemCount: totalCount,
-      data: comments
-    });
-  }))
-
-  // 댓글 등록
-  .post(asyncHandler(async (req, res) => {
-    const { memoryId } = req.params;
-    const { nickname, content, password } = req.body;
-
-    if (!nickname || !content || !password) {
-      return res.status(400).json({ message: '잘못된 요청입니다' });
-    }
-
-    const newComment = await prisma.comment.create({
-      data: {
-        memoryId,
-        nickname,
-        content,
-        password
-      },
-      select: {
-        id: true,
-        nickname: true,
-        content: true,
-        createdAt: true
-      }
-    });
-
-    return res.status(200).json(newComment);
-  })); 
-
 commentRouter.route('/:commentId')
 
   // 댓글 수정

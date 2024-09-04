@@ -3,6 +3,7 @@ import './Info.css';
 import { useState } from "react";
 import InfoChangeModal from "./Info_change_modal.js"
 import InfoDeleteModal from "./Info_delete_modal.js"
+
 //D day 계산
 function calculateDaysDifference(createdAt) {
     const now = new Date();
@@ -18,9 +19,6 @@ function calculateDaysDifference(createdAt) {
       return `D+${days}`;
     }
   }
-  
-
-
 
 const style={
     boxSizing:'border-box',
@@ -28,7 +26,6 @@ const style={
     fontFamily: 'Spoqa Han Sans Neo, Sans-Serif',
     fontWeight: '400'
 };
-
 
 //그룹 정보 나타내는 info 컴포넌트
 function Info(mock){
@@ -72,7 +69,7 @@ function Info(mock){
                     {
                         changeModal === true ? <InfoChangeModal items={mock.items.item} setModal={setChangeModal}/> : null
                     }
-                    <button className='infoButton' onClick={() => setDeleteModal(!deleteModal)}>그룹 삭제하기</button>
+                    <button className='infoButton' style={{color:"gray"}} onClick={() => setDeleteModal(!deleteModal)}>그룹 삭제하기</button>
                     {
                         deleteModal === true ? <InfoDeleteModal setModal={setDeleteModal} /> : null
                     }

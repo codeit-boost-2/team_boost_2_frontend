@@ -9,6 +9,8 @@
     font-weight: 400;
     border: 1px solid black;
     border-radius:5px;
+    break-inside: avoid;
+    margin-bottom: 50px;
 }
 
 .cardImg{

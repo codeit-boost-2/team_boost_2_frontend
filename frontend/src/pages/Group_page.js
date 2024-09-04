@@ -62,13 +62,13 @@ function GroupPage() {
         <Tab />
         <Search />
       </div>
-      <div className="feed" style={feedstyle}>
+      <div className="cardGroupList">
       {memories.length === 0 ? (
-            "<NoGroup />"
+            "NO items"
           ) : (
             <CardMemory items={memories} />
           )}
-      </div>
+          </div>
     </div>
   );
 }

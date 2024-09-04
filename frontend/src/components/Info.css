@@ -17,6 +17,7 @@
     border : none;
     background-color: white;
     cursor: pointer;
+    font-size: 14px;
 }
 
 h2{
@@ -45,6 +46,7 @@ h2{
     display: flex;
     justify-content: space-between;
 }
+
 /*modal.css만들어서 이동 필요함*/
 .modalBackground{
     position: fixed;

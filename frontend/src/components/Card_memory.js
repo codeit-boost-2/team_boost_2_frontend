@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 const feedstyle = {
   display: "grid",
   gridTemplateColumns: "repeat(4, 1fr)",
+  gridTemplateRows:"auto auto auto",
   gridAutoRows: "561px",
-  margin: "12px",
-  gap: "10px",
+  gap: "50px",
+  margin: "auto",
 };
 
 function formatDate(value) {
@@ -35,7 +36,7 @@ function CardMemoryItems( { item }){
     >
     <div className="card">
         <div className="cardImg">
-          <img src={image} alt="대표이미지"></img>
+          {image && <img src={image} alt="대표이미지"></img> }
         </div>
         <div className="cardStatus">
           <div className="writer">{nickname}</div>
@@ -61,7 +62,7 @@ function CardMemoryItems( { item }){
 // card/memory 컴포넌트
 function CardMemory( { items } ) {
   return (
-      <ul style={{listStyle:"none", ...feedstyle}}>
+      <ul className="cardGroup">
       {items.map((item) => (
         <li key={item.id}>
           <CardMemoryItems item={item} />

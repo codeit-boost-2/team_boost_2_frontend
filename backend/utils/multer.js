@@ -16,7 +16,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, done) => {
-            done(null, path.join(__dirname, '../images'))
+            done(null, '/images')
         },
         filename: (req, file, done) => {
             const ext = path.extname(file.originalname);
@@ -24,7 +24,7 @@ const upload = multer({
             done(null, fileName);
         },
     }),
-    fileFilter: fileFilter,
+   // fileFilter: fileFilter,
     limits: { fileSize: 10 * 1024 * 1024 },
 });
 

@@ -18,11 +18,11 @@ const upload = multer({
         destination: (req, file, done) => {
             done(null, '~/team_boost_2/images')
         },
-        filename: (req, file, done) => {
-            const ext = path.extname(file.originalname);
-            const fileName = path.basename(file.originalname, ext) + Date.now() + ext;
-            done(null, fileName);
-        },
+        //filename: (req, file, done) => {
+            //const ext = path.extname(file.originalname);
+            //const fileName = path.basename(file.originalname, ext) + Date.now() + ext;
+            //done(null, fileName);
+        //},
     }),
    // fileFilter: fileFilter,
     limits: { fileSize: 10 * 1024 * 1024 },

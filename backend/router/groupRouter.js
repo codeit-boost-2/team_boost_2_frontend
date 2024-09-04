@@ -81,8 +81,13 @@ groupRouter.route('/:page/:pageSize')
 
   // 그룹 등록
   .post(upload.single("image"), asyncHandler(async (req, res) => {
-    const { groupName, groupDescription, isPublic, password } = req.body;
+    const { groupName, groupDescription, password } = req.body;
+    let isPublic = req.body.isPublic;
+    if (isPublic === 'true') isPublic = true;
     const image = `/images/${req.file.filename}`;
+
+    console.log(req.body);
+    console.log(req.file);
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });

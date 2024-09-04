@@ -1,5 +1,7 @@
 import multer from 'multer';
 import path from 'path';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const fileFilter = (req, file, cb) => {
     if (
@@ -16,7 +18,8 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, done) => {
-            done(null, '../images')
+            done(null, '${process.env.IMAGE_DIR}/images')
+            //done(null, '../images')
         },
         //filename: (req, file, done) => {
             //const ext = path.extname(file.originalname);

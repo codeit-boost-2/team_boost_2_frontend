@@ -18,7 +18,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, done) => {
-            done(null, `${process.env.IMAGE_DIR}/images`)
+            done(null, `${process.env.IMAGE_DIR}`)
             //done(null, '../images')
         },
         //filename: (req, file, done) => {

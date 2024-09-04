@@ -4,6 +4,7 @@ import {
   getMemories,
   editMemory,
   deleteMemory,
+  editReply,
   deleteReply,
 } from "../api/api.js";
 //import axios from "axios";
@@ -14,6 +15,7 @@ import DeleteMemoryPopup from "../components/Delete_memory_popup.js";
 import EditMemoryPopup from "../components/Edit_memory_popup.js";
 import ReplyMemoryPopup from "../components/Reply_popup.js";
 import DeleteReplyPopup from "../components/Delete_reply_popup.js";
+import EditReplyPopup from "../components/Edit_reply_popup.js";
 
 // 임의의 item 데이터 (추후 삭제)
 const mockItem = {
@@ -68,6 +70,7 @@ function MemoryDetailPage() {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [isReplyPopupOpen, setIsReplyPopupOpen] = useState(false);
+  const [isEditReplyPopupOpen, setIsEditReplyPopupOpen] = useState(false);
   const [isDeleteReplyPopupOpen, setIsDeleteReplyPopupOpen] = useState(false);
 
   // 추억 수정 팝업 오픈
@@ -85,6 +88,12 @@ function MemoryDetailPage() {
   //댓글 등록 팝업 오픈
   const openReplyPopup = () => {
     setIsReplyPopupOpen(true);
+  };
+
+  //댓글 수정 팝업 오픈
+  const openEditReplyPopup = (id) => {
+    setSelectedItemId(id);
+    setIsEditReplyPopupOpen(true);
   };
 
   //댓글 삭제 팝업 오픈
@@ -127,14 +136,56 @@ function MemoryDetailPage() {
     }
   };
 
-  // 비밀번호 일치시 Reply 삭제 진행
-  const handleDeleteReply = async (password) => {
-    if (password === mockItem.replies.password) {
-      const result = await deleteReply(mockItem.replies.Id, password);
+  // 비밀번호 일치시 Reply 수정 진행
+  const handleEditReply = async (updatedReply, password) => {
+    const replyToEdit = mockItem.replies.find(
+      (reply) => reply.id === updatedReply.id
+    );
+
+    if (replyToEdit && password === replyToEdit.password) {
+      const result = await editReply(updatedReply);
       if (result) {
-        setItems((prevItems) =>
-          prevItems.filter((item) => item.replies.Id !== mockItem.replies.Id)
-        );
+        setItems((prevItems) => {
+          const updatedItems = prevItems.map((item) => {
+            if (item.Id === mockItem.Id) {
+              return {
+                ...item,
+                replies: item.replies.map((reply) =>
+                  reply.id === updatedReply.id ? updatedReply : reply
+                ),
+              };
+            }
+            return item;
+          });
+          return updatedItems;
+        });
+      }
+    } else {
+      alert("비밀번호가 일치하지 않습니다.");
+    }
+  };
+
+  // 비밀번호 일치시 Reply 삭제 진행
+  const handleDeleteReply = async (replyId, password) => {
+    const replyToDelete = mockItem.replies.find(
+      (reply) => reply.id === replyId
+    );
+
+    if (replyToDelete && password === replyToDelete.password) {
+      const result = await deleteReply(replyId, password);
+      if (result) {
+        setItems((prevItems) => {
+          const updatedItems = prevItems.map((item) => {
+            if (item.Id === mockItem.Id) {
+              return {
+                ...item,
+                replies: item.replies.filter((reply) => reply.id !== replyId),
+              };
+            }
+            return item;
+          });
+          return updatedItems;
+        });
       }
     } else {
       alert("비밀번호가 일치하지 않습니다.");
@@ -149,6 +200,11 @@ function MemoryDetailPage() {
   // handleDelete 호출
   const handleDeleteConfirmation = (password) => {
     handleDelete(selectedItemId, password);
+  };
+
+  // handleEditReply 호출
+  const handleEditReplyConfirmation = (password) => {
+    handleEditReply(selectedItemId, password);
   };
 
   // handleDeleteReply 호출
@@ -203,7 +259,7 @@ function MemoryDetailPage() {
                 content={reply.content}
               />
               <div className="ReplyControl">
-                <button className="ReplyEdit">
+                <button className="ReplyEdit" onClick={openEditReplyPopup}>
                   <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
                 </button>
                 <button className="ReplyDelete" onClick={openDeleteReplyPopup}>
@@ -234,6 +290,13 @@ function MemoryDetailPage() {
         <ReplyMemoryPopup
           onClose={() => setIsReplyPopupOpen(false)}
           onChange={() => {}}
+        />
+      )}
+
+      {isEditReplyPopupOpen && (
+        <EditReplyPopup
+          onClose={() => setIsEditReplyPopupOpen(false)}
+          onConfirm={handleEditReplyConfirmation}
         />
       )}
 

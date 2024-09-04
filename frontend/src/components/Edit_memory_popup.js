@@ -14,6 +14,17 @@ const inputStyle = {
   marginTop: "10px",
 };
 
+const inputContentStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "400px",
+  height: "150px",
+  border: "1px solid #dcdcdc",
+  borderRadius: "5px",
+  marginTop: "10px",
+};
+
 function EditMemoryPopup({ onClose }) {
   const [isPublic, setIsPublic] = useState(true);
   const [values, setValues] = useState({
@@ -36,21 +47,36 @@ function EditMemoryPopup({ onClose }) {
     }));
   };
 
+  // 폼 유효성 검사
+  const validateForm = () => {
+    const requiredFields = ["name", "title", "body", "date", "password"];
+    for (let field of requiredFields) {
+      if (!values[field]) {
+        alert("내용을 입력해 주세요.");
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ values });
-    onClose();
+
+    if (validateForm()) {
+      console.log({ values });
+      onClose();
+    }
   };
 
   return (
-    <div className="EditPopupOverlay">
-      <div className="EditPopup">
-        <h2 className="EditPopup-title">추억 수정하기</h2>
+    <div className="EditMemoryPopupOverlay">
+      <div className="EditMemoryPopup">
+        <h2 className="EditMemoryPopup-title">추억 수정하기</h2>
         <button className="Cancel-button" onClick={onClose}>
           x
         </button>
-        <form className="EditPopup-Form">
-          <div className="EditPopup-Left">
+        <form className="EditMemoryPopup-Form">
+          <div className="EditMemoryPopup-Left">
             <div>
               닉네임
               <input
@@ -59,6 +85,7 @@ function EditMemoryPopup({ onClose }) {
                 value={values.name}
                 onChange={handleChange}
                 placeholder="닉네임을 입력해주세요."
+                required
               />
             </div>
             <div>
@@ -69,6 +96,7 @@ function EditMemoryPopup({ onClose }) {
                 value={values.title}
                 onChange={handleChange}
                 placeholder="제목을 입력해 주세요."
+                required
               />
             </div>
             <div>
@@ -77,16 +105,17 @@ function EditMemoryPopup({ onClose }) {
             </div>
             <div>
               본문
-              <input
-                style={inputStyle}
+              <textarea
+                style={inputContentStyle}
                 name="body"
                 value={values.body}
                 onChange={handleChange}
                 placeholder="본문 내용을 입력 해 주세요."
+                required
               />
             </div>
           </div>
-          <div className="EditPopup-Right">
+          <div className="EditMemoryPopup-Right">
             <div>
               태그
               <input
@@ -116,6 +145,7 @@ function EditMemoryPopup({ onClose }) {
                 value={values.date}
                 onChange={handleChange}
                 placeholder="YYYY-MM-DD"
+                required
               />
             </div>
             <div>
@@ -130,6 +160,7 @@ function EditMemoryPopup({ onClose }) {
                 value={values.password}
                 onChange={handleChange}
                 placeholder="비밀번호를 입력해 주세요."
+                required
               />
             </div>
           </div>

@@ -1,4 +1,4 @@
-.EditPopupOverlay {
+.EditMemoryPopupOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.EditPopup {
+.EditMemoryPopup {
   position: absolute;
   width: 1120px;
   height: 794px;
@@ -19,12 +19,12 @@
   padding: 20px;
 }
 
-.EditPopup-title {
+.EditMemoryPopup-title {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .Cancel-button {
@@ -37,23 +37,23 @@
   cursor: grab;
 }
 
-.EditPopup-Form {
-  margin-top: 70px;
+.EditMemoryPopup-Form {
+  margin-top: 50px;
   display: flex;
   justify-content: center;
-  gap: 70px;
+  gap: 100px;
 }
 
-.EditPopup-Left {
+.EditMemoryPopup-Left {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 40px;
 }
 
-.EditPopup-Right {
+.EditMemoryPopup-Right {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 40px;
 }
 
 .submit {

@@ -46,33 +46,62 @@ export async function getMemories({
 }
 
 // 추억 상세 페이지 수정
-export async function editMemory(id, formData) {
+export async function editMemory(id, updatedItem) {
   const response = await fetch(`${BASE_URL}/GroupPage/${id}`, {
     method: "PUT",
-    body: formData,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedItem),
   });
+
   if (!response.ok) {
-    throw new Error("데이터를 수정하는데 실패했습니다");
+    throw new Error("데이터를 수정하는 데 실패했습니다.");
   }
+
   const body = await response.json();
   return body;
 }
 
 // 추억 삭제
-export async function deleteMemory(id) {
+export async function deleteMemory(id, password) {
   const response = await fetch(`${BASE_URL}/GroupPage/${id}`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password }),
   });
+
   if (!response.ok) {
-    throw new Error("데이터를 삭제하는데 실패했습니다");
+    throw new Error("데이터를 삭제하는 데 실패했습니다.");
   }
+
+  const body = await response.json();
+  return body;
+}
+
+// 댓글 수정
+export async function editReply(id, updatedReply, password) {
+  const response = await fetch(`${BASE_URL}/GroupPage/replies/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ updatedReply, password }),
+  });
+
+  if (!response.ok) {
+    throw new Error("댓글을 수정하는 데 실패했습니다.");
+  }
+
   const body = await response.json();
   return body;
 }
 
 // 댓글 삭제
 export async function deleteReply(id, password) {
-  const response = await fetch(`${BASE_URL}/GroupPage/${id}`, {
+  const response = await fetch(`${BASE_URL}/GroupPage/replies/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

@@ -11,13 +11,12 @@ const memoryRouter = express.Router();
 memoryRouter.use(express.json());
 
 // 추억 목록 조회 (그룹 상세 정보 조회를 위해 함수로 분리)
-export async function getMemoryList({ groupId, page, pageSize, sortBy, keyword, isPublic }) {
+export async function getMemoryList({ groupId, page, pageSize, sortBy, keyword, isPublic}) {
   const where = {
     groupId: Number(groupId),
-    isPublic: isPublic === 'true',
+    isPublic,
     title: {
       contains: keyword === 'null' ? '' : keyword,
-      mode: 'insensitive'
     },
   };
 
@@ -73,49 +72,8 @@ export async function getMemoryList({ groupId, page, pageSize, sortBy, keyword, 
     data,
   };
 };
-  
-memoryRouter.route('/groups/:groupId/posts')
 
-  // 추억 등록
-  .post(asyncHandler(async (req, res) => {
-    const { groupId } = req.params;
-    const { nickname, title, content, password, image, location, moment, isPublic } = req.body;
-
-    if (!nickname || !title || !content || isPublic === undefined || !password) {
-      return res.status(400).json({ message: '잘못된 요청입니다' });
-    }
-
-    const newMemory = await prisma.memory.create({
-      data: {
-        groupId: Number(groupId),
-        nickname,
-        title,
-        content,
-        image,
-        location,
-        isPublic,
-        password,
-        moment: new Date(moment),
-      }
-    });
-
-    res.status(200).json({
-      id: newMemory.id,
-      groupId: newMemory.groupId,
-      nickname: newMemory.nickname,
-      title: newMemory.title,
-      content: newMemory.content,
-      image: newMemory.image,
-      location: newMemory.location,
-      moment: newMemory.moment.toISOString(),
-      isPublic: newMemory.isPublic,
-      likeCount: newMemory.likeCount,
-      commentCount: 0,
-      createdAt: newMemory.createdAt.toISOString()
-    });
-  }));
-
-memoryRouter.route('/posts/:id/verifyPassword')  
+memoryRouter.route('/:id/verifyPassword')  
 
   // 추억 조회 권한 확인
   .post(asyncHandler(async (req, res) => {
@@ -136,7 +94,7 @@ memoryRouter.route('/posts/:id/verifyPassword')
     }
   }));
 
-memoryRouter.route('/posts/:id/like')
+memoryRouter.route('/:id/like')
 
   // 추억 공감하기
   .post(asyncHandler(async (req, res) => {
@@ -162,7 +120,7 @@ memoryRouter.route('/posts/:id/like')
     return res.status(200).json({ message: '게시글 공감하기 성공' });
   }));
 
-memoryRouter.route('/posts/:id/isPublic')
+memoryRouter.route('/:id/isPublic')
 
   // 추억 공개 여부 확인
   .get(asyncHandler(async (req, res) => {
@@ -178,7 +136,7 @@ memoryRouter.route('/posts/:id/isPublic')
     res.status(200).send(memory)
   }));
 
-memoryRouter.route('/posts/:id')
+memoryRouter.route('/:id')
 
   // 추억 수정
   .put(asyncHandler(async (req, res) => {
@@ -251,7 +209,7 @@ memoryRouter.route('/posts/:id')
     return res.status(200).json({ message: '게시글 삭제 성공' });
   }));
 
-memoryRouter.route('/posts/:id/comments/:page/:pageSize')
+memoryRouter.route('/:id/comments/:page/:pageSize')
 
   // 추억 상세 정보 조회 
   .get(asyncHandler(async (req, res) => {
@@ -279,5 +237,34 @@ memoryRouter.route('/posts/:id/comments/:page/:pageSize')
       },
     });
   }));
+
+  commentRouter.route('/:id/comments')
+
+  // 댓글 등록
+  .post(asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { nickname, content, password } = req.body;
+
+    if (!nickname || !content || !password) {
+      return res.status(400).json({ message: '잘못된 요청입니다' });
+    }
+
+    const newComment = await prisma.comment.create({
+      data: {
+        id,
+        nickname,
+        content,
+        password
+      },
+      select: {
+        id: true,
+        nickname: true,
+        content: true,
+        createdAt: true
+      }
+    });
+
+    return res.status(200).json(newComment);
+  })); 
   
 export default memoryRouter;

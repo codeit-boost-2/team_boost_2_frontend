@@ -8,7 +8,7 @@ const fileFilter = (req, file, cb) => {
     ) {
         cb(null, true);
     } else {
-        req.fileValidationError = "jpg, jpeg, png 파일만 업로드 가능합니다";
+        req.fileValidationError = "jpeg, png 파일만 업로드 가능합니다";
         cb(null, false);
     }
 };
@@ -16,7 +16,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, done) => {
-            done(null, "/images")
+            done(null, path.join(__dirname, '../images'))
         },
         filename: (req, file, done) => {
             const ext = path.extname(file.originalname);
@@ -25,7 +25,7 @@ const upload = multer({
         },
     }),
     fileFilter: fileFilter,
-    limits: { fileSize: 30 * 1024 * 1024 },
+    limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 export { upload };

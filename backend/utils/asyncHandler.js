@@ -14,7 +14,7 @@ function asyncHandler(handler) {
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2025'
       ) {
-        res.status(404).send({ message: "존재하지 않습니다" })
+        res.sendStatus(404)({ message: "존재하지 않습니다"});
       } else {
         res.status(500).send({ message: e.message });
       }

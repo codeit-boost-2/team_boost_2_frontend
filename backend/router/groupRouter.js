@@ -82,7 +82,7 @@ groupRouter.route('')
   // 그룹 등록
   .post(upload.single("image"), asyncHandler(async (req, res) => {
     const { groupName, groupDescription, isPublic, password } = req.body;
-    const image = `/images/${req.file.filename}`;
+    const image = `/images/${req.file.name}`;
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });

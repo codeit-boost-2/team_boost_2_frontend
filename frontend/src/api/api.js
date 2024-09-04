@@ -1,3 +1,4 @@
+import axios from "axios";
 const BASE_URL = "https://localhost:3000/api";
 
 //그룹 불러오기
@@ -18,15 +19,16 @@ export async function getGroups({
 
 // 그룹 생성
 export async function createGroup(formData) {
-  const response = await fetch(`${BASE_URL}/makeGroup`, {
-    method: "POST",
-    body: formData,
-  });
-  if (!response.ok) {
+  try {
+    const response = await axios.post(`${BASE_URL}/makeGroup`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data; 
+  } catch (error) {
     throw new Error("데이터를 생성하는데 실패했습니다");
   }
-  const body = await response.json();
-  return body;
 }
 
 // 추억 불러오기

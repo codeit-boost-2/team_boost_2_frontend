@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Memory_post_page.css';
+import Toggle from "../components/Toggle";
 
 function FileInput({name, value, onChange}){
 
@@ -31,6 +32,7 @@ function FileInput({name, value, onChange}){
 
 function MemoryPostPage(){
 
+    const [isPublic, setisPublic] = useState(true);
     const [values, setValues] = useState({
         name: '',
         title: '',
@@ -39,7 +41,6 @@ function MemoryPostPage(){
         tag: '',
         place: '',
         date: '',
-        option: '',
         password: ''
       });
       
@@ -63,6 +64,7 @@ function MemoryPostPage(){
     //제출 함수 기능 추가하기
     const handleSubmit = (e) => {
         e.preventDefault();
+
         console.log({values});
       };
 
@@ -133,11 +135,7 @@ function MemoryPostPage(){
                     placeholder=' YYYY-MM-DD'/> 
 
                     <div className="MPinputDsc">추억 공개 선택</div>
-                    <input className="MPinput"
-                    name="option" 
-                    value={values.option} 
-                    onChange={handleInputChange} 
-                    placeholder=' 공개/비공개'/> 
+                    <Toggle isPublic={isPublic} onToggle={setisPublic} />
 
                     <div className="MPinputDsc">비밀번호 생성</div>
                     <input className="MPinput"

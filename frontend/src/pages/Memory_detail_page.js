@@ -217,9 +217,10 @@ function MemoryDetailPage() {
   const handleDeleteReplyConfirmation = (password) => {
     handleDeleteReply(selectedItemId, password);
   };
-
+ 
   return (
     <>
+    <div style={{marginBottom:"100px"}}></div>
       <div className="MemoryHeader">
         <CardMemoryInfo item={mockItem} />
         <div className="MemoryButtons">

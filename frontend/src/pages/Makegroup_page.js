@@ -24,35 +24,30 @@ function MakeGroupPage() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // formData로 서버로 전송할 데이터
-    const formData = new FormData();
-    formData.append("name", groupName);
-    formData.append("image", groupImage);
-    formData.append("description", groupDescription);
-    formData.append("isPublic", isPublic);
-    formData.append("password", password);
 
     // formData를 서버로 전송
     /*********************/
-    // axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups", formData).then((res)=>{console.log(res.data);}) .catch(error => {
-    //   if (error.response) {
-    //     console.log('서버 응답 오류:', error.response.status);
-    //   } else if (error.request) {
-    //     console.log('오류', error.request);
-    //   } else {
-    //     console.log('기타 오류:', error.message);
-    //   }
-    // });
 
-    console.log("Form submitted:", {
-      groupName,
-      groupImage,
-      groupDescription,
-      isPublic,
-      password: password,
+    axios.get("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/1/5?isPublic=true")
+    .then((res) => {console.log(res)})
+    axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups",
+       {
+        groupName: groupName,
+        groupDescription: groupDescription,
+        isPublic: isPublic,
+        password: password
+       }).then((res)=>{
+        console.log(res.data);
+      }) .catch(error => {
+      if (error.response) {
+        console.log('서버 응답 오류:', error.response.status);
+      } else if (error.request) {
+        console.log('오류', error.request);
+      } else {
+        console.log('기타 오류:', error.message);
+      }
     });
 
     const success = true; // 그룹 생성 성공 예시
@@ -74,10 +69,10 @@ function MakeGroupPage() {
           <div className="inputItems">
             <InputText label="그룹명" onChange={setGroupName} required={true} />
 
-            <div>
+            {/* <div>
               <div style={{ marginBottom: "10px" }}>대표 이미지</div>
               <FileInput onFileChange={setGroupImage} required={true} />
-            </div>
+            </div> */}
 
             <InputBox
               label="그룹 소개"

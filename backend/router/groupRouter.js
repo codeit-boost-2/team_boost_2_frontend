@@ -84,6 +84,9 @@ groupRouter.route('/:page/:pageSize')
     const { groupName, groupDescription, isPublic, password } = req.body;
     const image = `${req.file.filename}`;
 
+    console.log(req.body);
+    console.log(req.file);
+
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });
     };

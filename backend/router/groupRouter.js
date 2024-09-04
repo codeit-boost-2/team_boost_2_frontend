@@ -4,6 +4,8 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js';
 import { getMemoryList } from './memoryRouter.js';
+import upload from '../utils/multer.js';
+import fs from 'fs';
 
 const prisma = new PrismaClient();
 const groupRouter = express.Router();
@@ -79,9 +81,10 @@ groupRouter.route('/groups/:page/:pageSize/:sortBy/:isPublic/:keyword')
 groupRouter.route('/groups')
 
   // 그룹 등록
-  .post(asyncHandler(async (req, res) => {
-    const { name, image, description, isPublic, password } = req.body;
-    
+  .post(upload.single("image"), asyncHandler(async (req, res) => {
+    const { name, description, isPublic, password } = req.body;
+    const image = `/images/${req.file.filename}`;
+
     if (!name || !image || !description || isPublic === undefined || !password) {
       res.status(400).send({ message: "잘못된 요청입니다" });
     };
@@ -136,6 +139,14 @@ groupRouter.route('/groups/:id')
   .delete(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;
+    if (fs.existsSync("/backend/images/" + file_name)) {
+      try {
+        fs.unlinkSync("/images" + file_name);
+        console.log("image delete")
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
     if (!password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });

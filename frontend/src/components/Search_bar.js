@@ -11,15 +11,12 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <div className="searchBar">
-      <img src="./imgs/icon_search.svg" alt="Search Icon" />
-      <input
+      <input className="searchBar"
         type="text"
         value={searchBarTerm}
         onChange={handleChange}
         placeholder="그룹명을 검색해주세요"
       />
-    </div>
   );
 }
 

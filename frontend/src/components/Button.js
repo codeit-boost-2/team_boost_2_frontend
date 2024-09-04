@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 //원형 모양의 버튼
 /*
 const style={
@@ -14,8 +15,10 @@ const style={
 function Button(){
     
     return(
+        <Link to="/MemoryPost">
         <button className="submitButton" style={{width: '200px', padding:'10px 60px',
-            marginLeft:'auto'}}>추억 만들기</button>
+            marginLeft:'auto'}}>추억 올리기</button>
+        </Link>
     );
 }
 

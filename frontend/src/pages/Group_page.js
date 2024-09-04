@@ -5,6 +5,7 @@ import Tab from "../components/oldTab.js";
 import Search from "../components/Search.js";
 import { useLocation, Link } from 'react-router-dom';
 import axios from "axios";
+import NoMemory from "../components/No_memory.js";
 import memories from "../api/memorymock.json";
 
 const style = {
@@ -36,6 +37,10 @@ function GroupPage() {
   const location = useLocation();
   const mock = location.state;
 
+  const groupMemories = memories.filter(
+    (item) => item.groupid === mock.item.id
+  );
+
   //api 연동.. 해보기
   //const res = await axios.get("memory_api");
 
@@ -54,19 +59,17 @@ function GroupPage() {
         >
           추억목록
         </div>
-        <Link to="/MemoryPost">
-          <Button />
-        </Link>
+        <Button />
       </div>
       <div style={{ display: "flex", marginBottom: "40px" }}>
         <Tab />
         <Search />
       </div>
       <div className="cardGroupList">
-      {memories.length === 0 ? (
-            "NO items"
+      {groupMemories.length === 0 ? (
+            <NoMemory />
           ) : (
-            <CardMemory items={memories} />
+            <CardMemory items={groupMemories} />
           )}
           </div>
     </div>

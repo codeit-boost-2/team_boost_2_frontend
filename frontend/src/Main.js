@@ -6,6 +6,7 @@ import GroupPage from "./pages/Group_page";
 import AuthenticationPage from "./pages/Authentication_page";
 import MemoryPostPage from "./pages/Memory_post_page";
 import MemoryDetailPage from "./pages/Memory_detail_page";
+import NotFoundPage from"./pages/Not_found_page";
 //나머지 페이지도 import
 
 function Main() {
@@ -21,6 +22,7 @@ function Main() {
           </Route>
           <Route path="/AutPage" element={<AuthenticationPage />} />
           <Route path="MemoryPost" element={<MemoryPostPage />} />
+          <Route path="*" element={<NotFoundPage />} />
           {/* Route path="다른페이지" element={<다른페이지 />} */}
         </Route>
       </Routes>

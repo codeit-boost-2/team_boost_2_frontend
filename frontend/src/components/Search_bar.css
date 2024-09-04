@@ -5,9 +5,16 @@
   border-radius: 4px;
   display: flex;
   align-items: center;
+  padding-left: 20px;
 }
 
-.searchBar input {
-  background-color: #f4f4f4;
-  border: none;
+.searchBar:focus::placeholder{
+  background: transparent;
+  color: transparent;
+}
+
+.searchBar::placeholder{
+  background : url('../assets/search.png') no-repeat;
+  background-position: 2px;
+  text-indent: 28px;
 }

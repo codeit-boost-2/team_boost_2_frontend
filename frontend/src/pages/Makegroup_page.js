@@ -37,15 +37,15 @@ function MakeGroupPage() {
 
     // formData를 서버로 전송
     /*********************/
-    axios.post("http://localhost:3000/groups", formData).then((res)=>{console.log(res.data);}) .catch(error => {
-      if (error.response) {
-        console.log('서버 응답 오류:', error.response.status);
-      } else if (error.request) {
-        console.log('오류', error.request);
-      } else {
-        console.log('기타 오류:', error.message);
-      }
-    });
+    // axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups", formData).then((res)=>{console.log(res.data);}) .catch(error => {
+    //   if (error.response) {
+    //     console.log('서버 응답 오류:', error.response.status);
+    //   } else if (error.request) {
+    //     console.log('오류', error.request);
+    //   } else {
+    //     console.log('기타 오류:', error.message);
+    //   }
+    // });
 
     console.log("Form submitted:", {
       groupName,

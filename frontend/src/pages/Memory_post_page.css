@@ -102,16 +102,10 @@
     border: 0;
 }
 
-input:focus::placeholder{
+.MPinput:focus::placeholder{
     color:transparent;
 }
-input::placeholder {
-    padding : 5px;
-}
-textarea:focus::placeholder{
-    color:transparent;
-}
-textarea::placeholder {
+.MPinput::placeholder {
     padding : 5px;
 }
 

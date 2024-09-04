@@ -91,7 +91,7 @@ groupRouter.route('')
     const group = await prisma.group.create({
       data: {
         name: groupName,
-        image,
+        //image,
         description: groupDescription,
         isPublic,
         password,

@@ -80,9 +80,9 @@ groupRouter.route('/:page/:pageSize')
   groupRouter.route('')
 
   // 그룹 등록
-  .post(upload.single("image"), asyncHandler(async (req, res) => {
+  .post(asyncHandler(async (req, res) => {
     const { groupName, groupDescription, isPublic, password } = req.body;
-    const image = `/images/${req.file.name}`;
+    //const image = `/images/${req.file.name}`;
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });
@@ -91,7 +91,7 @@ groupRouter.route('/:page/:pageSize')
     const group = await prisma.group.create({
       data: {
         name: groupName,
-        image,
+        //image,
         description: groupDescription,
         isPublic,
         password,
@@ -281,7 +281,7 @@ groupRouter.route('/:id/posts')
   // 추억 등록
   .post(asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { nickname, title, content, password, image, location, moment, isPublic } = req.body;
+    const { nickname, title, content, password, location, moment, isPublic } = req.body;
 
     if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
@@ -293,7 +293,6 @@ groupRouter.route('/:id/posts')
         nickname,
         title,
         content,
-        image,
         location,
         isPublic,
         password,

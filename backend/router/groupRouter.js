@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 const groupRouter = express.Router();
 groupRouter.use(express.json());
 
-groupRouter.route('/groups/:page/:pageSize/:sortBy/:isPublic/:keyword')
+groupRouter.route('/:page/:pageSize/:sortBy/:isPublic/:keyword')
 
   // 그룹 목록 조회
   .get(asyncHandler(async (req, res) => {
@@ -78,22 +78,22 @@ groupRouter.route('/groups/:page/:pageSize/:sortBy/:isPublic/:keyword')
     });
   }));
 
-groupRouter.route('/groups')
+groupRouter.route('')
 
   // 그룹 등록
-  .post(upload.single("image"), asyncHandler(async (req, res) => {
-    const { name, description, isPublic, password } = req.body;
-    const image = `/images/${req.file.filename}`;
+  .post( asyncHandler(async (req, res) => {
+    const { groupName, groupDescription, isPublic, password } = req.body;
+    //const image = `/images/${req.file.filename}`;
 
-    if (!name || !image || !description || isPublic === undefined || !password) {
+    if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       res.status(400).send({ message: "잘못된 요청입니다" });
     };
 
     const group = await prisma.group.create({
       data: {
-        name,
-        image,
-        description,
+        name: groupName,
+        //image,
+        description: groupDescription,
         isPublic,
         password,
       },
@@ -101,7 +101,7 @@ groupRouter.route('/groups')
     res.status(201).send(group);
   }));
 
-groupRouter.route('/groups/:id')
+groupRouter.route('/:id')
 
   // 그룹 수정
   .put(asyncHandler(async (req, res) => {
@@ -171,7 +171,7 @@ groupRouter.route('/groups/:id')
     res.status(200).send({ message: "그룹 삭제 성공" });
   }));
 
-groupRouter.route('/groups/:id/isPublic')
+groupRouter.route('/:id/isPublic')
 
   // 그룹 공개 여부 확인
   .get(asyncHandler(async (req, res) => {
@@ -213,7 +213,7 @@ groupRouter.route('/groups/:id/like')
     res.status(200).send({ message: "그룹 공감하기 성공" });
   }));
 
-groupRouter.route('/groups/:id/verifyPassword')
+groupRouter.route('/:id/verifyPassword')
 
   // 그룹 조회 권한 확인
   .post(asyncHandler(async (req, res) => {

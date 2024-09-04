@@ -16,7 +16,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, done) => {
-            done(null, '~/team_boost_2/images')
+            done(null, 'team_boost_2/images')
         },
         //filename: (req, file, done) => {
             //const ext = path.extname(file.originalname);

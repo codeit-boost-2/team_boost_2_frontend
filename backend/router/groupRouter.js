@@ -80,7 +80,7 @@ groupRouter.route('/:page/:pageSize')
 groupRouter.route('')
 
   // 그룹 등록
-  .post( asyncHandler(async (req, res) => {
+  .post(upload.single("image"), asyncHandler(async (req, res) => {
     const { groupName, groupDescription, isPublic, password } = req.body;
     const image = `/images/${req.file.filename}`;
 

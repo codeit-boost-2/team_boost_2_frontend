@@ -37,7 +37,7 @@ function ReplyMemoryPopup({ onClose, onChange }) {
     <div className="ReplyPopupOverlay">
       <div className="ReplyPopup">
         <button className="Cancel-button" onClick={onClose}>
-          <img alt="취소" src="../imgs/cancel_icon.svg" />
+          X
         </button>
         <div>
           <h2 className="ReplyPopup-title">댓글 등록</h2>

@@ -69,3 +69,21 @@ export async function deleteMemory(id) {
   const body = await response.json();
   return body;
 }
+
+// 댓글 삭제
+export async function deleteReply(id, password) {
+  const response = await fetch(`${BASE_URL}/GroupPage/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password }),
+  });
+
+  if (!response.ok) {
+    throw new Error("댓글을 삭제하는 데 실패했습니다.");
+  }
+
+  const body = await response.json();
+  return body;
+}

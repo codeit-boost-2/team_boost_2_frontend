@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./Delete_memory_popup.css";
+import "./Delete_reply_popup.css";
 
-function DeleteMemoryPopup({ onClose, onConfirm }) {
+function DeleteReplyPopup({ onClose, onConfirm }) {
   const [password, setPassword] = useState("");
 
   const handleConfirm = () => {
@@ -16,7 +16,7 @@ function DeleteMemoryPopup({ onClose, onConfirm }) {
           X
         </button>
         <div>
-          <h2 className="DeletePopup-title">추억 삭제</h2>
+          <h2 className="DeletePopup-title">댓글 삭제</h2>
           <div className="DeletePopup-inner">
             <p>삭제 권한 인증</p>
             <input
@@ -36,4 +36,4 @@ function DeleteMemoryPopup({ onClose, onConfirm }) {
   );
 }
 
-export default DeleteMemoryPopup;
+export default DeleteReplyPopup;

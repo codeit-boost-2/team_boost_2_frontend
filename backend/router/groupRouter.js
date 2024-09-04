@@ -4,7 +4,7 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js';
 import { getMemoryList } from './memoryRouter.js';
-import upload from '../utils/multer.js';
+import { upload } from '../utils/multer.js';
 import fs from 'fs';
 
 const prisma = new PrismaClient();

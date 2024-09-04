@@ -276,7 +276,7 @@ groupRouter.route('/:id/:page/:pageSize')
     }); 
   }));
 
-memoryRouter.route('/:id/posts')
+groupRouter.route('/:id/posts')
 
   // 추억 등록
   .post(asyncHandler(async (req, res) => {

@@ -238,7 +238,7 @@ memoryRouter.route('/:id/comments/:page/:pageSize')
     });
   }));
 
-  commentRouter.route('/:id/comments')
+  memoryRouter.route('/:id/comments')
 
   // 댓글 등록
   .post(asyncHandler(async (req, res) => {

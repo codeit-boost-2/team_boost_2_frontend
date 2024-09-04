@@ -2,7 +2,7 @@
   height: 25px;
   padding: 10px;
   background-color: #f4f4f4;
-  border-radius: 4px;
+  border: none;
   display: flex;
   align-items: center;
   padding-left: 20px;
@@ -11,6 +11,8 @@
 .searchBar:focus::placeholder{
   background: transparent;
   color: transparent;
+  border-radius: 4px;
+
 }
 
 .searchBar::placeholder{

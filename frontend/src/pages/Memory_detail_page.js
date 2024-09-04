@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./Memory_detail_page.css";
 import {
   getMemories,
@@ -65,6 +66,11 @@ const hrReply = {
 };
 
 function MemoryDetailPage() {
+
+  //Link 태그로 받은 mock items
+  const location = useLocation();
+  const mock = location.state;
+  
   const [items, setItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);

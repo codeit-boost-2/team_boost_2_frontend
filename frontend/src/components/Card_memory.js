@@ -22,7 +22,7 @@ function CardMemoryItems( { item }){
     title,
     image,
     content,
-    location,
+    place,
     isPublic,
     likeCount,
     createdAt,
@@ -32,6 +32,7 @@ function CardMemoryItems( { item }){
     <>
     <Link
       to={`/GroupPage/${item.id}`} //MemoryId는 추억상세페이지 주소
+      state={{ item : item }}
       style={{ textDecoration: "none", color: "inherit" }}
     >
     <div className="card">
@@ -48,7 +49,7 @@ function CardMemoryItems( { item }){
           {content}
         </div>
         <div className="cardFooter">
-          <div>{location} | {uploadDate}</div>
+          <div>{place} | {uploadDate}</div>
           <div>{likeCount} | 댓글 수</div>
         </div>
       </div>

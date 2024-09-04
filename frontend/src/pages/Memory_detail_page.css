@@ -1,5 +1,5 @@
 .CardMemoryInfo {
-  margin-top: 200px;
+  margin-top: 70px;
 }
 
 .MemoryEdit {
@@ -44,7 +44,7 @@
 }
 
 .MemoryButtons {
-  margin-top: 200px;
+  margin-top: 70px;
   display: flex;
   flex-direction: column;
   gap: 70px;

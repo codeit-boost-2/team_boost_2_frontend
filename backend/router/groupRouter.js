@@ -85,7 +85,7 @@ groupRouter.route('')
     //const image = `/images/${req.file.filename}`;
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
-      res.status(400).send({ message: "잘못된 요청입니다" });
+      return res.status(400).send({ message: "잘못된 요청입니다" });
     };
 
     const group = await prisma.group.create({
@@ -97,7 +97,7 @@ groupRouter.route('')
         password,
       },
     });
-    res.status(201).send(group);
+    return res.status(201).send(group);
   }));
 
 groupRouter.route('/:id')

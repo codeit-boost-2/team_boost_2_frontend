@@ -77,7 +77,7 @@ groupRouter.route('/:page/:pageSize')
     });
   }));
 
-groupRouter.route('')
+  groupRouter.route('')
 
   // 그룹 등록
   .post(upload.single("image"), asyncHandler(async (req, res) => {
@@ -99,7 +99,7 @@ groupRouter.route('')
     });
     return res.status(201).send(group);
   }));
-
+  
 groupRouter.route('/:id')
 
   // 그룹 수정
@@ -186,7 +186,7 @@ groupRouter.route('/:id/isPublic')
     res.status(200).send(group);
   }));
 
-groupRouter.route('/groups/:id/like')
+groupRouter.route('/:id/like')
 
   // 그룹 공감하기
   .post(asyncHandler(async (req, res) => {
@@ -232,13 +232,16 @@ groupRouter.route('/:id/verifyPassword')
     };
   }));
 
-groupRouter.route('/groups/:id/:page/:pageSize/:sortBy/:keyword/:isPublic')
+groupRouter.route('/:id/:page/:pageSize')
 
   // 그룹 상세 정보 조회 (추억 목록 조회)
   .get(asyncHandler(async (req, res) => {
-    const { id, page, pageSize, sortBy, keyword, isPublic } = req.params;
+    const { id } = req.params;
+    const page = Number(req.params.page);
+    const pageSize = Number(req.params.pageSize);
+    const { sortBy, isPublic, keyword } = req.query;
 
-    if (!id || !page || !pageSize || !sortBy || isPublic === undefined) {
+    if (!id || !page || !pageSize) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
 
@@ -254,10 +257,10 @@ groupRouter.route('/groups/:id/:page/:pageSize/:sortBy/:keyword/:isPublic')
     });
 
     const memoriesResult = await getMemoryList({
-      groupId: id,
+      id: id,
       page: Number(page),
       pageSize: Number(pageSize),
-      sortBy,
+      sortBy: sortBy,
       keyword: keyword === 'null' ? '' : keyword,
       isPublic: isPublic === 'true',
     });
@@ -271,6 +274,47 @@ groupRouter.route('/groups/:id/:page/:pageSize/:sortBy/:keyword/:isPublic')
         data: memoriesResult.data,
       },
     }); 
+  }));
+
+memoryRouter.route('/:id/posts')
+
+  // 추억 등록
+  .post(asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { nickname, title, content, password, image, location, moment, isPublic } = req.body;
+
+    if (!nickname || !title || !content || isPublic === undefined || !password) {
+      return res.status(400).json({ message: '잘못된 요청입니다' });
+    }
+
+    const newMemory = await prisma.memory.create({
+      data: {
+        id: Number(id),
+        nickname,
+        title,
+        content,
+        image,
+        location,
+        isPublic,
+        password,
+        moment: new Date(moment),
+      }
+    });
+
+    res.status(200).json({
+      id: newMemory.id,
+      id: newMemory.id,
+      nickname: newMemory.nickname,
+      title: newMemory.title,
+      content: newMemory.content,
+      image: newMemory.image,
+      location: newMemory.location,
+      moment: newMemory.moment.toISOString(),
+      isPublic: newMemory.isPublic,
+      likeCount: newMemory.likeCount,
+      commentCount: 0,
+      createdAt: newMemory.createdAt.toISOString()
+    });
   }));
 
 export default groupRouter;

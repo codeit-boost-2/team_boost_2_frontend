@@ -20,7 +20,10 @@ export async function getGroups({
 export async function createGroup(formData) {
   const response = await fetch(`${BASE_URL}/makeGroup`, {
     method: "POST",
-    body: formData,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
   });
   if (!response.ok) {
     throw new Error("데이터를 생성하는데 실패했습니다");

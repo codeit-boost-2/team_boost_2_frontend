@@ -23,7 +23,6 @@ groupRouter.route('/:page/:pageSize/:sortBy/:isPublic/:keyword')
       isPublic: isPublic === 'true',
       name: {
         contains: keyword === 'null' ? '' : keyword,
-        mode: 'insensitive'
       },
     };
 

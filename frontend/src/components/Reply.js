@@ -20,11 +20,6 @@ function formatDate(createdAt) {
   );
 }
 
-const hrStyle = {
-  border: "1px solid #DDDDDD",
-  margin: "20px 0",
-};
-
 function Reply({ name, createdAt, content }) {
   const publishedOn = formatDate(createdAt);
 
@@ -35,17 +30,8 @@ function Reply({ name, createdAt, content }) {
           <span className="ReplyName">{name}</span>
           <formatDate className="ReplyDate">{publishedOn}</formatDate>
         </div>
-        <div>
-          <button className="ReplyEdit">
-            <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
-          </button>
-          <button className="ReplyDelete">
-            <img alt="댓글 삭제하기" src="../imgs/delete_button.svg" />
-          </button>
-        </div>
       </div>
       <div className="ReplyContent">{content}</div>
-      <hr style={hrStyle} />
     </div>
   );
 }

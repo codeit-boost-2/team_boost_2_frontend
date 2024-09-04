@@ -220,6 +220,7 @@ function MemoryDetailPage() {
 
   return (
     <>
+    <div style={{marginBottom:"100px"}}></div>
       <div className="MemoryHeader">
         <CardMemoryInfo item={mockItem} />
         <div className="MemoryButtons">

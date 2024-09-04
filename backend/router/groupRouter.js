@@ -82,7 +82,7 @@ groupRouter.route('')
   // 그룹 등록
   .post( asyncHandler(async (req, res) => {
     const { groupName, groupDescription, isPublic, password } = req.body;
-    //const image = `/images/${req.file.filename}`;
+    const image = `/images/${req.file.filename}`;
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });
@@ -91,7 +91,7 @@ groupRouter.route('')
     const group = await prisma.group.create({
       data: {
         name: groupName,
-        //image,
+        image,
         description: groupDescription,
         isPublic,
         password,

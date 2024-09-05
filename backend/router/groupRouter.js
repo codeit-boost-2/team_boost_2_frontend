@@ -59,33 +59,28 @@ groupRouter.route('/:page/:pageSize')
       }),
     ]);
 
-    const data = groups.map(group => ({
-      id: group.id,
-      name: group.name,
-      image: group.image,
-      isPublic: group.isPublic,
-      likeCount: group.likeCount,
-      postCount: group._count.memories,
-      createdAt: group.createdAt,
-      introduction: group.description,
-    }));
-
     const form = new FormData();
     form.append('currentPage', Number(page));
     form.append('totalPages', Math.ceil(totalItemCount / pageSize));
     form.append('totalItemCount', totalItemCount);
-    form.append('data', JSON.stringify(data));
 
-    console.log(`${process.env.IMAGE_DIR}/`);
-    console.log(data.image);
+    groups.forEach((group, index) => {
+      form.append(`data[${index}][id]`, group.id);
+      form.append(`data[${index}][name]`, group.name);
+      form.append(`data[${index}][isPublic]`, group.isPublic);
+      form.append(`data[${index}][likeCount]`, group.likeCount);
+      form.append(`data[${index}][postCount]`, group._count.memories);
+      form.append(`data[${index}][createdAt]`, group.createdAt.toISOString());
+      form.append(`data[${index}][introduction]`, group.description);
 
-    const imagePath = path.join(`${process.env.IMAGE_DIR}/`, data.image);
-
-    console.log(imagePath);
-    
-    form.append('image', fs.createReadStream(imagePath));
-
-  
+      // Add the image file
+      const imagePath = path.join('/home/ec2-user/team_boost_2/images', group.image);
+      if (fs.existsSync(imagePath)) {
+        form.append(`data[${index}][image]`, fs.createReadStream(imagePath));
+      } else {
+        form.append(`data[${index}][image]`, '');  // If image not found, send empty string
+      }
+    });
 
     res.set('Content-Type', 'multipart/form-data');
     form.pipe(res);

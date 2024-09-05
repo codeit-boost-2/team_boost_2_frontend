@@ -219,7 +219,7 @@ function MemoryDetailPage() {
   };
 
   return (
-    <>
+    <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
     <div style={{marginBottom:"100px"}}></div>
       <div className="MemoryHeader">
         <CardMemoryInfo item={mockItem} />
@@ -313,7 +313,7 @@ function MemoryDetailPage() {
           onConfirm={handleDeleteReplyConfirmation}
         />
       )}
-    </>
+    </div>
   );
 }
 

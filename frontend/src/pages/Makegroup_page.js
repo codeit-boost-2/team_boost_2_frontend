@@ -64,7 +64,7 @@ function MakeGroupPage() {
   };
 
   return (
-    <>
+    <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
       <form onSubmit={handleSubmit}>
         <h2 style={titleStyle}>그룹 만들기</h2>
 
@@ -106,7 +106,7 @@ function MakeGroupPage() {
       {isPopupVisible && (
         <Popup isSuccess={isSuccess} onClose={handleClosePopup} />
       )}
-    </>
+    </div>
   );
 }
 

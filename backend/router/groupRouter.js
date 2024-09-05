@@ -74,7 +74,7 @@ groupRouter.route('/:page/:pageSize')
     form.append('currentPage', Number(page));
     form.append('totalPages', Math.ceil(totalItemCount / pageSize));
     form.append('totalItemCount', totalItemCount);
-    form.append('data', data);
+    form.append('data', json.stringify(data));
     
     const imagePath = path.join(`${process.env.IMAGE_DIR}`, data.image);
     form.append('image', fs.createReadStream(imagePath));
@@ -83,19 +83,20 @@ groupRouter.route('/:page/:pageSize')
     form.pipe(res);
   }));
 
-groupRouter.route('')
+  groupRouter.route('')
 
   // 그룹 등록
   .post(upload.single("image"), asyncHandler(async (req, res) => {
     const { groupName, groupDescription, password } = req.body;
     let isPublic = req.body.isPublic;
     if (isPublic === 'true') isPublic = true;
-    else isPublic = false;
 
     console.log(req.body);
     console.log(req.file);
 
     const image = `${req.file.filename}`;
+
+
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });
@@ -169,18 +170,18 @@ groupRouter.route('/:id')
     });
 
     if (!group) {
-      return res.status(404).send({ message: "존재하지 않습니다 "});
+      res.status(404).send({ message: "존재하지 않습니다 "});
     };
 
     if (group.password !== password) {
-      return res.status(403).send({ message: "비밀번호가 틀렸습니다" });
+      res.status(403).send({ message: "비밀번호가 틀렸습니다" });
     };
 
     await prisma.group.delete({
       where: { id },
     });
 
-    return res.status(200).send({ message: "그룹 삭제 성공" });
+    res.status(200).send({ message: "그룹 삭제 성공" });
   }));
 
 groupRouter.route('/:id/isPublic')
@@ -196,7 +197,7 @@ groupRouter.route('/:id/isPublic')
       },
     });
 
-    return res.status(200).send(group);
+    res.status(200).send(group);
   }));
 
 groupRouter.route('/:id/like')
@@ -210,7 +211,7 @@ groupRouter.route('/:id/like')
     });
 
     if (!group) {
-      return res.status(404).send({ message: "존재하지 않습니다" });
+      res.status(404).send({ message: "존재하지 않습니다" });
     };
     
     await prisma.group.update({
@@ -222,7 +223,7 @@ groupRouter.route('/:id/like')
       },
     });
 
-    return res.status(200).send({ message: "그룹 공감하기 성공" });
+    res.status(200).send({ message: "그룹 공감하기 성공" });
   }));
 
 groupRouter.route('/:id/verifyPassword')
@@ -239,9 +240,9 @@ groupRouter.route('/:id/verifyPassword')
     });
 
     if (group.password === password) {
-      return res.status(200).send({ message: "비밀번호가 확인되었습니다" });
+      res.status(200).send({ message: "비밀번호가 확인되었습니다" });
     } else {
-      return res.status(401).send({ message: "비밀번호가 틀렸습니다" });
+      res.status(401).send({ message: "비밀번호가 틀렸습니다" });
     };
   }));
 
@@ -278,7 +279,7 @@ groupRouter.route('/:id/:page/:pageSize')
       isPublic: isPublic === 'true',
     });
 
-    return res.status(200).json({
+    res.status(200).json({
       group,
       memories: {
         currentPage: Number(page),
@@ -289,15 +290,12 @@ groupRouter.route('/:id/:page/:pageSize')
     }); 
   }));
 
-groupRouter.route('/:groupId/posts')
+groupRouter.route('/:id/posts')
 
   // 추억 등록
   .post(asyncHandler(async (req, res) => {
-    const { groupId } = req.params;
-    const { nickname, title, content, password, location, moment } = req.body;
-    let isPublic = req.body.isPublic;
-    if (isPublic === 'true') isPublic = true;
-    else isPublic = false;
+    const { id } = req.params;
+    const { nickname, title, content, password, location, moment, isPublic } = req.body;
 
     if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
@@ -305,10 +303,9 @@ groupRouter.route('/:groupId/posts')
 
     const newMemory = await prisma.memory.create({
       data: {
-        groupId,
+        id: Number(id),
         nickname,
         title,
-        image,
         content,
         location,
         isPublic,
@@ -317,7 +314,20 @@ groupRouter.route('/:groupId/posts')
       }
     });
 
-    return res.status(201).send(newMemory);
+    res.status(200).json({
+      id: newMemory.id,
+      id: newMemory.id,
+      nickname: newMemory.nickname,
+      title: newMemory.title,
+      content: newMemory.content,
+      image: newMemory.image,
+      location: newMemory.location,
+      moment: newMemory.moment.toISOString(),
+      isPublic: newMemory.isPublic,
+      likeCount: newMemory.likeCount,
+      commentCount: 0,
+      createdAt: newMemory.createdAt.toISOString()
+    });
   }));
 
 export default groupRouter;

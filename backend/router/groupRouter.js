@@ -73,8 +73,11 @@ groupRouter.route('/:page/:pageSize')
       form.append(`data[${index}][createdAt]`, group.createdAt.toISOString());
       form.append(`data[${index}][introduction]`, group.description);
 
-      // Add the image file
-      const imagePath = path.join('/home/ec2-user/team_boost_2/images', group.image);
+      const imagePath = path.join(`${process.env.IMAGE_DIR}`, group.image);
+      console.log(`${process.env.IMAGE_DIR}`);
+      console.log(group.image);
+      console.log(imagePath);
+
       if (fs.existsSync(imagePath)) {
         form.append(`data[${index}][image]`, fs.createReadStream(imagePath));
       } else {

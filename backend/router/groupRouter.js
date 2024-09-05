@@ -76,7 +76,7 @@ groupRouter.route('/:page/:pageSize')
     form.append('totalItemCount', totalItemCount);
     form.append('data', JSON.stringify(data));
     
-    const imagePath = path.join(`${process.env.IMAGE_DIR}`, data.image);
+    const imagePath = path.join(`${process.env.IMAGE_DIR}/`, data.image);
     form.append('image', fs.createReadStream(imagePath));
 
     res.set('Content-Type', 'multipart/form-data');

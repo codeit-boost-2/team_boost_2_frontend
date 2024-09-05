@@ -16,78 +16,87 @@ groupRouter.route('/:page/:pageSize')
 
   // 그룹 목록 조회
   .get(asyncHandler(async (req, res) => {
-    const page = Number(req.params.page);
-    const pageSize = Number(req.params.pageSize);
-    const { sortBy, isPublic, keyword } = req.query;
+    try{
+      const page = Number(req.params.page);
+      const pageSize = Number(req.params.pageSize);
+      const { sortBy, isPublic, keyword } = req.query;
 
-    const where = {
-      isPublic: isPublic === 'true',
-      name: {
-        contains: keyword === 'null' ? '' : keyword,
-      },
-    };
-
-    let orderBy;
-    switch (sortBy) {
-      case 'mostPosted':
-        orderBy = { _count: { memories: 'desc' } };
-        break;
-      case 'mostLiked':
-        orderBy = { likeCount: 'desc' };
-        break;
-      default: // latest
-        orderBy = { createdAt: 'desc' };
-    }
-
-    const [totalItemCount, groups] = await Promise.all([
-      prisma.group.count({ where }),
-      prisma.group.findMany({
-        where,
-        skip: (page - 1) * pageSize,
-        take: Number(pageSize),
-        orderBy,
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          isPublic: true,
-          likeCount: true,
-          _count: { select: { memories: true } },
-          createdAt: true,
-          description: true,
+      const where = {
+        isPublic: isPublic === 'true',
+        name: {
+          contains: keyword === 'null' ? '' : keyword,
         },
-      }),
-    ]);
+      };
 
-    const form = new FormData();
-    form.append('currentPage', Number(page));
-    form.append('totalPages', Math.ceil(totalItemCount / pageSize));
-    form.append('totalItemCount', totalItemCount);
-
-    groups.forEach((group, index) => {
-      form.append(`data[${index}][id]`, group.id);
-      form.append(`data[${index}][name]`, group.name);
-      form.append(`data[${index}][isPublic]`, group.isPublic);
-      form.append(`data[${index}][likeCount]`, group.likeCount);
-      form.append(`data[${index}][postCount]`, group._count.memories);
-      form.append(`data[${index}][createdAt]`, group.createdAt.toISOString());
-      form.append(`data[${index}][introduction]`, group.description);
-
-      console.log(`${process.env.IMAGE_DIR}`);
-      console.log(group.image);
-
-      const imagePath = path.join(`${process.env.IMAGE_DIR}/`, group.image);
-      console.log(imagePath);
-
-      if (fs.existsSync(imagePath)) {
-        form.append(`data[${index}][image]`, fs.createReadStream(imagePath));
-      } else {
-        form.append(`data[${index}][image]`, '');  // If image not found, send empty string
+      let orderBy;
+      switch (sortBy) {
+        case 'mostPosted':
+          orderBy = { _count: { memories: 'desc' } };
+          break;
+        case 'mostLiked':
+          orderBy = { likeCount: 'desc' };
+          break;
+        default: // latest
+          orderBy = { createdAt: 'desc' };
       }
-    });
 
-    res.set('Content-Type', 'multipart/form-data');
-    form.pipe(res);
+      const [totalItemCount, groups] = await Promise.all([
+        prisma.group.count({ where }),
+        prisma.group.findMany({
+          where,
+          skip: (page - 1) * pageSize,
+          take: Number(pageSize),
+          orderBy,
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            isPublic: true,
+            likeCount: true,
+            _count: { select: { memories: true } },
+            createdAt: true,
+            description: true,
+          },
+        }),
+      ]);
+
+      const form = new FormData();
+      form.append('currentPage', Number(page));
+      form.append('totalPages', Math.ceil(totalItemCount / pageSize));
+      form.append('totalItemCount', totalItemCount);
+
+      groups.forEach((group, index) => {
+        form.append(`data[${index}][id]`, group.id);
+        form.append(`data[${index}][name]`, group.name);
+        form.append(`data[${index}][isPublic]`, group.isPublic);
+        form.append(`data[${index}][likeCount]`, group.likeCount);
+        form.append(`data[${index}][postCount]`, group._count.memories);
+        form.append(`data[${index}][createdAt]`, group.createdAt.toISOString());
+        form.append(`data[${index}][introduction]`, group.description);
+
+        console.log(`${process.env.IMAGE_DIR}`);
+        console.log(group.image);
+
+        const imagePath = path.join(`${process.env.IMAGE_DIR}/`, group.image);
+        console.log(imagePath);
+
+        if (fs.existsSync(imagePath)) {
+          form.append(`data[${index}][image]`, fs.createReadStream(imagePath));
+        } else {
+          form.append(`data[${index}][image]`, '');  // If image not found, send empty string
+        }
+      });
+
+      if (!res.headersSent) {
+        res.set('Content-Type', 'multipart/form-data');
+        form.pipe(res);
+      }
+    } catch (error) {
+      // 에러가 발생하면 500 응답을 보내고 로깅
+      if (!res.headersSent) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+      }
+    }
   }));
 
 groupRouter.route('')

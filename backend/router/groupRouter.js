@@ -290,12 +290,14 @@ groupRouter.route('/:id/:page/:pageSize')
     }); 
   }));
 
-groupRouter.route('/:id/posts')
+groupRouter.route('/:groupId/posts')
 
   // 추억 등록
   .post(asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { nickname, title, content, password, location, moment, isPublic } = req.body;
+    const { groupId } = req.params;
+    const { nickname, title, content, password, location, moment } = req.body;
+    let isPublic = req.body.isPublic;
+    if (isPublic === 'true') isPublic = true;
 
     if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
@@ -303,9 +305,10 @@ groupRouter.route('/:id/posts')
 
     const newMemory = await prisma.memory.create({
       data: {
-        id: Number(id),
+        groupId,
         nickname,
         title,
+        image,
         content,
         location,
         isPublic,
@@ -314,20 +317,7 @@ groupRouter.route('/:id/posts')
       }
     });
 
-    res.status(200).json({
-      id: newMemory.id,
-      id: newMemory.id,
-      nickname: newMemory.nickname,
-      title: newMemory.title,
-      content: newMemory.content,
-      image: newMemory.image,
-      location: newMemory.location,
-      moment: newMemory.moment.toISOString(),
-      isPublic: newMemory.isPublic,
-      likeCount: newMemory.likeCount,
-      commentCount: 0,
-      createdAt: newMemory.createdAt.toISOString()
-    });
+    return res.status(201).send(newMemory);
   }));
 
 export default groupRouter;

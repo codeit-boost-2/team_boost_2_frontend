@@ -133,7 +133,7 @@ memoryRouter.route('/:id/isPublic')
       },
     });
 
-    res.status(200).send(memory)
+    return res.status(200).send(memory)
   }));
 
 memoryRouter.route('/:id')
@@ -227,7 +227,7 @@ memoryRouter.route('/:id/comments/:page/:pageSize')
       commentId: id
     });
 
-    res.status(200).send({
+    return res.status(200).send({
       memory,
       comments: {
         currentPage: Number(page),

@@ -83,7 +83,7 @@ groupRouter.route('/:page/:pageSize')
     form.pipe(res);
   }));
 
-  groupRouter.route('')
+groupRouter.route('')
 
   // 그룹 등록
   .post(upload.single("image"), asyncHandler(async (req, res) => {
@@ -95,8 +95,6 @@ groupRouter.route('/:page/:pageSize')
     console.log(req.file);
 
     const image = `${req.file.filename}`;
-
-
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });
@@ -170,18 +168,18 @@ groupRouter.route('/:id')
     });
 
     if (!group) {
-      res.status(404).send({ message: "존재하지 않습니다 "});
+      return res.status(404).send({ message: "존재하지 않습니다 "});
     };
 
     if (group.password !== password) {
-      res.status(403).send({ message: "비밀번호가 틀렸습니다" });
+      return res.status(403).send({ message: "비밀번호가 틀렸습니다" });
     };
 
     await prisma.group.delete({
       where: { id },
     });
 
-    res.status(200).send({ message: "그룹 삭제 성공" });
+    return res.status(200).send({ message: "그룹 삭제 성공" });
   }));
 
 groupRouter.route('/:id/isPublic')
@@ -197,7 +195,7 @@ groupRouter.route('/:id/isPublic')
       },
     });
 
-    res.status(200).send(group);
+    return res.status(200).send(group);
   }));
 
 groupRouter.route('/:id/like')
@@ -211,7 +209,7 @@ groupRouter.route('/:id/like')
     });
 
     if (!group) {
-      res.status(404).send({ message: "존재하지 않습니다" });
+      return res.status(404).send({ message: "존재하지 않습니다" });
     };
     
     await prisma.group.update({
@@ -223,7 +221,7 @@ groupRouter.route('/:id/like')
       },
     });
 
-    res.status(200).send({ message: "그룹 공감하기 성공" });
+    return res.status(200).send({ message: "그룹 공감하기 성공" });
   }));
 
 groupRouter.route('/:id/verifyPassword')
@@ -240,9 +238,9 @@ groupRouter.route('/:id/verifyPassword')
     });
 
     if (group.password === password) {
-      res.status(200).send({ message: "비밀번호가 확인되었습니다" });
+      return res.status(200).send({ message: "비밀번호가 확인되었습니다" });
     } else {
-      res.status(401).send({ message: "비밀번호가 틀렸습니다" });
+      return res.status(401).send({ message: "비밀번호가 틀렸습니다" });
     };
   }));
 
@@ -279,7 +277,7 @@ groupRouter.route('/:id/:page/:pageSize')
       isPublic: isPublic === 'true',
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       group,
       memories: {
         currentPage: Number(page),

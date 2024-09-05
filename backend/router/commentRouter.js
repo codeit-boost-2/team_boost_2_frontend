@@ -53,11 +53,11 @@ commentRouter.route('/:commentId')
     });
 
     if (!comment) {
-      res.status(404).send({ message: "존재하지 않습니다"})
+      return res.status(404).send({ message: "존재하지 않습니다"})
     }
 
     if (!nickname || !content || !password) {
-      res.status(400).send({ message: "잘못된 요청입니다"});
+      return res.status(400).send({ message: "잘못된 요청입니다"});
     };
 
     if (password === comment.password) {
@@ -67,9 +67,9 @@ commentRouter.route('/:commentId')
         },
         data : req.body,
       });
-      res.status(200).send(updatedComment);
+      return res.status(200).send(updatedComment);
     } else {
-      res.status(403).send({ message: "비밀번호가 틀렸습니다" });
+      return res.status(403).send({ message: "비밀번호가 틀렸습니다" });
     };
   }))
 
@@ -85,15 +85,15 @@ commentRouter.route('/:commentId')
     });
 
     if (!comment) {
-      res.status(404).send({ message: "존재하지 않습니다" });
+      return res.status(404).send({ message: "존재하지 않습니다" });
     };
 
     if (password !== comment.password) {
-      res.status(403).send({ message: "비밀번호가 틀렸습니다" });
+      return res.status(403).send({ message: "비밀번호가 틀렸습니다" });
     };
 
     if (!password) {
-      res.status(400).send({ message: "잘못된 요청입니다" });
+      return res.status(400).send({ message: "잘못된 요청입니다" });
     };
 
     await prisma.comment.delete({
@@ -102,7 +102,7 @@ commentRouter.route('/:commentId')
       },
     });
 
-    res.status(200).send({ message: "답글 삭제 성공" });
+    return res.status(200).send({ message: "답글 삭제 성공" });
   }));
 
 export default commentRouter;

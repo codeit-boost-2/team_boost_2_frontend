@@ -69,7 +69,7 @@ groupRouter.route('/:page/:pageSize')
       groups.forEach((group, index) => {
         form.append(`data[${index}][id]`, group.id);
         form.append(`data[${index}][name]`, group.name);
-        form.append(`data[${index}][isPublic]`, group.isPublic);
+        form.append(`data[${index}][isPublic]`, String(group.isPublic));
         form.append(`data[${index}][likeCount]`, group.likeCount);
         form.append(`data[${index}][postCount]`, group._count.memories);
         form.append(`data[${index}][createdAt]`, group.createdAt.toISOString());

@@ -90,13 +90,14 @@ groupRouter.route('/:page/:pageSize')
 
       if (!res.headersSent) {
         res.set('Content-Type', 'multipart/form-data');
-        form.pipe(res);
+        form.pipe(res);   
       }
     } catch (error) {
       // 에러가 발생하면 500 응답을 보내고 로깅
       if (!res.headersSent) {
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
       }
+      console.log(error);
     }
   }));
 

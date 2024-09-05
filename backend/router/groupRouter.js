@@ -75,9 +75,9 @@ groupRouter.route('/:page/:pageSize')
 
       console.log(`${process.env.IMAGE_DIR}`);
       console.log(group.image);
-      console.log(imagePath);
 
       const imagePath = path.join(`${process.env.IMAGE_DIR}`, group.image);
+      console.log(imagePath);
 
       if (fs.existsSync(imagePath)) {
         form.append(`data[${index}][image]`, fs.createReadStream(imagePath));

@@ -95,7 +95,7 @@ function GroupListPage() {
   }, [order, handleLoad, getGroupsAsync]);
 
   return (
-    <div>
+    <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
       <div className="cardGroupPage">
         <MakeGroupButton />
         <div className="sortBar">

@@ -73,10 +73,11 @@ groupRouter.route('/:page/:pageSize')
       form.append(`data[${index}][createdAt]`, group.createdAt.toISOString());
       form.append(`data[${index}][introduction]`, group.description);
 
-      const imagePath = path.join(`${process.env.IMAGE_DIR}`, group.image);
       console.log(`${process.env.IMAGE_DIR}`);
       console.log(group.image);
       console.log(imagePath);
+
+      const imagePath = path.join(`${process.env.IMAGE_DIR}`, group.image);
 
       if (fs.existsSync(imagePath)) {
         form.append(`data[${index}][image]`, fs.createReadStream(imagePath));

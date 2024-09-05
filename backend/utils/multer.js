@@ -21,13 +21,13 @@ const upload = multer({
             done(null, `${process.env.IMAGE_DIR}`)
             //done(null, '../images')
         },
-        //filename: (req, file, done) => {
-            //const ext = path.extname(file.originalname);
-            //const fileName = path.basename(file.originalname, ext) + Date.now() + ext;
-            //done(null, fileName);
-        //},
+        filename: (req, file, done) => {
+            const ext = path.extname(file.originalname);
+            const fileName = path.basename(file.originalname, ext) + Date.now() + ext;
+            done(null, fileName);
+        },
     }),
-   // fileFilter: fileFilter,
+    fileFilter: fileFilter,
     limits: { fileSize: 10 * 1024 * 1024 },
 });
 

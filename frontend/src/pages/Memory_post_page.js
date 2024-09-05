@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Memory_post_page.css';
+import Toggle from "../components/Toggle";
+import axios from "axios";
 
 function FileInput({name, value, onChange}){
 
@@ -14,7 +16,7 @@ function FileInput({name, value, onChange}){
   
   return (
     <>
-    <div class="filebox">
+    <div className="filebox">
       <input className="MPinput" style={{width: '280px', marginLeft:'0'}}
       placeholder={placeholder}
       disabled='disabled'/> 
@@ -32,16 +34,17 @@ function FileInput({name, value, onChange}){
 function MemoryPostPage(){
 
     const [values, setValues] = useState({
-        name: '',
+        memoryName: '',
         title: '',
         image: null,
         body: '',
         tag: '',
         place: '',
         date: '',
-        option: '',
         password: ''
       });
+
+    const [isPublic, setisPublic] = useState(true);
       
       const handleChange = (name, value) => {
         setValues((prevValues) => ({
@@ -64,6 +67,24 @@ function MemoryPostPage(){
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log({values});
+
+        const formData = new FormData();
+        formData.append('name', values.memoryName);
+        formData.append('title', values.title);
+        formData.append('body', values.body);
+        formData.append('tag', values.tag);
+        formData.append('place', values.place);
+        formData.append('date', values.date);
+        formData.append('password', values.password);
+
+        for (const x of formData) {
+          console.log(x);
+         };
+      axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories"
+        ,formData)
+      .then((res)=>{console.log(res.data);}) 
+      .catch(error => {console.log(error)});
+
       };
 
     return(
@@ -79,8 +100,8 @@ function MemoryPostPage(){
                 <div className="MPformLeft" style={{flexBasis:'50%'}}>
                     <div className="MPinputDsc">닉네임</div>
                     <input className="MPinput"
-                      name="name" 
-                      value={values.name} 
+                      name="memoryName" 
+                      value={values.memoryName} 
                       onChange={handleInputChange} 
                       placeholder=' 닉네임을 입력해 주세요.'
                       /* 자동완성 비활성화 : autoComplete="off"*/ />
@@ -133,14 +154,13 @@ function MemoryPostPage(){
                     placeholder=' YYYY-MM-DD'/> 
 
                     <div className="MPinputDsc">추억 공개 선택</div>
-                    <input className="MPinput"
-                    name="option" 
-                    value={values.option} 
-                    onChange={handleInputChange} 
-                    placeholder=' 공개/비공개'/> 
+                    <div style={{marginLeft:'10px'}}>
+                    <Toggle isPublic={isPublic} onToggle={setisPublic}/>
+                    </div>
 
                     <div className="MPinputDsc">비밀번호 생성</div>
                     <input className="MPinput"
+                    type="password"
                     name="password" 
                     value={values.password} 
                     onChange={handleInputChange} 

@@ -29,31 +29,29 @@ function MakeGroupPage() {
 
     // formData로 서버로 전송할 데이터
     const formData = new FormData();
-    formData.append("name", groupName);
+    formData.append("groupName", groupName);
     formData.append("image", groupImage);
-    formData.append("description", groupDescription);
+    formData.append("groupDescription", groupDescription);
     formData.append("isPublic", isPublic);
     formData.append("password", password);
 
     // formData를 서버로 전송
     /*********************/
-    // axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups", formData).then((res)=>{console.log(res.data);}) .catch(error => {
-    //   if (error.response) {
-    //     console.log('서버 응답 오류:', error.response.status);
-    //   } else if (error.request) {
-    //     console.log('오류', error.request);
-    //   } else {
-    //     console.log('기타 오류:', error.message);
-    //   }
+    // axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups", formData)
+    // .then((res)=>{console.log(res.data);}) .catch(error => {console.log(error);
     // });
+    
+    // for (const x of formData) {
+    //   console.log(x);
+    //  };
 
-    console.log("Form submitted:", {
-      groupName,
-      groupImage,
-      groupDescription,
-      isPublic,
-      password: password,
-    });
+    // console.log("Form submitted:", {
+    //   groupName,
+    //   groupImage,
+    //   groupDescription,
+    //   isPublic,
+    //   password: password,
+    // });
 
     const success = true; // 그룹 생성 성공 예시
 

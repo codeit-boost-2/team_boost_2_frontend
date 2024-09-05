@@ -6,6 +6,7 @@ import asyncHandler from '../utils/asyncHandler.js';
 import { getMemoryList } from './memoryRouter.js';
 import { upload } from '../utils/multer.js';
 import fs from 'fs';
+import FormData from 'form-data';
 
 const prisma = new PrismaClient();
 const groupRouter = express.Router();
@@ -69,12 +70,17 @@ groupRouter.route('/:page/:pageSize')
       introduction: group.description,
     }));
 
-    res.status(200).json({
-      currentPage: Number(page),
-      totalPages: Math.ceil(totalItemCount / pageSize),
-      totalItemCount,
-      data,
-    });
+    const form = new FormData();
+    form.append('currentPage', Number(page));
+    form.append('totalPages', Math.ceil(totalItemCount / pageSize));
+    form.append('totalItemCount', totalItemCount);
+    form.append('data', data);
+    
+    const imagePath = path.join(`${process.env.IMAGE_DIR}`, data.image);
+    form.append('image', fs.createReadStream(imagePath));
+
+    res.set('Content-Type', 'multipart/form-data');
+    form.pipe(res);
   }));
 
   groupRouter.route('')

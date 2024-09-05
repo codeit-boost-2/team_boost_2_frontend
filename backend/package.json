@@ -4,6 +4,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.19.2",
+    "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "is-email": "^1.0.2",

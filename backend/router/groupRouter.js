@@ -90,6 +90,7 @@ groupRouter.route('')
     const { groupName, groupDescription, password } = req.body;
     let isPublic = req.body.isPublic;
     if (isPublic === 'true') isPublic = true;
+    else isPublic = false;
 
     console.log(req.body);
     console.log(req.file);
@@ -296,6 +297,7 @@ groupRouter.route('/:groupId/posts')
     const { nickname, title, content, password, location, moment } = req.body;
     let isPublic = req.body.isPublic;
     if (isPublic === 'true') isPublic = true;
+    else isPublic = false;
 
     if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });

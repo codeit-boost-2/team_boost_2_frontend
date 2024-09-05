@@ -37,7 +37,7 @@ function CardMemoryItems( { item }){
     >
     <div className="card">
         <div className="cardImg">
-          {image && <img src={image} alt="대표이미지"></img> }
+        {isPublic === true && image && <img src={image} alt="대표이미지"></img> }
         </div>
         <div className="cardStatus">
           <div className="writer">{nickname}</div>
@@ -50,7 +50,9 @@ function CardMemoryItems( { item }){
         </div>
         <div className="cardFooter">
           <div>{place} | {uploadDate}</div>
-          <div>{likeCount} | 댓글 수</div>
+          <div>
+          <img alt="공감아이콘" src="./imgs/logo_16x16.svg" />
+            {likeCount} | 댓글 수</div>
         </div>
       </div>
       </Link>

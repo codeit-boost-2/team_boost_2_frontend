@@ -34,7 +34,7 @@ function FileInput({name, value, onChange}){
 function MemoryPostPage(){
 
     const [values, setValues] = useState({
-        memoryName: '',
+        nickname: '',
         title: '',
         image: null,
         body: '',
@@ -75,6 +75,7 @@ function MemoryPostPage(){
         formData.append('tag', values.tag);
         formData.append('place', values.place);
         formData.append('date', values.date);
+        formData.append('isPublic',isPublic);
         formData.append('password', values.password);
 
         for (const x of formData) {
@@ -100,7 +101,7 @@ function MemoryPostPage(){
                 <div className="MPformLeft" style={{flexBasis:'50%'}}>
                     <div className="MPinputDsc">닉네임</div>
                     <input className="MPinput"
-                      name="memoryName" 
+                      name="nickname" 
                       value={values.memoryName} 
                       onChange={handleInputChange} 
                       placeholder=' 닉네임을 입력해 주세요.'
@@ -124,6 +125,7 @@ function MemoryPostPage(){
 
                     <div className="MPinputDsc">본문</div>    
                     <textarea className="MPinput"
+                    style={{height:"100px"}}
                     name="body" 
                     value={values.body} 
                     onChange={handleInputChange} 

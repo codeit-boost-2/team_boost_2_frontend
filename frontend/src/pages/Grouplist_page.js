@@ -60,7 +60,7 @@ function GroupListPage() {
     const itemsAfterFilter = filterItemsBySearch(filteredItems, searchTerm);
     return getSortedItems(itemsAfterFilter, order);
   }, [filteredItems, order, searchTerm]);
-
+  
   const handleSelect = (option) => {
     if (option === "최신순") setOrder("createdAt");
     else if (option === "게시글 많은순") setOrder("memories");

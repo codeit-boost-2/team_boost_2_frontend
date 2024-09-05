@@ -218,11 +218,18 @@ function MemoryDetailPage() {
     handleDeleteReply(selectedItemId, password);
   };
 
+  const{
+    id,
+    image,
+    content,
+  } = mock.item; // card/memory에서 아이템 받아와서 적용함
+
+  console.log(mock.item)
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
     <div style={{marginBottom:"100px"}}></div>
       <div className="MemoryHeader">
-        <CardMemoryInfo item={mockItem} />
+        <CardMemoryInfo item={mock.item} replies={mockItem.replies.length} />
         <div className="MemoryButtons">
           <div className="MemoryEdit">
             <button
@@ -245,8 +252,9 @@ function MemoryDetailPage() {
       </div>
       <hr style={hrStyle} />
       <div className="MainContents">
-        <img src={mockItem.img} />
-        <p className="ContentMemory">{mockItem.content}</p>
+        {image && (<img src={"."+image} alt="추억 사진" />)} 
+        {/*왜그런진 모르겠는데 이미지 경로가 여기서는 ../로 시작하더라구요 ... 그래서 일단 임시로 붙여뒀어요*/}
+        <p className="ContentMemory">{content}</p>
       </div>
       <div>
         <button className="ReplyButton" onClick={openReplyPopup}>

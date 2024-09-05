@@ -21,18 +21,18 @@ function formatDate(createdAt) {
   );
 }
 
-function CardMemoryInfo({ item }) {
-  const { name, isPublic, title, tags, place, createdAt, likeCount, replies } =
-    item;
+function CardMemoryInfo({ item , replylength }) {
+  const { nickname, isPublic, title, tag, place, createdAt, likeCount } =
+    item;//Link로 아이템 받아오도록 적용함
 
-  // 추억 작성 날짜
+    // 추억 작성 날짜
   const PublishedOn = formatDate(createdAt);
 
   return (
     <div className="CardMemoryInfo">
       <div className="MemoryInfoHeader">
         <div className="GroupInfo">
-          <div>{name}</div>
+          <div>{nickname}</div>
           <div style={{ color: "#8D8D8D" }}>|</div>
           <div style={{ color: "#8D8D8D" }}>
             {isPublic === true ? "공개" : "비공개"}
@@ -41,12 +41,7 @@ function CardMemoryInfo({ item }) {
       </div>
       <h1 className="MemoryTitle">{title}</h1>
       <div className="MemoryTags">
-        {tags.map((tag, index) => (
-          <React.Fragment key={index}>
-            #{tag}
-            {index < tags.length - 1}
-          </React.Fragment>
-        ))}
+        #{tag} //태그 하나만 받도록 일단 수정
       </div>
       <div className="MemoryInfoFooter">
         <div className="MemoryStatus">
@@ -62,7 +57,7 @@ function CardMemoryInfo({ item }) {
             </div>
             <div className="repliesCount">
               <img alt="댓글" src="../imgs/icon_bubble.svg" />
-              <div>{replies.length}</div>
+              <div>{replylength}</div> // mock 데이터에 댓글 관련된 정보가 없어서 임의로 MemorydetailPage의 데이터로 가져옴
             </div>
           </div>
         </div>

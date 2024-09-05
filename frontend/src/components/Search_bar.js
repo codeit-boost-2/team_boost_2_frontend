@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./Search_bar.css";
 
-function SearchBar({ onSearch }) {
+function SearchBar({ onSearch, placeholderprop ="그룹 명을 입력해주세요." }) {
   const [searchBarTerm, setSearchBarTerm] = useState("");
 
   const handleChange = (e) => {
@@ -15,7 +15,7 @@ function SearchBar({ onSearch }) {
         type="text"
         value={searchBarTerm}
         onChange={handleChange}
-        placeholder="그룹명을 검색해주세요"
+        placeholder={placeholderprop}
       />
   );
 }

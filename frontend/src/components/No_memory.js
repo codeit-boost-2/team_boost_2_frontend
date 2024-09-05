@@ -2,6 +2,7 @@ import React from "react";
 import Button from "./Button.js";
 import noMemory from "../assets/noMemory.png";
 const NoMemoryStyle = {
+    margin: '30px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent:"center"

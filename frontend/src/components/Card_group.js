@@ -24,11 +24,10 @@ function CardGroupItem({ item }) {
   const {
     name,
     image,
-    description,
+    introduction,
     isPublic,
     likeCount,
-    memories,
-    badges,
+    postCount,
     createdAt,
   } = item;
   const daysDifference = calculateDaysDifference(createdAt);
@@ -59,17 +58,11 @@ function CardGroupItem({ item }) {
           </div>
         </div>
         <div style={nameStyle}>{name}</div>
-        {isPublic === true && memories && <div>{description}</div>}
+        {isPublic === true && postCount && <div>{introduction}</div>}
         <div className="cardGroupItem-info">
-          {isPublic === true && memories && (
-            <div>
-              <div style={categoryNameStyle}>획득배지</div>
-              <div>{badges}</div>
-            </div>
-          )}
           <div>
             <div style={categoryNameStyle}>추억</div>
-            <div>{memories}</div>
+            <div>{postCount}</div>
           </div>
           <div>
             <div style={categoryNameStyle}>그룹 공감</div>

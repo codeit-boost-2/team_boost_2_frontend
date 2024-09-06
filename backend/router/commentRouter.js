@@ -78,7 +78,7 @@ commentRouter.route('/:commentId')
 
     const comment = await prisma.comment.findUniqueOrThrow({
       where: {
-        id : commentId,
+        commentId : commentId,
       },
     });
 
@@ -96,7 +96,7 @@ commentRouter.route('/:commentId')
 
     await prisma.comment.delete({
       where: {
-        id: commentId,
+        commentId: commentId,
       },
     });
 

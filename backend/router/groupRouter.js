@@ -78,7 +78,7 @@ groupRouter.route('/:page/:pageSize')
         console.log(`${process.env.IMAGE_DIR}`);
         console.log(group.image);
 
-        const imagePath = path.join(`${process.env.IMAGE_DIR}/`, group.image);
+        const imagePath = path.join(`${process.env.IMAGE_DIR}`, group.image);
         console.log(imagePath);
 
         if (fs.existsSync(imagePath)) {

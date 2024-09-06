@@ -18,6 +18,9 @@ import groupRouter from './router/groupRouter.js';
 import memoryRouter from './router/memoryRouter.js';
 import commentRouter from './router/commentRouter.js';
 
+app.use('/images', express.static(`${process.env.IMAGE_DIR}`));
+// http://localhost:3000/images/
+
 // 라우트 설정
 app.use('/groups', groupRouter);
 app.use('/memories', memoryRouter);

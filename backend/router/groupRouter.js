@@ -147,14 +147,6 @@ groupRouter.route('/:id')
   .delete(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;
-    if (fs.existsSync("/backend/images/" + file_name)) {
-      try {
-        fs.unlinkSync("/images" + file_name);
-        console.log("image delete")
-      } catch (error) {
-        console.log(error)
-      }
-    }
 
     if (!password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });

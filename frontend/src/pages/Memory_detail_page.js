@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import "./Memory_detail_page.css";
 import {
-  getMemories,
+  getDataById,
   editMemory,
   deleteMemory,
   editReply,
   deleteReply,
+  updateLikeCount,
 } from "../api/api.js";
 //import axios from "axios";
-import sampleImg from "../assets/img4.png";
 import CardMemoryInfo from "../components/Card_memory_info";
 import Reply from "../components/Reply";
 import DeleteMemoryPopup from "../components/Delete_memory_popup.js";
@@ -17,8 +17,9 @@ import EditMemoryPopup from "../components/Edit_memory_popup.js";
 import ReplyMemoryPopup from "../components/Reply_popup.js";
 import DeleteReplyPopup from "../components/Delete_reply_popup.js";
 import EditReplyPopup from "../components/Edit_reply_popup.js";
+import Like from "../components/Like.js";
 
-// 임의의 item 데이터 (추후 삭제)
+/* // mock 데이터 //
 const mockItem = {
   Id: 1,
   name: "작성자 이름",
@@ -54,7 +55,9 @@ const mockItem = {
     },
   ],
 };
+*/
 
+// 구분선 Style
 const hrStyle = {
   border: "1px solid #dddddd",
   margin: "20px 200px 20px 200px",
@@ -65,20 +68,70 @@ const hrReply = {
   margin: "20px 200px 20px 200px",
 };
 
-function MemoryDetailPage() {
+// 추억 상세 페이지 사진, 글
+function MemoryDetailMainContent({ memory }) {
+  const { image, content } = memory;
+  // image url을 받아와야함
+  return (
+    <div className="MainContents">
+      <img src={image} alt="Memory" />
+      <p className="ContentMemory">{content}</p>
+    </div>
+  );
+}
 
+function MemoryDetailPage() {
   //Link 태그로 받은 mock items
-  const location = useLocation();
-  const mock = location.state;
-  
-  const [items, setItems] = useState([]);
+  //const location = useLocation();
+  //const mock = location.state;
+
+  const { memoryId } = useParams(); // url에서 memoryId 가져오기
+  const [memory, setMemory] = useState(null);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [isReplyPopupOpen, setIsReplyPopupOpen] = useState(false);
   const [isEditReplyPopupOpen, setIsEditReplyPopupOpen] = useState(false);
   const [isDeleteReplyPopupOpen, setIsDeleteReplyPopupOpen] = useState(false);
+  const [like, setLike] = useState(0);
 
+  ///////////////////////////////////////
+  //Memory받아오기
+  const handleLoad = async (id) => {
+    try {
+      const memoryData = await getDataById(id); // 서버에서 데이터 가져오기
+      if (memoryData) {
+        setMemory(memoryData);
+        setLike(memoryData.likeCount); // 좋아요 개수 설정
+      } else {
+        console.error("메모리 데이터를 불러오지 못했습니다.");
+      }
+    } catch (error) {
+      console.error("데이터를 불러오는 중 오류 발생:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (memoryId) {
+      handleLoad(memoryId);
+    }
+  }, [memoryId]);
+
+  /////////* 공감 보내기 버튼 클릭 핸들*//////////
+  const handleLikeClick = () => {
+    setLike((prevLike) => prevLike + 1);
+
+    updateLikeCount(memoryId)
+      .then(() => {
+        console.log("좋아요 상태가 서버에 업데이트되었습니다.");
+      })
+      .catch((error) => {
+        console.error("좋아요 상태 업데이트 중 오류 발생:", error);
+      });
+  };
+
+  //////////*팝업 오픈 핸들*/////////
   // 추억 수정 팝업 오픈
   const openEditPopup = (id) => {
     setSelectedItemId(id);
@@ -107,97 +160,73 @@ function MemoryDetailPage() {
     setIsDeleteReplyPopupOpen(true);
   };
 
-  // 비밀번호 일치시 Memory 수정 진행
+  ///////////* 수정, 삭제 핸들*///////////
+  // Memory 수정 진행
   const handleEdit = async (updatedItem, password) => {
-    if (password === mockItem.replies.password) {
-      const result = await editMemory(updatedItem);
+    try {
+      const result = await editMemory(updatedItem, password);
+
       if (result) {
-        setItems((prevItems) => {
-          const splitIdx = prevItems.findIndex(
-            (item) => item.Id === updatedItem.Id
-          );
-          return [
-            ...prevItems.slice(0, splitIdx),
-            updatedItem,
-            ...prevItems.slice(splitIdx + 1),
-          ];
-        });
+        setMemory((prevMemory) => ({
+          ...prevMemory,
+          ...updatedItem,
+        }));
       }
-    } else {
-      alert("비밀번호가 일치하지 않습니다.");
+    } catch (error) {
+      console.error("메모리를 수정하는 데 실패했습니다.", error);
     }
   };
 
-  // 비밀번호 일치시 Memory 삭제 진행
+  // Memory 삭제 진행
   const handleDelete = async (password) => {
-    if (password === mockItem.password) {
-      const result = await deleteMemory(mockItem.Id, password);
-      if (result) {
-        setItems((prevItems) =>
-          prevItems.filter((item) => item.Id !== mockItem.Id)
-        );
-      }
-    } else {
-      alert("비밀번호가 일치하지 않습니다.");
+    if (!memory || !memory.Id) return;
+
+    const result = await deleteMemory(memory.Id, password);
+    if (result) {
+      setIsDeleted(true); // 삭제 성공 상태:true
     }
   };
+  if (isDeleted) {
+    return <Navigate to="/GroupPage" />; // 삭제 후 GroupPage로 이동
+  }
 
-  // 비밀번호 일치시 Reply 수정 진행
+  // Reply 수정 진행
   const handleEditReply = async (updatedReply, password) => {
-    const replyToEdit = mockItem.replies.find(
-      (reply) => reply.id === updatedReply.id
-    );
+    try {
+      const result = await editReply(updatedReply, password);
 
-    if (replyToEdit && password === replyToEdit.password) {
-      const result = await editReply(updatedReply);
       if (result) {
-        setItems((prevItems) => {
-          const updatedItems = prevItems.map((item) => {
-            if (item.Id === mockItem.Id) {
-              return {
-                ...item,
-                replies: item.replies.map((reply) =>
-                  reply.id === updatedReply.id ? updatedReply : reply
-                ),
-              };
-            }
-            return item;
-          });
-          return updatedItems;
+        setMemory((prevMemory) => {
+          return {
+            ...prevMemory,
+            replies: prevMemory.replies.map((reply) =>
+              reply.id === updatedReply.id ? updatedReply : reply
+            ),
+          };
         });
       }
-    } else {
-      alert("비밀번호가 일치하지 않습니다.");
+    } catch (error) {
+      console.error("댓글을 수정하는 데 실패했습니다.", error);
     }
   };
 
-  // 비밀번호 일치시 Reply 삭제 진행
+  // Reply 삭제 진행
   const handleDeleteReply = async (replyId, password) => {
-    const replyToDelete = mockItem.replies.find(
-      (reply) => reply.id === replyId
-    );
-
-    if (replyToDelete && password === replyToDelete.password) {
+    try {
       const result = await deleteReply(replyId, password);
+
       if (result) {
-        setItems((prevItems) => {
-          const updatedItems = prevItems.map((item) => {
-            if (item.Id === mockItem.Id) {
-              return {
-                ...item,
-                replies: item.replies.filter((reply) => reply.id !== replyId),
-              };
-            }
-            return item;
-          });
-          return updatedItems;
-        });
+        setMemory((prevMemory) => ({
+          ...prevMemory,
+          replies: prevMemory.replies.filter((reply) => reply.id !== replyId),
+        }));
       }
-    } else {
-      alert("비밀번호가 일치하지 않습니다.");
+    } catch (error) {
+      console.error("댓글을 삭제하는 데 실패했습니다.", error);
     }
   };
 
+  ///////////*삭제, 수정 호출 핸들*/////////////
   // handleEdit 호출
   const handleEditConfirmation = (password) => {
     handleEdit(selectedItemId, password);
@@ -226,65 +255,76 @@ function MemoryDetailPage() {
 
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
-    <div style={{marginBottom:"100px"}}></div>
-      <div className="MemoryHeader">
-        <CardMemoryInfo item={mock.item} replylength={mockItem.replies.length} />
-        <div className="MemoryButtons">
-          <div className="MemoryEdit">
-            <button
-              className="MemoryUpdate"
-              onClick={() => openEditPopup(mockItem.Id)}
-            >
-              추억 수정하기
-            </button>
-            <button
-              className="MemoryDelete"
-              onClick={() => openDeletePopup(mockItem.Id)}
-            >
-              추억 삭제하기
-            </button>
-          </div>
-          <button className="likeButton">
-            <img alt="공감보내기" src="../imgs/like_button.svg" />
-          </button>
-        </div>
-      </div>
-      <hr style={hrStyle} />
-      <div className="MainContents">
-        {image && (<img src={"."+image} alt="추억 사진" />)} 
-        {/*왜그런진 모르겠는데 이미지 경로가 여기서는 ../로 시작하더라구요 ... 그래서 일단 임시로 붙여뒀어요*/}
-        <p className="ContentMemory">{content}</p>
-      </div>
-      <div>
-        <button className="ReplyButton" onClick={openReplyPopup}>
-          <img src="../imgs/reply_button.svg" />
-        </button>
-      </div>
-      <div className="Replies">
-        <p className="ReplyCount">댓글 {mockItem.replies.length}</p>
-        <hr style={hrReply} />
-        {mockItem.replies.map((reply) => (
-          <>
-            <div className="ReplyContents">
-              <Reply
-                key={reply.id}
-                name={reply.name}
-                createdAt={reply.createdAt}
-                content={reply.content}
-              />
-              <div className="ReplyControl">
-                <button className="ReplyEdit" onClick={openEditReplyPopup}>
-                  <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
+      <div style={{ marginBottom: "100px" }}></div>
+      {memory ? ( // memory가 있을 때 렌더링
+        <>
+          <div className="MemoryHeader">
+            <CardMemoryInfo item={memory} />
+            <div className="MemoryButtons">
+              <div className="MemoryEdit">
+                <button
+                  className="MemoryUpdate"
+                  onClick={() => openEditPopup(memory.Id)}
+                >
+                  추억 수정하기
                 </button>
-                <button className="ReplyDelete" onClick={openDeleteReplyPopup}>
-                  <img alt="댓글 삭제하기" src="../imgs/delete_button.svg" />
+                <button
+                  className="MemoryDelete"
+                  onClick={() => openDeletePopup(memory.Id)}
+                >
+                  추억 삭제하기
                 </button>
               </div>
+              <Like handleLikeClick={handleLikeClick} likeCount={like} />
             </div>
-            <hr style={hrStyle} />
-          </>
-        ))}
-      </div>
+          </div>
+
+          <hr style={hrStyle} />
+
+          <MemoryDetailMainContent memory={memory} />
+
+          <div>
+            <button className="ReplyButton" onClick={openReplyPopup}>
+              <img src="../imgs/reply_button.svg" alt="댓글 달기" />
+            </button>
+          </div>
+          <div className="Replies">
+            <p className="ReplyCount">댓글 {memory.replies.length}</p>
+            <hr style={hrReply} />
+            {memory.replies.map((reply) => (
+              <React.Fragment key={reply.id}>
+                <div className="ReplyContents">
+                  <Reply
+                    name={reply.name}
+                    createdAt={reply.createdAt}
+                    content={reply.content}
+                  />
+                  <div className="ReplyControl">
+                    <button
+                      className="ReplyEdit"
+                      onClick={() => openEditReplyPopup(reply.id)}
+                    >
+                      <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
+                    </button>
+                    <button
+                      className="ReplyDelete"
+                      onClick={() => openDeleteReplyPopup(reply.id)}
+                    >
+                      <img
+                        alt="댓글 삭제하기"
+                        src="../imgs/delete_button.svg"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <hr style={hrStyle} />
+              </React.Fragment>
+            ))}
+          </div>
+        </>
+      ) : (
+        <Navigate to="/*" /> // memory가 없을 때는 404페이지로 연결
+      )}
 
       {isEditPopupOpen && (
         <EditMemoryPopup

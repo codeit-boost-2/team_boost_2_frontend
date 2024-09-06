@@ -1,20 +1,34 @@
 import axios from "axios";
 const BASE_URL = "http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000";
 
-//그룹 불러오기
-export async function getGroups({
+//그룹 목록 조회
+export async function getGroupList({
   order = "createdAt",
   cursor = "",
   limit = 8,
   search = "",
 }) {
   const query = `order=${order}&cursor=${cursor}&limit=${limit}&search=${search}`;
-  const response = await fetch(`${BASE_URL}/?${query}`);
+  const response = await fetch(`${BASE_URL}/groups/?${query}`);
   if (!response.ok) {
     throw new Error("데이터를 불러오는데 실패했습니다");
   }
   const body = await response.json();
   return body;
+}
+
+export async function getGroupsAxios(currentPage, itemsPerPage){
+  const url =`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=true`;
+  const res = await axios.get(url);
+  const data = res.data;
+  return data;
+}
+
+export async function getGroupsAxios(currentPage, itemsPerPage){
+  const url =`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=true`;
+  const res = await axios.get(url);
+  const data = res.data;
+  return data;
 }
 
 export async function getGroupsAxios(currentPage, itemsPerPage){

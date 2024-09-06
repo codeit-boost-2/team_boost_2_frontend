@@ -24,7 +24,7 @@ function MakeGroupPage() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // formData로 서버로 전송할 데이터
@@ -72,10 +72,10 @@ function MakeGroupPage() {
           <div className="inputItems">
             <InputText label="그룹명" onChange={setGroupName} required={true} />
 
-            <div>
+            {/* <div>
               <div style={{ marginBottom: "10px" }}>대표 이미지</div>
               <FileInput onFileChange={setGroupImage} required={true} />
-            </div>
+            </div> */}
 
             <InputBox
               label="그룹 소개"

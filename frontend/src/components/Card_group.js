@@ -24,13 +24,15 @@ function CardGroupItem({ item }) {
   const {
     name,
     image,
-    description,
+    introduction,
     isPublic,
     likeCount,
     memories,
     createdAt,
   } = item;
   const daysDifference = calculateDaysDifference(createdAt);
+
+  const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
 
   //스타일
   const categoryNameStyle = { color: "#B8B8B8" };
@@ -48,7 +50,7 @@ function CardGroupItem({ item }) {
     >
       <div className="cardGroupItem">
         {isPublic === true && image && (
-          <img src={image} alt={name} className="cardGroupItem-img" />
+          <img src={imageUrl} alt={name} className="cardGroupItem-img" />
         )}
         <div className="cardGroupItem-status">
           <div>{daysDifference}</div>
@@ -58,11 +60,11 @@ function CardGroupItem({ item }) {
           </div>
         </div>
         <div style={nameStyle}>{name}</div>
-        {isPublic === true && memories && <div>{description}</div>}
+        {isPublic === true && postCount && <div>{introduction}</div>}
         <div className="cardGroupItem-info">
           <div>
             <div style={categoryNameStyle}>추억</div>
-            <div>{memories}</div>
+            <div>{postCount}</div>
           </div>
           <div>
             <div style={categoryNameStyle}>그룹 공감</div>

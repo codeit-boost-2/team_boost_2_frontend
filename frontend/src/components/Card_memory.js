@@ -28,16 +28,18 @@ function CardMemoryItems( { item }){
     createdAt,
   } = item;
   const uploadDate = formatDate(createdAt);
+  const isPublicPath = isPublic === true ? "/GroupPage" : "/AutPage";
+
   return(
     <>
     <Link
-      to={`/GroupPage/${item.id}`} //MemoryId는 추억상세페이지 주소
+      to={`/MemoryPage/${item.id}`} //MemoryId는 추억상세페이지 주소
       state={{ item : item }}
       style={{ textDecoration: "none", color: "inherit" }}
     >
     <div className="card">
         <div className="cardImg">
-        {isPublic === true && image && <img src={image} alt="대표이미지"></img> }
+        {isPublic === true && image && <img src={"."+image} alt="대표이미지"></img> }
         </div>
         <div className="cardStatus">
           <div className="writer">{nickname}</div>
@@ -51,7 +53,7 @@ function CardMemoryItems( { item }){
         <div className="cardFooter">
           <div>{place} | {uploadDate}</div>
           <div>
-          <img alt="공감아이콘" src="./imgs/logo_16x16.svg" />
+          <img alt="공감아이콘" src="../imgs/logo_16x16.svg" />
             {likeCount} | 댓글 수</div>
         </div>
       </div>

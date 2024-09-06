@@ -47,7 +47,6 @@ function Info(mock){
     const handleLikeClick = () => {
         const afterLike = like +1;
         setLike(afterLike);
-        
     }
     const dday = calculateDaysDifference(createdAt);
     return(
@@ -55,7 +54,7 @@ function Info(mock){
         <div style={style}>
             <div className='infoImage'>
                 {isPublic === true && image && (
-                <img src={image} alt='그룹이미지' />
+                <img src={"." + image} alt='그룹이미지' />
                 )}
             </div>     
             <div style={{flexGrow:'1', margin:'10px'}}>
@@ -93,7 +92,7 @@ function Info(mock){
                     </div>
                     <div className='badge'>
                         <div>{badges}</div>
-                        <Like handleLikeClick={handleLikeClick} />
+                        <Like handleLikeClick={handleLikeClick} isVisible={isVisible} />
                     </div>
                 </div>
                 

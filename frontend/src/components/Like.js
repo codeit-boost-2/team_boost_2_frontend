@@ -11,13 +11,19 @@ const style={
     fontSize: "15px",
 };
 
-function Like(props){
+function Like({handleLikeClick, isVisible}){
     
     return(
-        <button className="gonggam" onClick={props.handleLikeClick}>
+        <>
+        {/* <img src={LikeIcon} 
+             alt="테스트" 
+             className={`fade ${isVisible ? 'visible' : ''}`} 
+            /> */}
+        <button className="gonggam" onClick={handleLikeClick}>
             <img style={{padding : "4px"}} alt="icon" src={LikeIcon} />
             공감 보내기
         </button>
+        </>
     );
 }
 

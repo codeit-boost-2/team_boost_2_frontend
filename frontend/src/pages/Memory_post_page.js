@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import './Memory_post_page.css';
 import Toggle from "../components/Toggle";
 import axios from "axios";
@@ -32,7 +32,7 @@ function FileInput({name, value, onChange}){
 
 
 function MemoryPostPage(){
-
+    let { params } = useParams();
     const [values, setValues] = useState({
         nickname: '',
         title: '',
@@ -66,13 +66,14 @@ function MemoryPostPage(){
     //제출 함수 기능 추가하기
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log({values});
+       
 
         const formData = new FormData();
-        formData.append('name', values.memoryName);
+        formData.append('groupId', params)
+        formData.append('nickname', values.memoryName);
         formData.append('title', values.title);
-        formData.append('body', values.body);
-        formData.append('tag', values.tag);
+        formData.append('content', values.body);
+        // formData.append('tag', values.tag);
         formData.append('place', values.place);
         formData.append('date', values.date);
         formData.append('isPublic',isPublic);
@@ -81,6 +82,7 @@ function MemoryPostPage(){
         for (const x of formData) {
           console.log(x);
          };
+         
       axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories"
         ,formData)
       .then((res)=>{console.log(res.data);}) 
@@ -133,12 +135,12 @@ function MemoryPostPage(){
                 </div>
 
                 <div className="MPformRight" style={{flexBasis:'50%'}}>
-                    <div className="MPinputDsc">태그</div>
+                    {/* <div className="MPinputDsc">태그</div>
                     <input className="MPinput"
                     name="tag" 
                     value={values.tag} 
                     onChange={handleInputChange} 
-                    placeholder=' 태그를 입력 해 주세요.'/> 
+                    placeholder=' 태그를 입력 해 주세요.'/>  */}
 
                     <div className="MPinputDsc">장소</div>
                     <input className="MPinput"

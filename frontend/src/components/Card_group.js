@@ -39,7 +39,7 @@ function CardGroupItem({ item }) {
   const isPublicStyle = { color: "#B8B8B8" };
 
   //공개 여부에 따라 경로 변경
-  const isPublicPath = isPublic === true ? "/GroupPage" : "/AutPage";
+  const isPublicPath = isPublic === true ? `/GroupPage/${item.id}` : "/AutPage";
 
   return (
     <Link

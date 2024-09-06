@@ -17,7 +17,9 @@ function Main() {
           <Route index element={<GroupListPage />} />
           <Route path="/MakeGroup" element={<MakeGroupPage />} />
           <Route path="/GroupPage">
-            <Route index element={<GroupPage />} />
+              <Route path=":GroupId" element={<GroupPage />} />
+          </Route>
+          <Route path="/MemoryPage">
             <Route path=":MemoryId" element={<MemoryDetailPage />} />
           </Route>
           <Route path="/AutPage" element={<AuthenticationPage />} />

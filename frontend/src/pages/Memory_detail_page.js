@@ -224,7 +224,6 @@ function MemoryDetailPage() {
     content,
   } = mock.item; // card/memory에서 아이템 받아와서 적용함
 
-  console.log(mock.item)
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
     <div style={{marginBottom:"100px"}}></div>

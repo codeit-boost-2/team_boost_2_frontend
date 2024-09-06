@@ -39,7 +39,7 @@ function Info(mock){
         badges,
         createdAt,
       } = mock.items.item;
-
+      console.log(mock.items.item)
     const [like, setLike] = useState(likeCount);
     const [changeModal, setChangeModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -47,6 +47,7 @@ function Info(mock){
     const handleLikeClick = () => {
         const afterLike = like +1;
         setLike(afterLike);
+        
     }
     const dday = calculateDaysDifference(createdAt);
     return(

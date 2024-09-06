@@ -16,8 +16,6 @@ export async function getCommentList({ memoryId }) {
     prisma.comment.count({ where: { memoryId } }),
     prisma.comment.findMany({
       where: { memoryId },
-      skip: (page - 1) * pageSize,
-      take: Number(pageSize),
       select: {
         id: true,
         nickname: true,

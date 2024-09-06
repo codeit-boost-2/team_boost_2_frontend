@@ -212,13 +212,14 @@ memoryRouter.route('/:id')
     return res.status(200).json({ message: '게시글 삭제 성공' });
   }));
 
-memoryRouter.route('/:id/comments/:page/:pageSize')
+memoryRouter.route('/:id/comments')
 
-  // 추억 상세 정보 조회 
+  // 추억 상세 정보 조회 (댓글 목록 조회)
   .get(asyncHandler(async (req, res) => {
-    const { id, page, pageSize } = req.params
+    console.log("추억 상세 정보 조회");
+    const { id } = req.params;
     
-    if ( !id || !page || !pageSize) {
+    if ( !id ) {
       return res.status(400).send({ message: "잘못된 요청입니다" });
     };
 
@@ -227,47 +228,40 @@ memoryRouter.route('/:id/comments/:page/:pageSize')
     });
 
     const commentResult = await getCommentList({
-      commentId: id
+      memoryId: id
     });
 
     return res.status(200).send({
       memory,
       comments: {
-        currentPage: Number(page),
-        totalPages: Math.ceil(commentResult.totalCommentCount / Number(pageSize)),
+        currentPage: page,
+        totalPages: Math.ceil(commentResult.totalCommentCount / pageSize),
         totalcommentCount: commentResult.totalCommentCount,
         data: commentResult.data,
       },
     });
   }));
 
-  memoryRouter.route('/:id/comments')
+  memoryRouter.route('/:memoryId/comments')
 
   // 댓글 등록
   .post(asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { memoryId } = req.params;
     const { nickname, content, password } = req.body;
 
     if (!nickname || !content || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
 
-    const newComment = await prisma.comment.create({
+    const comment = await prisma.comment.create({
       data: {
         id,
         nickname,
         content,
         password
       },
-      select: {
-        id: true,
-        nickname: true,
-        content: true,
-        createdAt: true
-      }
     });
-
-    return res.status(200).json(newComment);
+    return res.status(201).send(comment);
   })); 
   
 export default memoryRouter;

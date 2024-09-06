@@ -275,7 +275,7 @@ groupRouter.route('/:id/verifyPassword')
     return res.status(200).json({
       group,
       memories: {
-        currentPage: Number(page),
+        currentPage: page,
         totalPages: Math.ceil(memoriesResult.totalItemCount / pageSize),
         totalItemCount: memoriesResult.totalItemCount,
         data: memoriesResult.data,

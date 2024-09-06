@@ -88,9 +88,6 @@ groupRouter.route('')
     if (isPublic === 'true') isPublic = true;
     else isPublic = false;
 
-    console.log(req.body);
-    console.log(req.file);
-
     const image = `${req.file.filename}`;
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
@@ -280,12 +277,14 @@ groupRouter.route('/:id/:page/:pageSize')
 groupRouter.route('/:groupId/posts')
 
   // 추억 등록
-  .post(asyncHandler(async (req, res) => {
+  .post(upload.single("image"), asyncHandler(async (req, res) => {
     const { groupId } = req.params;
     const { nickname, title, content, password, location, moment } = req.body;
     let isPublic = req.body.isPublic;
     if (isPublic === 'true') isPublic = true;
     else isPublic = false;
+
+    const image = `${req.file.filename}`;
 
     if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });

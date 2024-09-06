@@ -38,15 +38,15 @@ export async function getCommentList({ memoryId }) {
   };
 }
 
-commentRouter.route('/:commentId')
+commentRouter.route('/:id')
 
   // 댓글 수정
   .put(asyncHandler(async (req, res) => {
-    const { commentId } = req.params;
+    const { id } = req.params;
     const { nickname, content, password } = req.body;
     const comment = await prisma.comment.findUniqueOrThrow({
       where: { 
-        id : commentId 
+        id
       },
     });
 
@@ -61,7 +61,7 @@ commentRouter.route('/:commentId')
     if (password === comment.password) {
       const updatedComment = await prisma.comment.update({
         where: { 
-          id : commentId,
+          id
         },
         data : req.body,
       });
@@ -73,12 +73,12 @@ commentRouter.route('/:commentId')
 
   // 댓글 삭제
   .delete(asyncHandler(async (req, res) => {
-    const { commentId } = req.params;
+    const { id } = req.params;
     const { password } = req.body;
 
     const comment = await prisma.comment.findUniqueOrThrow({
       where: {
-        commentId : commentId,
+        id,
       },
     });
 
@@ -96,7 +96,7 @@ commentRouter.route('/:commentId')
 
     await prisma.comment.delete({
       where: {
-        commentId: commentId,
+        id,
       },
     });
 

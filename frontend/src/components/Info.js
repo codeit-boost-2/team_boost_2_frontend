@@ -37,7 +37,6 @@ function Info({ items }){
         isPublic,
         likeCount,
         memories,
-        badges,
         createdAt,
       } = items;
     const [like, setLike] = useState(likeCount);
@@ -87,13 +86,7 @@ function Info({ items }){
                     {description}
                 </div>
                 <div className='infoFooter'>
-                    <div style={{fontWeight:'600', paddingBottom:'15px', fontSize:'15px'}}>
-                    획득 배지
-                    </div>
-                    <div className='badge'>
-                        <div>{badges}</div>
-                        <Like handleLikeClick={handleLikeClick}/>
-                    </div>
+                    <Like handleLikeClick={handleLikeClick}/>
                 </div>
                 
             </div>

@@ -92,7 +92,7 @@ function Info(mock){
                     </div>
                     <div className='badge'>
                         <div>{badges}</div>
-                        <Like handleLikeClick={handleLikeClick} isVisible={isVisible} />
+                        <Like handleLikeClick={handleLikeClick}/>
                     </div>
                 </div>
                 

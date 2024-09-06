@@ -11,7 +11,7 @@ const style={
     fontSize: "15px",
 };
 
-function Like({handleLikeClick, isVisible}){
+function Like({handleLikeClick}){
     
     return(
         <>

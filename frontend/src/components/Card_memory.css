@@ -7,10 +7,11 @@
     padding: 15px;
     font-family: Spoqa Han Sans Neo, Sans-Serif;
     font-weight: 400;
-    border: 1px solid black;
+    border: 1px solid #b8b8b8;
     border-radius:5px;
     break-inside: avoid;
     margin-bottom: 50px;
+    
 }
 
 .cardImg{

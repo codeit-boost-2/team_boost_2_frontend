@@ -1,5 +1,5 @@
 import LikeIcon from "../assets/LikeIcon.jpg"
-
+import "./Like.css";
 const style={
     display: "flex",
     alignItems: "center",
@@ -14,7 +14,7 @@ const style={
 function Like(props){
     
     return(
-        <button style={style} onClick={props.handleLikeClick}>
+        <button className="gonggam" onClick={props.handleLikeClick}>
             <img style={{padding : "4px"}} alt="icon" src={LikeIcon} />
             공감 보내기
         </button>

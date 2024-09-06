@@ -50,8 +50,8 @@ const mockItem = {
 };
 */
 
-async function getPostAxios(postId) {
-  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${postId}/comments`;
+async function getPostAxios(MemoryId) {
+  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
   const res = await axios.get(url);
   const data = res.data;
   return data;
@@ -87,7 +87,7 @@ function MemoryDetailPage() {
   //const location = useLocation();
   //const mock = location.state;
 
-  const { postId } = useParams(); // url에서 postId 가져오기
+  const { MemoryId } = useParams(); // url에서 MemoryId 가져오기
   const [memory, setMemory] = useState(null);
   const [isDeleted, setIsDeleted] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -115,14 +115,14 @@ function MemoryDetailPage() {
   };
 
   useEffect(() => {
-    if (postId) {
-      handleLoad(postId);
+    if (MemoryId) {
+      handleLoad(MemoryId);
     }
-  }, [postId]);
+  }, [MemoryId]);
 
   /////////* 공감 보내기 버튼 클릭 핸들*//////////
   const handleLikeClick = async () => {
-    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${postId}/like`;
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/like`;
 
     try {
       const response = await axios.post(url);

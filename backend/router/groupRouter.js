@@ -322,8 +322,8 @@ groupRouter.route('/:groupId/posts')
         content,
         location,
         isPublic,
-        password,
         moment: new Date(moment),
+        password,
       }
     });
 

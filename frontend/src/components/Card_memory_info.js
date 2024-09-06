@@ -58,7 +58,8 @@ function CardMemoryInfo({ item , replylength }) {
             </div>
             <div className="repliesCount">
               <img alt="댓글" src="../imgs/icon_bubble.svg" />
-              <div>{replylength}</div> // mock 데이터에 댓글 관련된 정보가 없어서 임의로 MemorydetailPage의 데이터로 가져옴
+              {/* replylength -> mock 데이터에 댓글 관련된 정보가 없어서 임의로 MemorydetailPage의 데이터로 가져옴 */}
+              <div>{replylength}</div> 
             </div>
           </div>
         </div>

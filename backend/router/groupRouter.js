@@ -286,7 +286,7 @@ groupRouter.route('/:id/:page/:pageSize')
     }); 
   }));
 
-groupRouter.route('/:groupId/posts')
+groupRouter.route('/posts/:groupId')
 
   // 추억 등록
   .post(upload.single("image"), asyncHandler(async (req, res) => {

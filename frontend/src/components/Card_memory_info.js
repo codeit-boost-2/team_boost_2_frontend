@@ -41,7 +41,8 @@ function CardMemoryInfo({ item , replylength }) {
       </div>
       <h1 className="MemoryTitle">{title}</h1>
       <div className="MemoryTags">
-        #{tag} //태그 하나만 받도록 일단 수정
+        {/*태그 하나만 받도록 일단 수정*/}
+        #{tag}
       </div>
       <div className="MemoryInfoFooter">
         <div className="MemoryStatus">

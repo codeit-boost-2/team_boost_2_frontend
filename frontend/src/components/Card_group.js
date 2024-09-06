@@ -28,7 +28,6 @@ function CardGroupItem({ item }) {
     isPublic,
     likeCount,
     memories,
-    badges,
     createdAt,
   } = item;
   const daysDifference = calculateDaysDifference(createdAt);
@@ -61,12 +60,6 @@ function CardGroupItem({ item }) {
         <div style={nameStyle}>{name}</div>
         {isPublic === true && memories && <div>{description}</div>}
         <div className="cardGroupItem-info">
-          {isPublic === true && memories && (
-            <div>
-              <div style={categoryNameStyle}>획득배지</div>
-              <div>{badges}</div>
-            </div>
-          )}
           <div>
             <div style={categoryNameStyle}>추억</div>
             <div>{memories}</div>

@@ -8,11 +8,8 @@ import InfoDeleteModal from "./Info_delete_modal.js"
 function calculateDaysDifference(createdAt) {
     const now = new Date();
     const createdDate = new Date(createdAt);
-  
     const difference = now - createdDate;
-  
     const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-  
     if (days === 0) {
       return "D+0";
     } else {
@@ -28,17 +25,16 @@ const style={
 };
 
 //그룹 정보 나타내는 info 컴포넌트
-function Info({ items }){
-    console.log(items);
+function Info({ items, length }){
     const{
         name,
         image,
-        description,
+        introduction,
         isPublic,
         likeCount,
-        memories,
         createdAt,
       } = items;
+      console.log(items)
     const [like, setLike] = useState(likeCount);
     const [changeModal, setChangeModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -48,12 +44,13 @@ function Info({ items }){
         setLike(afterLike);
     }
     const dday = calculateDaysDifference(createdAt);
+    const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
     return(
         <>
         <div style={style}>
             <div className='infoImage'>
                 {isPublic === true && image && (
-                <img src={"." + image} alt='그룹이미지' />
+                <img style={{width:'262px', height:'273px'}}src={imageUrl} alt='그룹이미지' />
                 )}
             </div>     
             <div style={{flexGrow:'1', margin:'10px'}}>
@@ -66,7 +63,7 @@ function Info({ items }){
                     <div>
                     <button className='infoButton' onClick={() => setChangeModal(!changeModal)}>그룹 정보 수정하기</button>
                     {
-                        changeModal === true ? <InfoChangeModal items={mock.items.item} setModal={setChangeModal}/> : null
+                        changeModal === true ? <InfoChangeModal items={items} setModal={setChangeModal}/> : null
                     }
                     <button className='infoButton' style={{color:"gray"}} onClick={() => setDeleteModal(!deleteModal)}>그룹 삭제하기</button>
                     {
@@ -77,15 +74,16 @@ function Info({ items }){
                 <div className='infoTitle'>
                     <h2>{name}</h2>
                     <div className='titleHeader'>
-                        <div style={{padding:'0 20px'}}>추억 {memories}</div>
+                        <div style={{padding:'0 20px'}}>추억 {length}</div>
                         <div className='line'></div>
                         <div style={{paddingLeft:'10px'}}>그룹 공감 {like}</div>
                     </div>
                 </div>
                 <div className='infoBody'>
-                    {description}
+                    {introduction}
                 </div>
-                <div className='infoFooter'>
+                <div className='badge'>
+                    <div />
                     <Like handleLikeClick={handleLikeClick}/>
                 </div>
                 

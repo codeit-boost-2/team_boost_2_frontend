@@ -74,6 +74,7 @@ function MemoryPostPage(){
         formData.append('title', values.title);
         formData.append('content', values.body);
         // formData.append('tag', values.tag);
+        formData.append('image', values.image);
         formData.append('place', values.place);
         formData.append('date', values.date);
         formData.append('isPublic',isPublic);

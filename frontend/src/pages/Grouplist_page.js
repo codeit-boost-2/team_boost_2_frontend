@@ -54,7 +54,6 @@ function GroupListPage() {
     setFilteredItems(filteredItems || []);
     setVisibleItems(LIMIT);
   }, []);
-
   const handleSearch = (term) => {
     setSearchTerm(term);
     setVisibleItems(LIMIT);

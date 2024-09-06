@@ -255,7 +255,7 @@ memoryRouter.route('/:id/comments')
 
     const comment = await prisma.comment.create({
       data: {
-        id,
+        memoryId,
         nickname,
         content,
         password

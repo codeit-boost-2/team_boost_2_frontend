@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import "./Grouplist_page.css";
-import { getGroups } from "../api/api.js";
+import { getGroupList } from "../api/api.js";
 import useAsync from "../hooks/useAsync";
 import Dropdown from "../components/Dropdown_menu.js";
 import CardGroup from "../components/Card_group.js";
@@ -41,7 +41,7 @@ function GroupListPage() {
   const [order, setOrder] = useState("createdAt");
   const [offset, setOffset] = useState(0);
   const [hasNext, setHasNext] = useState(false);
-  const [getGroupsAsync] = useAsync(getGroups);
+  const [getGroupListAsync] = useAsync(getGroupList);
   const [filteredItems, setFilteredItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleItems, setVisibleItems] = useState(LIMIT);
@@ -70,7 +70,7 @@ function GroupListPage() {
 
   const handleLoad = useCallback(
     async (options) => {
-      const result = await getGroupsAsync(options);
+      const result = await getGroupListAsync(options);
       if (!result) return;
 
       const { paging, groups } = result;
@@ -82,7 +82,7 @@ function GroupListPage() {
       setOffset(options.offset + options.limit);
       setHasNext(paging.hasNext);
     },
-    [getGroupsAsync]
+    [getGroupListAsync]
   );
 
   const handleLoadMore = async () => {
@@ -90,12 +90,12 @@ function GroupListPage() {
   };
 
   useEffect(() => {
-    console.log("getGroupsAsync:", getGroupsAsync);
+    console.log("getGroupListAsync:", getGroupListAsync);
     handleLoad({ order, offset: 0, limit: LIMIT });
-  }, [order, handleLoad, getGroupsAsync]);
+  }, [order, handleLoad, getGroupListAsync]);
 
   return (
-    <div>
+    <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
       <div className="cardGroupPage">
         <MakeGroupButton />
         <div className="sortBar">

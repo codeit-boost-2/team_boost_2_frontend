@@ -1,47 +1,42 @@
 //공개, 비공개 탭 기능
 import React, { useState, useEffect } from "react";
-//import { getGroups } from "../api/api.js";
-//import useAsync from "../hooks/useAsync.js";
-// mock 데이터 추후 제거
-import items from "../api/mock.json";
+import axios from "axios";
 import "./Tab.css";
 
-// api 연결하면 아래의 function으로 대체
-/*
-function Tab({ onFilter }) {
-  const [filterOption, setFilterOption] = useState(true);
-  const { data: groups, loading, error } = useAsync(getGroups);
-
-  useEffect(() => {
-    if (groups) {
-      const filteredItems = groups.filter(
-        (item) => item.isPublic === filterOption
-      );
-      onFilter(filteredItems);
-    }
-  }, [groups, filterOption, onFilter]);
-
-  const handleFilterClick = (isPublic) => {
-    setFilterOption(isPublic);
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-*/
+async function getGroupsAxios(currentPage, itemsPerPage, isPublic) {
+  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups//${currentPage}/${itemsPerPage}?isPublic=${isPublic}`;
+  const res = await axios.get(url);
+  const data = res.data;
+  return data;
+}
 
 function Tab({ onFilter }) {
   const [filterOption, setFilterOption] = useState(true);
+  const [groups, setGroups] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const filteredItems = items.filter(
-      (item) => item.isPublic === filterOption
-    );
-    onFilter(filteredItems);
+    const fetchData = async () => {
+      setError(null);
+
+      try {
+        const result = await getGroupsAxios(1, 10, filterOption);
+        setGroups(result.data);
+        onFilter(result.data);
+      } catch (err) {
+        setError(err);
+      }
+    };
+
+    fetchData();
   }, [filterOption, onFilter]);
 
   const handleFilterClick = (isPublic) => {
     setFilterOption(isPublic);
   };
+
+  // 에러났을 때
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>

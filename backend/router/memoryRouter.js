@@ -234,8 +234,6 @@ memoryRouter.route('/:id/comments')
     return res.status(200).send({
       memory,
       comments: {
-        currentPage: page,
-        totalPages: Math.ceil(commentResult.totalCommentCount / pageSize),
         totalcommentCount: commentResult.totalCommentCount,
         data: commentResult.data,
       },

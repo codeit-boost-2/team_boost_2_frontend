@@ -254,11 +254,23 @@ groupRouter.route('/:id/:page/:pageSize')
       },
     });
 
+    let orderBy;
+    switch (sortBy) {
+      case 'mostPosted':
+        orderBy = { _count: { memories: 'desc' } };
+        break;
+      case 'mostLiked':
+        orderBy = { likeCount: 'desc' };
+        break;
+      default: // latest
+        orderBy = { createdAt: 'desc' };
+    }
+
     const memoriesResult = await getMemoryList({
       id: id,
       page: Number(page),
       pageSize: Number(pageSize),
-      sortBy: sortBy,
+      orderBy,
       keyword: keyword === 'null' ? '' : keyword,
       isPublic: isPublic === 'true',
     });
@@ -267,7 +279,7 @@ groupRouter.route('/:id/:page/:pageSize')
       group,
       memories: {
         currentPage: Number(page),
-        totalPages: Math.ceil(memoriesResult.totalItemCount / Number(pageSize)),
+        totalPages: Math.ceil(memoriesResult.totalItemCount / pageSize),
         totalItemCount: memoriesResult.totalItemCount,
         data: memoriesResult.data,
       },
@@ -283,6 +295,12 @@ groupRouter.route('/:groupId/posts')
     let isPublic = req.body.isPublic;
     if (isPublic === 'true') isPublic = true;
     else isPublic = false;
+
+    console.log(groupId);
+    console.log(isPublic);
+    console.log(req.file);
+    console.log(moment);
+    console.log(new Date(moment));
 
     const image = `${req.file.filename}`;
 

@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import "./Memory_detail_page.css";
-import {
-  getDataById,
-  editMemory,
-  deleteMemory,
-  editReply,
-  deleteReply,
-  updateLikeCount,
-} from "../api/api.js";
-//import axios from "axios";
+// import { editMemory, deleteMemory, editReply, deleteReply, updateLikeCount } from "../api/api.js";
+import axios from "axios";
 import CardMemoryInfo from "../components/Card_memory_info";
 import Reply from "../components/Reply";
 import DeleteMemoryPopup from "../components/Delete_memory_popup.js";
@@ -57,6 +50,13 @@ const mockItem = {
 };
 */
 
+async function getPostAxios(MemoryId) {
+  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
+  const res = await axios.get(url);
+  const data = res.data;
+  return data;
+}
+
 // 구분선 Style
 const hrStyle = {
   border: "1px solid #dddddd",
@@ -71,10 +71,12 @@ const hrReply = {
 // 추억 상세 페이지 사진, 글
 function MemoryDetailMainContent({ memory }) {
   const { image, content } = memory;
-  // image url을 받아와야함
+
+  const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
+
   return (
     <div className="MainContents">
-      <img src={image} alt="Memory" />
+      <img src={imageUrl} alt="Memory" />
       <p className="ContentMemory">{content}</p>
     </div>
   );
@@ -85,7 +87,7 @@ function MemoryDetailPage() {
   //const location = useLocation();
   //const mock = location.state;
 
-  const { memoryId } = useParams(); // url에서 memoryId 가져오기
+  const { MemoryId } = useParams(); // url에서 MemoryId 가져오기
   const [memory, setMemory] = useState(null);
   const [isDeleted, setIsDeleted] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -94,16 +96,16 @@ function MemoryDetailPage() {
   const [isReplyPopupOpen, setIsReplyPopupOpen] = useState(false);
   const [isEditReplyPopupOpen, setIsEditReplyPopupOpen] = useState(false);
   const [isDeleteReplyPopupOpen, setIsDeleteReplyPopupOpen] = useState(false);
-  const [like, setLike] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
 
   ///////////////////////////////////////
   //Memory받아오기
   const handleLoad = async (id) => {
     try {
-      const memoryData = await getDataById(id); // 서버에서 데이터 가져오기
-      if (memoryData) {
-        setMemory(memoryData);
-        setLike(memoryData.likeCount); // 좋아요 개수 설정
+      const data = await getPostAxios(id); // 서버에서 데이터 가져오기
+      if (data) {
+        setMemory(data.memory);
+        setLikeCount(data.memory.likeCount); // 좋아요 개수 설정
       } else {
         console.error("메모리 데이터를 불러오지 못했습니다.");
       }
@@ -113,22 +115,26 @@ function MemoryDetailPage() {
   };
 
   useEffect(() => {
-    if (memoryId) {
-      handleLoad(memoryId);
+    if (MemoryId) {
+      handleLoad(MemoryId);
     }
-  }, [memoryId]);
+  }, [MemoryId]);
 
   /////////* 공감 보내기 버튼 클릭 핸들*//////////
-  const handleLikeClick = () => {
-    setLike((prevLike) => prevLike + 1);
+  const handleLikeClick = async () => {
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/like`;
 
-    updateLikeCount(memoryId)
-      .then(() => {
-        console.log("좋아요 상태가 서버에 업데이트되었습니다.");
-      })
-      .catch((error) => {
-        console.error("좋아요 상태 업데이트 중 오류 발생:", error);
-      });
+    try {
+      const response = await axios.post(url);
+      if (response.status === 200) {
+        setLikeCount((prevLikeCount) => prevLikeCount + 1);
+        console.log("좋아요 상태가 서버에 성공적으로 업데이트되었습니다.");
+      } else {
+        console.error("좋아요 상태 업데이트 요청이 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("좋아요 상태 업데이트 중 오류 발생:", error);
+    }
   };
 
   //////////*팝업 오픈 핸들*/////////
@@ -160,69 +166,107 @@ function MemoryDetailPage() {
     setIsDeleteReplyPopupOpen(true);
   };
 
-  ///////////* 수정, 삭제 핸들*///////////
+  ///////////* 댓글 등록 핸들 *///////////
+
+  ///////////* 수정, 삭제 핸들 *//////////
   // Memory 수정 진행
   const handleEdit = async (updatedItem, password) => {
-    try {
-      const result = await editMemory(updatedItem, password);
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${updatedItem.id}`;
 
-      if (result) {
+    try {
+      const response = await axios.put(url, {
+        ...updatedItem,
+        password, // password 포함
+      });
+
+      if (response.status === 200) {
         setMemory((prevMemory) => ({
           ...prevMemory,
-          ...updatedItem,
+          ...updatedItem, // 성공적으로 수정된 경우 상태 업데이트
         }));
+        console.log("해당 Post가 성공적으로 수정되었습니다.");
+      } else {
+        console.error("해당 Post 수정 요청이 실패했습니다.");
       }
     } catch (error) {
-      console.error("메모리를 수정하는 데 실패했습니다.", error);
+      console.error("해당 Post를 수정하는 데 실패했습니다:", error);
     }
   };
 
   // Memory 삭제 진행
   const handleDelete = async (password) => {
-    if (!memory || !memory.Id) return;
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${memory.id}`;
 
-    const result = await deleteMemory(memory.Id, password);
-    if (result) {
-      setIsDeleted(true); // 삭제 성공 상태:true
+    try {
+      const response = await axios.delete(url, {
+        data: { password },
+      });
+
+      if (response.status === 200) {
+        setIsDeleted(true);
+        console.log("Post가 성공적으로 삭제되었습니다.");
+      } else {
+        console.error("Post 삭제 요청이 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Post를 삭제하는 데 실패했습니다:", error);
     }
   };
-  if (isDeleted) {
-    return <Navigate to="/GroupPage" />; // 삭제 후 GroupPage로 이동
-  }
 
   // Reply 수정 진행
   const handleEditReply = async (updatedReply, password) => {
-    try {
-      const result = await editReply(updatedReply, password);
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/comments/${updatedReply.id}`;
 
-      if (result) {
-        setMemory((prevMemory) => {
-          return {
-            ...prevMemory,
-            replies: prevMemory.replies.map((reply) =>
+    try {
+      const response = await axios.put(url, {
+        content: updatedReply.content,
+        password,
+      });
+
+      if (response.status === 200) {
+        setMemory((prevMemory) => ({
+          ...prevMemory,
+          comments: {
+            ...prevMemory.comments,
+            data: prevMemory.comments.data.map((reply) =>
               reply.id === updatedReply.id ? updatedReply : reply
             ),
-          };
-        });
+          },
+        }));
+        console.log("댓글이 성공적으로 수정되었습니다.");
+      } else {
+        console.error("댓글 수정 요청이 실패했습니다.");
       }
     } catch (error) {
-      console.error("댓글을 수정하는 데 실패했습니다.", error);
+      console.error("댓글을 수정하는 데 실패했습니다:", error);
     }
   };
 
   // Reply 삭제 진행
   const handleDeleteReply = async (replyId, password) => {
-    try {
-      const result = await deleteReply(replyId, password);
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/comments/${replyId}`;
 
-      if (result) {
+    try {
+      const response = await axios.delete(url, {
+        data: { password },
+      });
+
+      if (response.status === 200) {
         setMemory((prevMemory) => ({
           ...prevMemory,
-          replies: prevMemory.replies.filter((reply) => reply.id !== replyId),
+          comments: {
+            ...prevMemory.comments,
+            data: prevMemory.comments.data.filter(
+              (reply) => reply.id !== replyId
+            ),
+          },
         }));
+        console.log("댓글이 성공적으로 삭제되었습니다.");
+      } else {
+        console.error("댓글 삭제 요청이 실패했습니다.");
       }
     } catch (error) {
-      console.error("댓글을 삭제하는 데 실패했습니다.", error);
+      console.error("댓글을 삭제하는 데 실패했습니다:", error);
     }
   };
 
@@ -247,8 +291,6 @@ function MemoryDetailPage() {
     handleDeleteReply(selectedItemId, password);
   };
 
- // card/memory에서 아이템 받아와서 적용함
-
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
       <div style={{ marginBottom: "100px" }}></div>
@@ -271,7 +313,7 @@ function MemoryDetailPage() {
                   추억 삭제하기
                 </button>
               </div>
-              <Like handleLikeClick={handleLikeClick} likeCount={like} />
+              <Like handleLikeClick={handleLikeClick} likeCount={likeCount} />
             </div>
           </div>
 
@@ -285,13 +327,15 @@ function MemoryDetailPage() {
             </button>
           </div>
           <div className="Replies">
-            <p className="ReplyCount">댓글 {memory.replies.length}</p>
+            <p className="ReplyCount">
+              댓글 {memory.comments.totalcommentCount}
+            </p>
             <hr style={hrReply} />
-            {memory.replies.map((reply) => (
+            {memory.comments.data.map((reply) => (
               <React.Fragment key={reply.id}>
                 <div className="ReplyContents">
                   <Reply
-                    name={reply.name}
+                    name={reply.nickname}
                     createdAt={reply.createdAt}
                     content={reply.content}
                   />
@@ -339,6 +383,7 @@ function MemoryDetailPage() {
       {isReplyPopupOpen && (
         <ReplyMemoryPopup
           onClose={() => setIsReplyPopupOpen(false)}
+          memoryId={memory.id}
           onChange={() => {}}
         />
       )}

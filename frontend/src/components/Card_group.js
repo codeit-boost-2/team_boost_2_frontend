@@ -50,7 +50,12 @@ function CardGroupItem({ item }) {
     >
       <div className="cardGroupItem">
         {isPublic === true && image && (
-          <img src={imageUrl} alt={name} className="cardGroupItem-img" />
+          <img
+            style={{ width: "325px", height: "325px", objectFit: "cover" }}
+            src={imageUrl}
+            alt={name}
+            className="cardGroupItem-img"
+          />
         )}
         <div className="cardGroupItem-status">
           <div>{daysDifference}</div>

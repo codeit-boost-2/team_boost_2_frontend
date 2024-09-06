@@ -37,13 +37,13 @@ function MakeGroupPage() {
 
     // formData를 서버로 전송
     /*********************/
-    // axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups", formData)
-    // .then((res)=>{console.log(res.data);}) .catch(error => {console.log(error);
-    // });
+    axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups", formData)
+    .then((res)=>{console.log(res.data);}) .catch(error => {console.log(error);
+    });
     
-    // for (const x of formData) {
-    //   console.log(x);
-    //  };
+    for (const x of formData) {
+      console.log(x);
+     };
 
     // console.log("Form submitted:", {
     //   groupName,

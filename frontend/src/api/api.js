@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "https://localhost:3000/api";
+const BASE_URL = "http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000";
 
 //그룹 불러오기
 export async function getGroups({
@@ -16,6 +16,30 @@ export async function getGroups({
   const body = await response.json();
   return body;
 }
+
+export async function getGroupsAxios(currentPage, itemsPerPage){
+  const url =`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=true`;
+  const res = await axios.get(url);
+  const data = res.data;
+  return data;
+}
+
+      // //grouppage (그룹정보 추억 : 그룹 id필요)
+      // axios.get('http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/1/10?isPublic=true')
+      // .then((res)=>{console.log(res.data)})
+      // .catch(error => {console.log(error)})
+      // const page=1
+      // const items=4
+      // //grouplistpage(그룹정보 리스트)
+      // axios.get(`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${page}/${items}?isPublic=true`)
+      // .then((res)=>{console.log(res.data)})
+      // .catch(error => {console.log(error)})
+      // //memorydetailpage(추억정보 댓글: 추억 id 필요)
+      // axios.get('http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/e3307679-ef7b-45aa-adc8-4b83a99dff50/comments')
+      // .then((res)=>{console.log(res.data)})
+      // .catch(error => {console.log(error)})
+
+      // //const sources=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${getTest}`-> 이미지불러오기
 
 // 그룹 생성
 export async function createGroup(formData) {

@@ -15,10 +15,10 @@ const style={
 function Button(){
     
     return(
-        <Link to="/MemoryPost">
-        <button className="submitButton" style={{width: '200px', padding:'10px 60px',
-            marginLeft:'auto'}}>추억 올리기</button>
-        </Link>
+        <button className="submitButton" 
+        style={{width: '200px', padding:'10px 60px',marginLeft:'auto'}}>
+            추억 올리기
+        </button>
     );
 }
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 //import { getGroups } from "../api/api.js";
 //import useAsync from "../hooks/useAsync.js";
 // mock 데이터 추후 제거
+import axios from "axios";
 import items from "../api/memorymock.json";
 import "./Tab.css";
 
@@ -29,32 +30,20 @@ function Tab({ onFilter }) {
   if (error) return <div>Error: {error.message}</div>;
 */
 
-function Tab({ onFilter }) {
-  const [filterOption, setFilterOption] = useState(true);
-
-  useEffect(() => {
-    const filteredItems = items.filter(
-      (item) => item.isPublic === filterOption
-    );
-    onFilter(filteredItems);
-  }, [filterOption, onFilter]);
-
-  const handleFilterClick = (isPublic) => {
-    setFilterOption(isPublic);
-  };
+function Tab({ handleTrue, handleFalse, isPublic }) {
 
   return (
     <div>
       <div className="publicOptionTab">
         <button
-          onClick={() => handleFilterClick(true)}
-          className={filterOption === true ? "active" : ""}
+          onClick={handleTrue}
+          className={isPublic === true ? "active" : ""}
         >
           공개
         </button>
         <button
-          onClick={() => handleFilterClick(false)}
-          className={filterOption === false ? "active" : ""}
+          onClick={handleFalse}
+          className={isPublic === false ? "active" : ""}
         >
           비공개
         </button>

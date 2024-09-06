@@ -28,7 +28,8 @@ const style={
 };
 
 //그룹 정보 나타내는 info 컴포넌트
-function Info(mock){
+function Info({ items }){
+    console.log(items);
     const{
         name,
         image,
@@ -38,8 +39,7 @@ function Info(mock){
         memories,
         badges,
         createdAt,
-      } = mock.items.item;
-      console.log(mock.items.item)
+      } = items;
     const [like, setLike] = useState(likeCount);
     const [changeModal, setChangeModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);

@@ -3,8 +3,8 @@ import Info from "../components/Info.js";
 import Button from "../components/Button.js";
 import Tab from "../components/Tab_memory.js";
 import Search from "../components/Search.js";
-import { useState, useCallback, useMemo } from "react";
-import { useLocation, Link } from 'react-router-dom';
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { useLocation, useParams, Link } from 'react-router-dom';
 import axios from "axios";
 import NoMemory from "../components/No_memory.js";
 import memories from "../api/memorymock.json";
@@ -40,13 +40,9 @@ const getSortedItems = (items, order) => {
   return [...items].sort((a, b) => {
     if (order === "createdAt") {
       return new Date(b.createdAt) - new Date(a.createdAt);
-    } else if (order === "memories") {
-      return b.memories - a.memories;
     } else if (order === "likeCount") {
       return b.likeCount - a.likeCount;
-    } else {
-      return b.badges - a.badges;
-    }
+    } 
   });
 };
 
@@ -63,18 +59,22 @@ const filterItemsBySearch = (items, searchTerm) => {
 
 function GroupPage() {
   
-  //Link 태그로 받은 mock items
+  //Link 태그로 받은 mock items -> 그룹 아이디 받아야 됨
   const location = useLocation();
   const mock = location.state;
 
+  const { GroupId } = useParams();
+
   const [order, setOrder] = useState ("createdAt");
   const [searchTerm, setSearchTerm] = useState("");
+  const [info, setInfo] = useState("");
+  const [memories, setMemories] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
+  const [isPublic,setIsPublic] = useState(true);
 
-
-  const groupMemories = filteredItems.filter(
-    (item) => item.groupid === mock.item.id
-  );
+  // const filteredItems = filteredItems.filter(
+  //   (item) => item.groupid === mock.item.id
+  // );
 
   const handleFilter = useCallback((filteredItems) => {
     setFilteredItems(filteredItems);
@@ -85,21 +85,41 @@ function GroupPage() {
   };
 
   const sortedItems = useMemo(() => {
-    const itemsAfterFilter = filterItemsBySearch(groupMemories, searchTerm);
+    const itemsAfterFilter = filterItemsBySearch(filteredItems, searchTerm);
     return getSortedItems(itemsAfterFilter, order);
-  }, [groupMemories, order, searchTerm]);
+  }, [filteredItems, order, searchTerm]);
 
   const handleSelect = (option) => {
     if (option === "최신순") setOrder("createdAt");
     else if (option === "공감순") setOrder("likeCount");
   };
   
+  const handleTabTrue = () =>{
+    setIsPublic(true);
+  }
 
-  //api 연동.. 해보기
-  //const res = await axios.get("memory_api");
+  const handleTabFalse = () =>{
+    setIsPublic(false);
+  }
+  //grouppage (그룹정보 추억 : 그룹 id필요)
+  const handleLoads = async () =>{
+    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/1/1?isPublic=${!isPublic}`;
+    axios.get(url)
+    .then((res)=>{
+      setInfo(res.data.group);
+      setMemories(res.data.memories.data);
+      console.log(info);
+      console.log(memories);
+    })
+    .catch(error => {console.log(error)})
+  }
+  useEffect(()=>{
+    handleLoads();
+  },[isPublic])
+  
   return (
     <div style={pageStyle}>
-      <Info items={mock}/>
+      <Info items={info}/>
       <hr />
       <div style={style}>
         <div
@@ -112,10 +132,12 @@ function GroupPage() {
         >
           추억목록
         </div>
-        <Button />
+        <Link to="/MemoryPost" state={GroupId}>
+          <Button />
+        </Link>
       </div>
       <div style={{display: 'grid', width:'85%', gridTemplateColumns: '1fr 8fr 1fr', margin: '0 auto', gap:"50px", justifyContent:"center"}}>
-        <Tab items={filteredItems} onFilter={handleFilter} />
+        <Tab items={filteredItems} handleTrue={handleTabTrue} handleFalse={handleTabFalse} isPublic={isPublic} />
         <SearchBar onSearch={handleSearch}
         placeholderprop="제목을 입력해 주세요" />
           <Dropdown
@@ -124,7 +146,7 @@ function GroupPage() {
           />
       </div>
       <div className="cardGroupList">
-      {groupMemories.length === 0 ? (
+      {filteredItems.length === 0 ? (
             <NoMemory />
           ) : (
             <CardMemory items={sortedItems} />

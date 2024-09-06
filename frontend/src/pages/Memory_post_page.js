@@ -83,7 +83,7 @@ function MemoryPostPage(){
           console.log(x);
          };
          
-      axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories"
+      axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/posts"
         ,formData)
       .then((res)=>{console.log(res.data);}) 
       .catch(error => {console.log(error)});

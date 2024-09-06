@@ -36,7 +36,6 @@ function Info(mock){
         isPublic,
         likeCount,
         memories,
-        badges,
         createdAt,
       } = mock.items.item;
       console.log(mock.items.item)
@@ -87,13 +86,7 @@ function Info(mock){
                     {description}
                 </div>
                 <div className='infoFooter'>
-                    <div style={{fontWeight:'600', paddingBottom:'15px', fontSize:'15px'}}>
-                    획득 배지
-                    </div>
-                    <div className='badge'>
-                        <div>{badges}</div>
-                        <Like handleLikeClick={handleLikeClick}/>
-                    </div>
+                    <Like handleLikeClick={handleLikeClick}/>
                 </div>
                 
             </div>

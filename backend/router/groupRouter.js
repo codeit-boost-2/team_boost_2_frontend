@@ -313,7 +313,7 @@ groupRouter.route('/:groupId/posts')
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
 
-    const newMemory = await prisma.memory.create({
+    const memory = await prisma.memory.create({
       data: {
         groupId,
         nickname,
@@ -326,8 +326,7 @@ groupRouter.route('/:groupId/posts')
         password,
       }
     });
-
-    return res.status(201).send(newMemory);
+    return res.status(201).send(memory);
   }));
 
 export default groupRouter;

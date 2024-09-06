@@ -297,6 +297,11 @@ groupRouter.route('/:groupId/posts')
     else isPublic = false;
 
     console.log(groupId);
+    console.log(nickname);
+    console.log(title);
+    console.log(content);
+    console.log(password);
+    console.log(location);
     console.log(isPublic);
     console.log(req.file);
     console.log(moment);

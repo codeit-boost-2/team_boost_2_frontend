@@ -1,3 +1,6 @@
+//import { getGroupList } from "../api/api.js";
+// import useAsync from "../hooks/useAsync";
+//import LoadMoreButton from "../components/Loadmore_button.js";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import "./Grouplist_page.css";
 import axios from "axios";
@@ -7,12 +10,11 @@ import Tab from "../components/Tab.js";
 import SearchBar from "../components/Search_bar.js";
 import MakeGroupButton from "../components/Makegroup_button.js";
 import NoGroup from "../components/No_group.js";
-//import LoadMoreButton from "../components/Loadmore_button.js";
 
 const LIMIT = 10;
 
 async function getGroupsAxios(currentPage, itemsPerPage, isPublic) {
-  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=true`;
+  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=${isPublic}`;
   const res = await axios.get(url);
   const data = res.data;
   return data.groups || [];
@@ -44,14 +46,15 @@ const filterItemsBySearch = (items, searchTerm) => {
 
 function GroupListPage() {
   const [order, setOrder] = useState("createdAt");
-  const [offset, setOffset] = useState(0);
   const [filteredItems, setFilteredItems] = useState([]);
+  const [originalItems, setOriginalItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleItems, setVisibleItems] = useState(LIMIT);
   const [isPublic, setIsPublic] = useState(true);
 
-  const handleFilter = useCallback((filteredItems) => {
-    setFilteredItems(filteredItems || []);
+  const handleFilter = useCallback((items) => {
+    setFilteredItems(items || []);
+    setOriginalItems(items || []);
     setVisibleItems(LIMIT);
   }, []);
   const handleSearch = (term) => {
@@ -60,10 +63,10 @@ function GroupListPage() {
   };
 
   const sortedItems = useMemo(() => {
-    const itemsAfterFilter = filterItemsBySearch(filteredItems, searchTerm);
-    return getSortedItems(itemsAfterFilter, order);
+    const itemsAfterSearch = filterItemsBySearch(filteredItems, searchTerm);
+    return getSortedItems(itemsAfterSearch, order);
   }, [filteredItems, order, searchTerm]);
-  
+
   const handleSelect = (option) => {
     if (option === "최신순") setOrder("createdAt");
     else if (option === "게시글 많은순") setOrder("postCount");
@@ -72,36 +75,24 @@ function GroupListPage() {
 
   const handleLoad = useCallback(
     async (options) => {
-      const result = await getGroupsAxios(
-        options.offset / LIMIT + 1,
-        LIMIT,
-        isPublic
-      );
+      const result = await getGroupsAxios(options.currentPage, LIMIT, isPublic);
       if (!result) return;
 
       const groups = result;
-      if (options.offset === 0) {
-        setFilteredItems(groups);
-      } else {
-        setFilteredItems((prevItems) => [...prevItems, ...groups]);
-      }
-      setOffset(options.offset + options.limit);
+      setFilteredItems(groups);
+      setOriginalItems(groups);
     },
     [isPublic]
   );
 
   useEffect(() => {
-    handleLoad({ order, offset: 0, limit: LIMIT });
-  }, [order, handleLoad, isPublic]);
-
-  //  const handleLoadMore = async () => {
-  //    await handleLoad({ order, offset, limit: LIMIT });
-  //  };
+    handleLoad({ currentPage: 1 });
+  }, [isPublic, handleLoad]);
 
   const handleTabChange = (isPublicValue) => {
     setIsPublic(isPublicValue);
-    setOffset(0);
-    handleLoad({ order, offset: 0, limit: LIMIT });
+    setVisibleItems(LIMIT);
+    handleLoad({ currentPage: 1 });
   };
 
   return (

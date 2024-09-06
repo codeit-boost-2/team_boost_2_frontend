@@ -234,10 +234,15 @@ groupRouter.route('/:id/verifyPassword')
 
   // 그룹 상세 정보 조회 (추억 목록 조회)
   .get(asyncHandler(async (req, res) => {
+    console.log("그룹 상세 정보 조회");
     const { id } = req.params;
     const page = Number(req.params.page);
     const pageSize = Number(req.params.pageSize);
     const { sortBy, isPublic, keyword } = req.query;
+
+    console.log(id);
+    console.log(page);
+    console.log(pageSize);
 
     if (!id || !page || !pageSize) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
@@ -254,26 +259,18 @@ groupRouter.route('/:id/verifyPassword')
       },
     });
 
-    let orderBy;
-    switch (sortBy) {
-      case 'mostPosted':
-        orderBy = { _count: { memories: 'desc' } };
-        break;
-      case 'mostLiked':
-        orderBy = { likeCount: 'desc' };
-        break;
-      default: // latest
-        orderBy = { createdAt: 'desc' };
-    }
+    console.log(group);
 
     const memoriesResult = await getMemoryList({
       id: id,
       page: Number(page),
       pageSize: Number(pageSize),
-      orderBy,
+      sortBy,
       keyword: keyword === 'null' ? '' : keyword,
       isPublic: isPublic === 'true',
     });
+
+    console.log(memoriesResult);
 
     return res.status(200).json({
       group,
@@ -297,24 +294,11 @@ groupRouter.route('/:groupId/posts')
     if (isPublic === 'true') isPublic = true;
     else isPublic = false;
 
-    console.log(groupId);
-    console.log(nickname);
-    console.log(title);
-    console.log(content);
-    console.log(password);
-    console.log(location);
-    console.log(isPublic);
-    console.log(req.file);
-    console.log(moment);
-    console.log(new Date(moment));
-
     const image = `${req.file.filename}`;
 
     if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
-
-    console.log("before");
 
     const memory = await prisma.memory.create({
       data: {
@@ -327,9 +311,8 @@ groupRouter.route('/:groupId/posts')
         isPublic,
         moment: new Date(moment),
         password,
-      }
+      },
     });
-    console.log("after");
     return res.status(201).send(memory);
   }));
 

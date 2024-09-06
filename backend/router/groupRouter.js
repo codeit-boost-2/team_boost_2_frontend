@@ -45,7 +45,7 @@ groupRouter.route('/:page/:pageSize')
       prisma.group.findMany({
         where,
         skip: (page - 1) * pageSize,
-        take: Number(pageSize),
+        take: pageSize,
         orderBy,
         select: {
           id: true,

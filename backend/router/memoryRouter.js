@@ -14,7 +14,7 @@ memoryRouter.use(express.json());
 export async function getMemoryList({ groupId, page, pageSize, sortBy, keyword, isPublic}) {
   const where = {
     groupId,
-    isPublic,
+    isPublic: isPublic === 'true',
     title: {
       contains: keyword === 'null' ? '' : keyword,
     },
@@ -37,7 +37,7 @@ export async function getMemoryList({ groupId, page, pageSize, sortBy, keyword, 
     prisma.memory.findMany({
       where,
       skip: (page - 1) * pageSize,
-      take: Number(pageSize),
+      take: pageSize,
       orderBy,
       select: {
         id: true,

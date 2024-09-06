@@ -17,6 +17,13 @@ export async function getGroupList({
   return body;
 }
 
+export async function getGroupsAxios(currentPage, itemsPerPage){
+  const url =`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=true`;
+  const res = await axios.get(url);
+  const data = res.data;
+  return data;
+}
+
 // 그룹 생성
 export async function createGroup(formData) {
   try {

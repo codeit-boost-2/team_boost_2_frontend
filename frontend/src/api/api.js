@@ -24,20 +24,6 @@ export async function getGroupsAxios(currentPage, itemsPerPage){
   return data;
 }
 
-export async function getGroupsAxios(currentPage, itemsPerPage){
-  const url =`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=true`;
-  const res = await axios.get(url);
-  const data = res.data;
-  return data;
-}
-
-export async function getGroupsAxios(currentPage, itemsPerPage){
-  const url =`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=true`;
-  const res = await axios.get(url);
-  const data = res.data;
-  return data;
-}
-
       // //grouppage (그룹정보 추억 : 그룹 id필요)
       // axios.get('http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/1/10?isPublic=true')
       // .then((res)=>{console.log(res.data)})

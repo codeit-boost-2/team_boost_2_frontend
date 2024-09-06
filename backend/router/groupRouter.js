@@ -262,7 +262,7 @@ groupRouter.route('/:id/verifyPassword')
     console.log(group);
 
     const memoriesResult = await getMemoryList({
-      id: id,
+      groupId: id,
       page: Number(page),
       pageSize: Number(pageSize),
       sortBy,

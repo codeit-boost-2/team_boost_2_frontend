@@ -13,7 +13,7 @@ memoryRouter.use(express.json());
 // 추억 목록 조회 (그룹 상세 정보 조회를 위해 함수로 분리)
 export async function getMemoryList({ groupId, page, pageSize, sortBy, keyword, isPublic}) {
   const where = {
-    groupId: Number(groupId),
+    groupId,
     isPublic,
     title: {
       contains: keyword === 'null' ? '' : keyword,

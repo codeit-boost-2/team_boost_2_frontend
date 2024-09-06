@@ -27,9 +27,10 @@ function CardGroupItem({ item }) {
     introduction,
     isPublic,
     likeCount,
-    memories,
+    postCount,
     createdAt,
   } = item;
+  console.log(item)
   const daysDifference = calculateDaysDifference(createdAt);
 
   const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;

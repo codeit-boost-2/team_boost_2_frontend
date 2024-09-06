@@ -103,12 +103,12 @@ function GroupPage() {
   }
   //grouppage (그룹정보 추억 : 그룹 id필요)
   const handleLoads = async () =>{
-    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/1/1?isPublic=${!isPublic}`;
+    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/1/1?isPublic=${isPublic}`;
     axios.get(url)
     .then((res)=>{
       setInfo(res.data.group);
       setMemories(res.data.memories.data);
-      console.log(info);
+      console.log(res.data);
       console.log(memories);
     })
     .catch(error => {console.log(error)})

@@ -1,7 +1,7 @@
 import axios from "axios";
-const BASE_URL = "https://localhost:3000/api";
+const BASE_URL = "http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000";
 
-//그룹 불러오기
+//그룹 목록 조회
 export async function getGroups({
   order = "createdAt",
   cursor = "",
@@ -9,7 +9,7 @@ export async function getGroups({
   search = "",
 }) {
   const query = `order=${order}&cursor=${cursor}&limit=${limit}&search=${search}`;
-  const response = await fetch(`${BASE_URL}/?${query}`);
+  const response = await fetch(`${BASE_URL}/api/groups/?${query}`);
   if (!response.ok) {
     throw new Error("데이터를 불러오는데 실패했습니다");
   }

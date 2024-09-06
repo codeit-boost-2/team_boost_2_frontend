@@ -1,5 +1,6 @@
 import Like from './Like.js';
 import './Info.css';
+import axios from 'axios';
 import { useState } from "react";
 import InfoChangeModal from "./Info_change_modal.js"
 import InfoDeleteModal from "./Info_delete_modal.js"

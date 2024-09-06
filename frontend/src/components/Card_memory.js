@@ -22,18 +22,20 @@ function CardMemoryItems( { item }){
     title,
     image,
     content,
-    place,
+    location,
     isPublic,
     likeCount,
     createdAt,
+    commentCount,
   } = item;
+  console.log(item.id)
   const uploadDate = formatDate(createdAt);
-  const isPublicPath = isPublic === true ? "/GroupPage" : "/AutPage";
+  const isPublicPath = isPublic === true ? `/MemoryPage/${item.id}` : "/AutPage";
   const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
   return(
     <>
     <Link
-      to={`/MemoryPage/${item.id}`} //MemoryId는 추억상세페이지 주소
+      to={isPublicPath} //MemoryId는 추억상세페이지 주소
       state={{ item : item }}
       style={{ textDecoration: "none", color: "inherit" }}
     >
@@ -51,10 +53,19 @@ function CardMemoryItems( { item }){
           {content}
         </div>
         <div className="cardFooter">
-          <div>{place} | {uploadDate}</div>
+          <div style={{display:"flex"}}>
+            {location} 
+            <div className="line" style={{marginLeft:"7px",marginRight:"7px"}}></div>
+            {uploadDate}
+          </div>
           <div>
-          <img alt="공감아이콘" src="../imgs/logo_16x16.svg" />
-            {likeCount} | 댓글 수</div>
+            <div style={{display:"flex"}}>
+              <img style={{marginRight:"4px",}} alt="공감아이콘" src="../imgs/logo_16x16.svg" />
+              {likeCount}  <div stlye={{margin:"3px"}}></div>
+              <img style={{margin:"0 7px"}} alt="댓글아이콘" src="../imgs/icon_bubble.svg" />
+              {commentCount}
+              </div>
+            </div>
         </div>
       </div>
       </Link>

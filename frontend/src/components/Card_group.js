@@ -32,6 +32,8 @@ function CardGroupItem({ item }) {
   } = item;
   const daysDifference = calculateDaysDifference(createdAt);
 
+  const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
+
   //스타일
   const categoryNameStyle = { color: "#B8B8B8" };
   const nameStyle = { fontWeight: "bold" };
@@ -48,7 +50,7 @@ function CardGroupItem({ item }) {
     >
       <div className="cardGroupItem">
         {isPublic === true && image && (
-          <img src={image} alt={name} className="cardGroupItem-img" />
+          <img src={imageUrl} alt={name} className="cardGroupItem-img" />
         )}
         <div className="cardGroupItem-status">
           <div>{daysDifference}</div>

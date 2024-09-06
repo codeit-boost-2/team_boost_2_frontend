@@ -173,7 +173,7 @@ groupRouter.route('/:id')
 
 // 개발자용 그룹 전체 삭제
 groupRouter.route('/all').delete(asyncHandler(async (req, res) => {
-  await prisma.group.deleteMany();
+  return await prisma.group.deleteMany();
 }));
 
 groupRouter.route('/:id/isPublic')

@@ -41,7 +41,8 @@ function CardMemoryInfo({ item , replylength }) {
       </div>
       <h1 className="MemoryTitle">{title}</h1>
       <div className="MemoryTags">
-        #{tag} //태그 하나만 받도록 일단 수정
+        {/*태그 하나만 받도록 일단 수정*/}
+        #{tag}
       </div>
       <div className="MemoryInfoFooter">
         <div className="MemoryStatus">
@@ -57,7 +58,8 @@ function CardMemoryInfo({ item , replylength }) {
             </div>
             <div className="repliesCount">
               <img alt="댓글" src="../imgs/icon_bubble.svg" />
-              <div>{replylength}</div> // mock 데이터에 댓글 관련된 정보가 없어서 임의로 MemorydetailPage의 데이터로 가져옴
+              {/* replylength -> mock 데이터에 댓글 관련된 정보가 없어서 임의로 MemorydetailPage의 데이터로 가져옴 */}
+              <div>{replylength}</div> 
             </div>
           </div>
         </div>

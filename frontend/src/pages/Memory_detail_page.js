@@ -229,7 +229,7 @@ function MemoryDetailPage() {
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
     <div style={{marginBottom:"100px"}}></div>
       <div className="MemoryHeader">
-        <CardMemoryInfo item={mock.item} replies={mockItem.replies.length} />
+        <CardMemoryInfo item={mock.item} replylength={mockItem.replies.length} />
         <div className="MemoryButtons">
           <div className="MemoryEdit">
             <button

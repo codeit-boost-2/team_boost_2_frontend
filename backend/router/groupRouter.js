@@ -171,6 +171,11 @@ groupRouter.route('/:id')
     return res.status(200).send({ message: "그룹 삭제 성공" });
   }));
 
+// 개발자용 그룹 전체 삭제
+groupRouter.route('/all').delete(asyncHandler(async (req, res) => {
+  await prisma.group.deleteMany();
+}));
+
 groupRouter.route('/:id/isPublic')
 
   // 그룹 공개 여부 확인

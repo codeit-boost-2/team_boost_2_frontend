@@ -27,7 +27,6 @@ function CardMemoryItems( { item }){
     likeCount,
     createdAt,
   } = item;
-  console.log(item);
   const uploadDate = formatDate(createdAt);
   const isPublicPath = isPublic === true ? "/GroupPage" : "/AutPage";
   const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
@@ -40,7 +39,7 @@ function CardMemoryItems( { item }){
     >
     <div className="card">
         <div className="cardImg">
-        {isPublic === true && image && <img src={imageUrl} alt="대표이미지"></img> }
+        {isPublic === true && image && <img className="groupIMG" src={imageUrl} alt="대표이미지"></img> }
         </div>
         <div className="cardStatus">
           <div className="writer">{nickname}</div>

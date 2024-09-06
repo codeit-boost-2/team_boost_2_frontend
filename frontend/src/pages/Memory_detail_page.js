@@ -247,11 +247,7 @@ function MemoryDetailPage() {
     handleDeleteReply(selectedItemId, password);
   };
 
-  const{
-    id,
-    image,
-    content,
-  } = mock.item; // card/memory에서 아이템 받아와서 적용함
+ // card/memory에서 아이템 받아와서 적용함
 
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>

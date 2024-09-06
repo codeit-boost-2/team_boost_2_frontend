@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import './Memory_post_page.css';
 import Toggle from "../components/Toggle";
 import axios from "axios";
@@ -32,7 +32,7 @@ function FileInput({name, value, onChange}){
 
 
 function MemoryPostPage(){
-    let { params } = useParams();
+    
     const [values, setValues] = useState({
         nickname: '',
         title: '',
@@ -43,7 +43,8 @@ function MemoryPostPage(){
         date: '',
         password: ''
       });
-
+    const location = useLocation();
+    const GroupId = location.state;
     const [isPublic, setisPublic] = useState(true);
       
       const handleChange = (name, value) => {
@@ -69,14 +70,14 @@ function MemoryPostPage(){
        
 
         const formData = new FormData();
-        formData.append('groupId', params)
-        formData.append('nickname', values.memoryName);
+        formData.append('groupId', GroupId)
+        formData.append('nickname', values.nickname);
         formData.append('title', values.title);
         formData.append('content', values.body);
         // formData.append('tag', values.tag);
         formData.append('image', values.image);
-        formData.append('place', values.place);
-        formData.append('date', values.date);
+        formData.append('location', values.place);
+        formData.append('moment', values.date);
         formData.append('isPublic',isPublic);
         formData.append('password', values.password);
 
@@ -84,9 +85,9 @@ function MemoryPostPage(){
           console.log(x);
          };
          
-      axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/posts"
+      axios.post(`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/posts`
         ,formData)
-      .then((res)=>{console.log(res.data);}) 
+      .then((res)=>{alert("올리기 성공!");}) 
       .catch(error => {console.log(error)});
 
       };
@@ -105,7 +106,7 @@ function MemoryPostPage(){
                     <div className="MPinputDsc">닉네임</div>
                     <input className="MPinput"
                       name="nickname" 
-                      value={values.memoryName} 
+                      value={values.nickname} 
                       onChange={handleInputChange} 
                       placeholder=' 닉네임을 입력해 주세요.'
                       /* 자동완성 비활성화 : autoComplete="off"*/ />

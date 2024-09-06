@@ -34,7 +34,6 @@ function Info({ items, length }){
         likeCount,
         createdAt,
       } = items;
-      console.log(items)
     const [like, setLike] = useState(likeCount);
     const [changeModal, setChangeModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -50,7 +49,7 @@ function Info({ items, length }){
         <div style={style}>
             <div className='infoImage'>
                 {isPublic === true && image && (
-                <img style={{width:'262px', height:'273px'}}src={imageUrl} alt='그룹이미지' />
+                <img style={{width:'262px', height:'273px',objectFit:"cover"}}src={imageUrl} alt='그룹이미지' />
                 )}
             </div>     
             <div style={{flexGrow:'1', margin:'10px'}}>

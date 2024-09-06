@@ -63,21 +63,12 @@ function GroupPage() {
   const location = useLocation();
   const groupInstance = location.state;
   const { GroupId } = useParams();
-
   const [order, setOrder] = useState ("createdAt");
   const [searchTerm, setSearchTerm] = useState("");
   const [info, setInfo] = useState("");
   const [memories, setMemories] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [isPublic,setIsPublic] = useState(true);
-
-  // const filteredItems = filteredItems.filter(
-  //   (item) => item.groupid === mock.item.id
-  // );
-
-  // const handleFilter = useCallback((filteredItems) => {
-  //   setFilteredItems(filteredItems);
-  // }, []);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -102,12 +93,13 @@ function GroupPage() {
   }
   //grouppage (그룹정보 추억 : 그룹 id필요)
   const handleLoads = async () =>{
-    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/1/1?isPublic=true`;
+    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=true`;
     axios.get(url)
     .then((res)=>{
       setInfo(res.data.group);
       setMemories(res.data.memories.data);
       setFilteredItems(res.data.memories.data)
+      console.log(res.data.memories)
     })
     .catch(error => {console.log(error)})
   }

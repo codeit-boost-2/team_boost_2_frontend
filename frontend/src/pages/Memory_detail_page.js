@@ -12,44 +12,6 @@ import DeleteReplyPopup from "../components/Delete_reply_popup.js";
 import EditReplyPopup from "../components/Edit_reply_popup.js";
 import Like from "../components/Like.js";
 
-/* // mock 데이터 //
-const mockItem = {
-  Id: 1,
-  name: "작성자 이름",
-  isPublic: true,
-  title: "추억 제목",
-  tags: ["태그1", "태그2"],
-  place: "장소",
-  createdAt: 1605938471029,
-  img: sampleImg,
-  content: `인천 앞바다에서 월척을 낚았습니다!
-  가족들과 기억에 오래도록 남을 멋진 하루였어요 
-  가족들과 기억에 오래도록 남을 멋진 하루였어요 
-  가족들과 기억에 오래도록 남을 멋진 하루였어요 
-  인천 앞바다에서 월척을 낚았습니다! 
-  가족들과 기억에 오래도록 남을 멋진 하루였어요  
-  인천 앞바다에서 월척을 낚았습니다!`,
-  likeCount: 123,
-  password: "userPassword", // 원글 작성 시 입력한 비밀번호
-  replies: [
-    {
-      id: 1,
-      name: "eg1",
-      createdAt: "1605938479029",
-      content: "첫 번째 댓글",
-      password: "reply1PW",
-    },
-    {
-      id: 2,
-      name: "eg2",
-      createdAt: "1605958479029",
-      content: "두 번째 댓글",
-      password: "reply2PW",
-    },
-  ],
-};
-*/
-
 async function getPostAxios(MemoryId) {
   const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
   const res = await axios.get(url);
@@ -82,13 +44,29 @@ function MemoryDetailMainContent({ memory }) {
   );
 }
 
-function MemoryDetailPage() {
-  //Link 태그로 받은 mock items
-  //const location = useLocation();
-  //const mock = location.state;
+// 추억 상세 페이지 댓글
+/*
+function Reply(comment) {
+  const { nickname, content, createdAt } = comment;
 
+  return (
+    <div className="Reply">
+      <div className="ReplyInfo">
+        <div className="ReplyHeader">
+          <span className="ReplyName">{nickname}</span>
+          <span className="ReplyDate">{createdAt}</span>
+        </div>
+      </div>
+      <div className="ReplyContent">{content}</div>
+    </div>
+  );
+}
+*/
+
+function MemoryDetailPage() {
   const { MemoryId } = useParams(); // url에서 MemoryId 가져오기
   const [memory, setMemory] = useState(null);
+  const [comments, setComments] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
@@ -100,11 +78,12 @@ function MemoryDetailPage() {
 
   ///////////////////////////////////////
   //Memory받아오기
-  const handleLoad = async (id) => {
+  const handleLoad = async (memoryId) => {
     try {
-      const data = await getPostAxios(id); // 서버에서 데이터 가져오기
+      const data = await getPostAxios(memoryId); // 서버에서 데이터 가져오기
       if (data) {
         setMemory(data.memory);
+        setComments(data.comments.data);
         setLikeCount(data.memory.likeCount); // 좋아요 개수 설정
       } else {
         console.error("메모리 데이터를 불러오지 못했습니다.");
@@ -326,41 +305,41 @@ function MemoryDetailPage() {
               <img src="../imgs/reply_button.svg" alt="댓글 달기" />
             </button>
           </div>
-          <div className="Replies">
-            <p className="ReplyCount">
-              댓글 {memory.comments.totalcommentCount}
-            </p>
-            <hr style={hrReply} />
-            {memory.comments.data.map((reply) => (
-              <React.Fragment key={reply.id}>
-                <div className="ReplyContents">
-                  <Reply
-                    name={reply.nickname}
-                    createdAt={reply.createdAt}
-                    content={reply.content}
-                  />
-                  <div className="ReplyControl">
-                    <button
-                      className="ReplyEdit"
-                      onClick={() => openEditReplyPopup(reply.id)}
-                    >
-                      <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
-                    </button>
-                    <button
-                      className="ReplyDelete"
-                      onClick={() => openDeleteReplyPopup(reply.id)}
-                    >
-                      <img
-                        alt="댓글 삭제하기"
-                        src="../imgs/delete_button.svg"
-                      />
-                    </button>
+          {/*comment가 있는 경우만 렌더링*/}
+          {comments && comments.length > 0 && (
+            <div className="Replies">
+              <p className="ReplyCount">댓글 {comments.length}</p>
+              <hr style={hrReply} />
+              {comments.map((reply) => (
+                <React.Fragment key={reply.id}>
+                  <div className="ReplyContents">
+                    <Reply comment={reply} />
+                    <div className="ReplyControl">
+                      <button
+                        className="ReplyEdit"
+                        onClick={() => openEditReplyPopup(reply.id)}
+                      >
+                        <img
+                          alt="댓글 수정하기"
+                          src="../imgs/edit_button.svg"
+                        />
+                      </button>
+                      <button
+                        className="ReplyDelete"
+                        onClick={() => openDeleteReplyPopup(reply.id)}
+                      >
+                        <img
+                          alt="댓글 삭제하기"
+                          src="../imgs/delete_button.svg"
+                        />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <hr style={hrStyle} />
-              </React.Fragment>
-            ))}
-          </div>
+                  <hr style={hrStyle} />
+                </React.Fragment>
+              ))}
+            </div>
+          )}
         </>
       ) : (
         <Navigate to="/*" /> // memory가 없을 때는 404페이지로 연결
@@ -404,5 +383,4 @@ function MemoryDetailPage() {
     </div>
   );
 }
-
 export default MemoryDetailPage;

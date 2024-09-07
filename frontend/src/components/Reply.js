@@ -5,8 +5,7 @@ import /* getMemories 함수 만들기 */ "../api/api.js";
 
 // 날짜 계산 함수
 function formatDate(createdAt) {
-  const date = new Date(parseInt(createdAt, 10));
-
+  const date = new Date(createdAt);
   const year = String(date.getFullYear()).slice(-2);
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -20,20 +19,20 @@ function formatDate(createdAt) {
   );
 }
 
-function Reply({ name, createdAt, content }) {
+// 추억 상세 페이지 댓글
+function Reply({ comment: { nickname, content, createdAt } }) {
   const publishedOn = formatDate(createdAt);
 
   return (
     <div className="Reply">
       <div className="ReplyInfo">
         <div className="ReplyHeader">
-          <span className="ReplyName">{name}</span>
-          <formatDate className="ReplyDate">{publishedOn}</formatDate>
+          <span className="ReplyName">{nickname}</span>
+          <span className="ReplyDate">{publishedOn}</span>
         </div>
       </div>
       <div className="ReplyContent">{content}</div>
     </div>
   );
 }
-
 export default Reply;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 import "./Memory_detail_page.css";
 // import { editMemory, deleteMemory, editReply, deleteReply, updateLikeCount } from "../api/api.js";
 import axios from "axios";
@@ -65,7 +65,7 @@ function Reply(comment) {
 
 function MemoryDetailPage() {
   const { MemoryId } = useParams(); // url에서 MemoryId 가져오기
-  const [memory, setMemory] = useState(null);
+  const [memory, setMemory] = useState('');
   const [comments, setComments] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -78,26 +78,44 @@ function MemoryDetailPage() {
 
   ///////////////////////////////////////
   //Memory받아오기
-  const handleLoad = async (memoryId) => {
-    try {
-      const data = await getPostAxios(memoryId); // 서버에서 데이터 가져오기
-      if (data) {
-        setMemory(data.memory);
-        setComments(data.comments.data);
-        setLikeCount(data.memory.likeCount); // 좋아요 개수 설정
-      } else {
-        console.error("메모리 데이터를 불러오지 못했습니다.");
-      }
-    } catch (error) {
-      console.error("데이터를 불러오는 중 오류 발생:", error);
-    }
-  };
+  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
+  // const handleLoad = async (memoryId) => {
+  //   try {
+  //     const data = await getPostAxios(memoryId); // 서버에서 데이터 가져오기
+  //     if (data) {
+  //       setMemory(data.memory);
+  //       setComments(data.comments.data);
+  //       console.log(comments)
+  //       setLikeCount(data.memory.likeCount); // 좋아요 개수 설정
+  //     } else {
+  //       console.error("메모리 데이터를 불러오지 못했습니다.");
+  //     }
+  //   } catch (error) {
+  //     console.error("데이터를 불러오는 중 오류 발생:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   if (MemoryId) {
+  //     handleLoad(MemoryId);
+  //   }
+  // }, [MemoryId]);
+  const handleLoad = async ()=>{
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
+    axios.get(url)
+    .then((res)=>{
+        setMemory(res.data.memory);
+        console.log(res.data)
+        setComments(res.data.comments.data);
+        setLikeCount(res.data.memory.likeCount);
+    })
+    .catch(error => {console.log(error)})
+  }
 
-  useEffect(() => {
-    if (MemoryId) {
-      handleLoad(MemoryId);
-    }
-  }, [MemoryId]);
+  
+  useEffect(()=>{
+    handleLoad();
+  },[])
+  
 
   /////////* 공감 보내기 버튼 클릭 핸들*//////////
   const handleLikeClick = async () => {
@@ -268,26 +286,25 @@ function MemoryDetailPage() {
   // handleDeleteReply 호출
   const handleDeleteReplyConfirmation = (password) => {
     handleDeleteReply(selectedItemId, password);
-  };
-
+  };  
+  const location= useLocation();
+  const memoryInstance = location.state;
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
       <div style={{ marginBottom: "100px" }}></div>
-      {memory ? ( // memory가 있을 때 렌더링
-        <>
           <div className="MemoryHeader">
             <CardMemoryInfo item={memory} />
             <div className="MemoryButtons">
               <div className="MemoryEdit">
                 <button
                   className="MemoryUpdate"
-                  onClick={() => openEditPopup(memory.Id)}
+                  onClick={() => openEditPopup(MemoryId)}
                 >
                   추억 수정하기
                 </button>
                 <button
                   className="MemoryDelete"
-                  onClick={() => openDeletePopup(memory.Id)}
+                  onClick={() => openDeletePopup(MemoryId)}
                 >
                   추억 삭제하기
                 </button>
@@ -299,88 +316,89 @@ function MemoryDetailPage() {
           <hr style={hrStyle} />
 
           <MemoryDetailMainContent memory={memory} />
+      </div>
 
-          <div>
-            <button className="ReplyButton" onClick={openReplyPopup}>
-              <img src="../imgs/reply_button.svg" alt="댓글 달기" />
-            </button>
-          </div>
-          {/*comment가 있는 경우만 렌더링*/}
-          {comments && comments.length > 0 && (
-            <div className="Replies">
-              <p className="ReplyCount">댓글 {comments.length}</p>
-              <hr style={hrReply} />
-              {comments.map((reply) => (
-                <React.Fragment key={reply.id}>
-                  <div className="ReplyContents">
-                    <Reply comment={reply} />
-                    <div className="ReplyControl">
-                      <button
-                        className="ReplyEdit"
-                        onClick={() => openEditReplyPopup(reply.id)}
-                      >
-                        <img
-                          alt="댓글 수정하기"
-                          src="../imgs/edit_button.svg"
-                        />
-                      </button>
-                      <button
-                        className="ReplyDelete"
-                        onClick={() => openDeleteReplyPopup(reply.id)}
-                      >
-                        <img
-                          alt="댓글 삭제하기"
-                          src="../imgs/delete_button.svg"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                  <hr style={hrStyle} />
-                </React.Fragment>
-              ))}
-            </div>
-          )}
-        </>
-      ) : (
-        <Navigate to="/*" /> // memory가 없을 때는 404페이지로 연결
-      )}
+    //       <div>
+    //         <button className="ReplyButton" onClick={openReplyPopup}>
+    //           <img src="../imgs/reply_button.svg" alt="댓글 달기" />
+    //         </button>
+    //       </div>
+    //       {/*comment가 있는 경우만 렌더링*/}
+    //       {comments && comments.length > 0 && (
+    //         <div className="Replies">
+    //           <p className="ReplyCount">댓글 {comments.length}</p>
+    //           <hr style={hrReply} />
+    //           {comments.map((reply) => (
+    //             <React.Fragment key={reply.id}>
+    //               <div className="ReplyContents">
+    //                 <Reply comment={reply} />
+    //                 <div className="ReplyControl">
+    //                   <button
+    //                     className="ReplyEdit"
+    //                     onClick={() => openEditReplyPopup(reply.id)}
+    //                   >
+    //                     <img
+    //                       alt="댓글 수정하기"
+    //                       src="../imgs/edit_button.svg"
+    //                     />
+    //                   </button>
+    //                   <button
+    //                     className="ReplyDelete"
+    //                     onClick={() => openDeleteReplyPopup(reply.id)}
+    //                   >
+    //                     <img
+    //                       alt="댓글 삭제하기"
+    //                       src="../imgs/delete_button.svg"
+    //                     />
+    //                   </button>
+    //                 </div>
+    //               </div>
+    //               <hr style={hrStyle} />
+    //             </React.Fragment>
+    //           ))}
+    //         </div>
+    //       )}
+    //     </>
+    //   ) : (
+    //     <Navigate to="/*" /> // memory가 없을 때는 404페이지로 연결
+    //   )}
 
-      {isEditPopupOpen && (
-        <EditMemoryPopup
-          onClose={() => setIsEditPopupOpen(false)}
-          onConfirm={handleEditConfirmation}
-        />
-      )}
+    //   {isEditPopupOpen && (
+    //     <EditMemoryPopup
+    //       onClose={() => setIsEditPopupOpen(false)}
+    //       onConfirm={handleEditConfirmation}
+    //     />
+    //   )}
 
-      {isDeletePopupOpen && (
-        <DeleteMemoryPopup
-          onClose={() => setIsDeletePopupOpen(false)}
-          onConfirm={handleDeleteConfirmation}
-        />
-      )}
+    //   {isDeletePopupOpen && (
+    //     <DeleteMemoryPopup
+    //       onClose={() => setIsDeletePopupOpen(false)}
+    //       onConfirm={handleDeleteConfirmation}
+    //     />
+    //   )}
 
-      {isReplyPopupOpen && (
-        <ReplyMemoryPopup
-          onClose={() => setIsReplyPopupOpen(false)}
-          memoryId={memory.id}
-          onChange={() => {}}
-        />
-      )}
+    //   {isReplyPopupOpen && (
+    //     <ReplyMemoryPopup
+    //       onClose={() => setIsReplyPopupOpen(false)}
+    //       memoryId={memory.id}
+    //       onChange={() => {}}
+    //     />
+    //   )}
 
-      {isEditReplyPopupOpen && (
-        <EditReplyPopup
-          onClose={() => setIsEditReplyPopupOpen(false)}
-          onConfirm={handleEditReplyConfirmation}
-        />
-      )}
+    //   {isEditReplyPopupOpen && (
+    //     <EditReplyPopup
+    //       onClose={() => setIsEditReplyPopupOpen(false)}
+    //       onConfirm={handleEditReplyConfirmation}
+    //     />
+    //   )}
 
-      {isDeleteReplyPopupOpen && (
-        <DeleteReplyPopup
-          onClose={() => setIsDeleteReplyPopupOpen(false)}
-          onConfirm={handleDeleteReplyConfirmation}
-        />
-      )}
-    </div>
+    //   {isDeleteReplyPopupOpen && (
+    //     <DeleteReplyPopup
+    //       onClose={() => setIsDeleteReplyPopupOpen(false)}
+    //       onConfirm={handleDeleteReplyConfirmation}
+    //     />
+    //   )}
+    // </div>
   );
 }
 export default MemoryDetailPage;

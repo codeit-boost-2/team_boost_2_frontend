@@ -1,6 +1,7 @@
 .gonggam{
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: #ffffff;
     padding: 12px 40px;
     border-radius: 5px;

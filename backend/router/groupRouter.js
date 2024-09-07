@@ -5,9 +5,6 @@ import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js';
 import { getMemoryList } from './memoryRouter.js';
 import { upload } from '../utils/multer.js';
-import fs from 'fs';
-import FormData from 'form-data';
-import path from 'path';
 
 const prisma = new PrismaClient();
 const groupRouter = express.Router();

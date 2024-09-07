@@ -3,7 +3,6 @@ dotenv.config();
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js';
-import { upload } from '../utils/multer.js';
 
 const prisma = new PrismaClient();
 const commentRouter = express.Router();

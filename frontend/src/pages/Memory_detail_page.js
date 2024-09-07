@@ -316,88 +316,90 @@ function MemoryDetailPage() {
           <hr style={hrStyle} />
 
           <MemoryDetailMainContent memory={memory} />
-      </div>
+      
 
-    //       <div>
-    //         <button className="ReplyButton" onClick={openReplyPopup}>
-    //           <img src="../imgs/reply_button.svg" alt="댓글 달기" />
-    //         </button>
-    //       </div>
-    //       {/*comment가 있는 경우만 렌더링*/}
-    //       {comments && comments.length > 0 && (
-    //         <div className="Replies">
-    //           <p className="ReplyCount">댓글 {comments.length}</p>
-    //           <hr style={hrReply} />
-    //           {comments.map((reply) => (
-    //             <React.Fragment key={reply.id}>
-    //               <div className="ReplyContents">
-    //                 <Reply comment={reply} />
-    //                 <div className="ReplyControl">
-    //                   <button
-    //                     className="ReplyEdit"
-    //                     onClick={() => openEditReplyPopup(reply.id)}
-    //                   >
-    //                     <img
-    //                       alt="댓글 수정하기"
-    //                       src="../imgs/edit_button.svg"
-    //                     />
-    //                   </button>
-    //                   <button
-    //                     className="ReplyDelete"
-    //                     onClick={() => openDeleteReplyPopup(reply.id)}
-    //                   >
-    //                     <img
-    //                       alt="댓글 삭제하기"
-    //                       src="../imgs/delete_button.svg"
-    //                     />
-    //                   </button>
-    //                 </div>
-    //               </div>
-    //               <hr style={hrStyle} />
-    //             </React.Fragment>
-    //           ))}
-    //         </div>
-    //       )}
-    //     </>
+          <div>
+            <button className="ReplyButton" onClick={openReplyPopup}>
+              <img src="../imgs/reply_button.svg" alt="댓글 달기" />
+            </button>
+          </div>
+          {/*comment가 있는 경우만 렌더링*/}
+          {comments && comments.length > 0 && (
+            <div className="Replies">
+              <p className="ReplyCount">댓글 {comments.length}</p>
+              <hr style={hrReply} />
+              {comments.map((reply) => (
+                <React.Fragment key={reply.id}>
+                  <div className="ReplyContents">
+                    <Reply comment={reply} />
+                    <div className="ReplyControl">
+                      <button
+                        className="ReplyEdit"
+                        onClick={() => openEditReplyPopup(reply.id)}
+                      >
+                        <img
+                          alt="댓글 수정하기"
+                          src="../imgs/edit_button.svg"
+                        />
+                      </button>
+                      <button
+                        className="ReplyDelete"
+                        onClick={() => openDeleteReplyPopup(reply.id)}
+                      >
+                        <img
+                          alt="댓글 삭제하기"
+                          src="../imgs/delete_button.svg"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <hr style={hrStyle} />
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+          
+     {isEditPopupOpen && (
+         <EditMemoryPopup
+           onClose={() => setIsEditPopupOpen(false)}
+           onConfirm={handleEditConfirmation}
+         />
+       )}
+
+       {isDeletePopupOpen && (
+         <DeleteMemoryPopup
+           onClose={() => setIsDeletePopupOpen(false)}
+           onConfirm={handleDeleteConfirmation}
+         />
+       )}
+
+       {isReplyPopupOpen && (
+        <ReplyMemoryPopup
+           onClose={() => setIsReplyPopupOpen(false)}
+           memoryId={memory.id}
+           onChange={() => {}}
+         />
+       )}
+
+       {isEditReplyPopupOpen && (
+         <EditReplyPopup
+           onClose={() => setIsEditReplyPopupOpen(false)}
+           onConfirm={handleEditReplyConfirmation}
+         />
+       )}
+
+       {isDeleteReplyPopupOpen && (
+         <DeleteReplyPopup
+           onClose={() => setIsDeleteReplyPopupOpen(false)}
+           onConfirm={handleDeleteReplyConfirmation}
+         />
+       )}
+          </div>
+
     //   ) : (
     //     <Navigate to="/*" /> // memory가 없을 때는 404페이지로 연결
     //   )}
 
-    //   {isEditPopupOpen && (
-    //     <EditMemoryPopup
-    //       onClose={() => setIsEditPopupOpen(false)}
-    //       onConfirm={handleEditConfirmation}
-    //     />
-    //   )}
-
-    //   {isDeletePopupOpen && (
-    //     <DeleteMemoryPopup
-    //       onClose={() => setIsDeletePopupOpen(false)}
-    //       onConfirm={handleDeleteConfirmation}
-    //     />
-    //   )}
-
-    //   {isReplyPopupOpen && (
-    //     <ReplyMemoryPopup
-    //       onClose={() => setIsReplyPopupOpen(false)}
-    //       memoryId={memory.id}
-    //       onChange={() => {}}
-    //     />
-    //   )}
-
-    //   {isEditReplyPopupOpen && (
-    //     <EditReplyPopup
-    //       onClose={() => setIsEditReplyPopupOpen(false)}
-    //       onConfirm={handleEditReplyConfirmation}
-    //     />
-    //   )}
-
-    //   {isDeleteReplyPopupOpen && (
-    //     <DeleteReplyPopup
-    //       onClose={() => setIsDeleteReplyPopupOpen(false)}
-    //       onConfirm={handleDeleteReplyConfirmation}
-    //     />
-    //   )}
     // </div>
   );
 }

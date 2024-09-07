@@ -100,9 +100,11 @@ function GroupPage() {
     })
     .catch(error => {console.log(error)})
   }
+
   useEffect(()=>{
     handleLoads();
   },[isPublic])
+  
   return (
     <div style={pageStyle}>
       <Info items={groupInstance.item} length={memories.length}/>

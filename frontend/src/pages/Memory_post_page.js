@@ -44,7 +44,8 @@ function MemoryPostPage(){
         password: ''
       });
     const location = useLocation();
-    const GroupId = location.state;
+    const { GroupId } = location.state;
+    console.log(GroupId);
     const [isPublic, setisPublic] = useState(true);
       
       const handleChange = (name, value) => {

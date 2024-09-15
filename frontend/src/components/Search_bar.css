@@ -1,0 +1,22 @@
+.searchBar {
+  height: 25px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.searchBar:focus::placeholder{
+  background: transparent;
+  color: transparent;
+  border-radius: 4px;
+
+}
+
+.searchBar::placeholder{
+  background : url('../assets/search.png') no-repeat;
+  background-position: 2px;
+  text-indent: 28px;
+}

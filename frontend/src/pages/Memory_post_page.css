@@ -1,0 +1,117 @@
+.MPbox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.MPtitle{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.close{
+    display:inline-block;
+    margin-left: 10px;
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right:300px;
+    cursor: pointer;
+}
+/* X 버튼 */
+.close:before, .close:after {
+    position: absolute;
+    left: 20px;
+    bottom: 1px;
+    content:' ';
+    height: 40px;
+    width: 2px;
+    background-color: #000;}
+.close:before {
+    transform: rotate(45deg);
+}
+.close:after {
+    transform: rotate(-45deg);
+}
+
+.MPform{
+    display: flex;
+    flex-direction: row;
+    margin : auto;
+}
+
+.MPformLeft{
+
+    border-right: thin solid rgb(202, 202, 202);
+    padding: 10px 20px;
+}
+
+.MPformRight{
+    padding-left: 20px; 
+
+}
+
+.MPinput{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+
+.MPinputDsc{
+    margin: 10px;
+}
+
+.fileArea{
+    display: flex;
+    
+}
+
+.filebox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filebox label {
+    display: inline-block;
+    color: black;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 15px 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    white-space : nowrap;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.MPinput:focus::placeholder{
+    color:transparent;
+}
+.MPinput::placeholder {
+    padding : 5px;
+}
+
+.submitArea{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}

@@ -1,0 +1,23 @@
+.gonggam{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 12px 40px;
+    border-radius: 5px;
+    font-family: Spoqa Han Sans Neo, Sans-Serif;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.gonggam:hover {
+    background-color: "#ffffff";
+    box-shadow:  0px 3px 3px rgba(27, 39, 63, 0.4);
+    transform: translateY(-2px);
+ }
+
+ .gonggam:active{
+    box-shadow:  0px 1px 1px rgba(27, 39, 63, 0.4);
+    transform: translateY(2px);
+ }

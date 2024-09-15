@@ -1,0 +1,78 @@
+.EditMemoryPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #282828c1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.EditMemoryPopup {
+  position: absolute;
+  width: 1120px;
+  height: 794px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.EditMemoryPopup-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.Cancel-button {
+  font-size: 30px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #fff;
+  border: none;
+  cursor: grab;
+}
+
+.EditMemoryPopup-Form {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+}
+
+.EditMemoryPopup-Left {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.EditMemoryPopup-Right {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.submitButton {
+  width: 410px;
+  height: 45px;
+  color: #fff;
+  background-color: #282828;
+  border-radius: 6px;
+}
+
+.submitButton:hover {
+  background-color: #e4e4e4;
+  border: none;
+  color: #282828;
+}

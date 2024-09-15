@@ -1,0 +1,21 @@
+.Reply {
+  margin: 0 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ReplyInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ReplyHeader {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.ReplyDate {
+  color: #b8b8b8;
+}

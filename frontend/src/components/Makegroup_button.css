@@ -1,0 +1,17 @@
+.makeGroupButton {
+  position: absolute;
+  top: 60px;
+  right: 100px;
+  bottom: 60px;
+  height: 45px;
+  width: 200px;
+  background-color: #282828;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+
+.makeGroupButton:hover {
+  color: #282828;
+  background-color: #ddd;
+}

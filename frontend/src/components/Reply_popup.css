@@ -1,0 +1,65 @@
+.ReplyPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #282828c1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ReplyPopup {
+  position: absolute;
+  width: 480px;
+  height: 700px;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.Cancel-button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: grab;
+  color: #282828;
+}
+
+.ReplyPopup-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.ReplyPopup-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 15px;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.Reply-button {
+  width: 400px;
+  height: 50px;
+  background: #282828;
+  border-radius: 6px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-left: 45px;
+}
+
+.Reply-button:hover {
+  background-color: #e4e4e4;
+  border: none;
+  color: #282828;
+}

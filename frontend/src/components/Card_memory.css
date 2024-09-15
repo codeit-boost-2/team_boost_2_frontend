@@ -1,0 +1,65 @@
+.card{
+    box-sizing: border-box;
+    width: 375px;
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+    font-family: Spoqa Han Sans Neo, Sans-Serif;
+    font-weight: 400;
+    border: 1px solid #b8b8b8;
+    border-radius:5px;
+    break-inside: avoid;
+    margin-bottom: 50px;
+    
+}
+
+.cardImg{
+    text-align: center;
+}
+.groupIMG{
+    width: 325px;
+    height: 325px;
+    object-fit: cover;
+    margin-top: 5px;
+    
+}
+.cardStatus{
+    display: flex;
+    flex-direction: row;
+    margin: 14px 0;
+    font-size: 13px;
+}
+.writer{
+    padding-right: 7px;
+}
+.line{
+    border-left: 1px solid grey;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 12px;
+}
+.status{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 13px;
+    color: grey;
+    text-align: center;
+    padding-left: 7px;
+
+}
+
+.cardTitle{
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+
+.cardBody{
+    font-weight: 300;
+    padding-bottom: 20px;
+}
+
+.cardFooter{
+    display: flex;
+    justify-content: space-between;
+}

@@ -102,7 +102,7 @@ groupRouter.route('')
     });
     return res.status(201).send(group);
   }));
-  
+
 groupRouter.route('/:id')
 
   // 그룹 수정

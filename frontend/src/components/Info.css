@@ -1,0 +1,82 @@
+.infoImage{
+    margin: 40px;
+}
+
+.groupInfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.dday{
+    padding-right: 7px;
+}
+
+.infoButton{
+    border : none;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+h2{
+    margin: 17px 0;
+}
+
+.infoTitle{
+    display: flex;
+    font-weight: 700;
+    
+}
+
+.titleHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+
+.infoBody{
+    font-weight: 400;
+    padding-bottom: 110px;
+}
+
+.badge{
+    display: flex;
+    justify-content: space-between;
+}
+
+/*modal.css만들어서 이동 필요함*/
+.modalBackground{
+    position: fixed;
+    top:0; left: 0; bottom: 0; right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 900;
+}
+.modalHead{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.modalContainer{
+    /* 최상단 위치 */
+    z-index: 999;
+    /* 중앙 배치 */
+    /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
+    /* translate는 본인의 크기 기준으로 작동한다. */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    width: 500px;
+    height: 700px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

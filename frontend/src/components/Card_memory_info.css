@@ -1,0 +1,70 @@
+.CardMemoryInfo {
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.MemoryInfoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.GroupInfo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.MemoryEdit {
+  display: flex;
+  gap: 30px;
+  color: #8d8d8d;
+}
+
+.MemoryTags {
+  color: #8d8d8d;
+}
+
+.Bio {
+  display: flex;
+  gap: 10px;
+}
+
+.MemoryInfoFooter {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.MemoryStatus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.likeCount {
+  display: flex;
+  align-items: center;
+}
+
+.repliesCount {
+  display: flex;
+  align-items: center;
+}
+
+.likeButton {
+  background-color: #fff;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.likeButton:hover {
+  background-color: #fff;
+  padding: 0;
+  border-radius: 6px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}

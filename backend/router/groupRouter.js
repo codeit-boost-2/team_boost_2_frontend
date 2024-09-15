@@ -109,7 +109,10 @@ groupRouter.route('/:id')
   .put(asyncHandler(async (req, res) => {
     console.log("그룹 수정");
     const { id } = req.params;
-    const { name, password, image, isPublic, description } = req.body;
+    const { name, password, image, description } = req.body;
+    let isPublic = req.body.isPublic;
+    if (isPublic === 'true') isPublic = true;
+    else isPublic = false;
 
     console.log(id);
     console.log(name);
@@ -121,9 +124,6 @@ groupRouter.route('/:id')
     if (!password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
-
-    if (isPublic === 'true') isPublic = true;
-    else isPublic = false;
 
     console.log("password 확인 완료");
 

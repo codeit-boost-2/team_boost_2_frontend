@@ -165,22 +165,6 @@ groupRouter.route('/:id')
     return res.status(200).send({ message: "그룹 삭제 성공" });
   }));
 
-groupRouter.route('/:id/isPublic')
-
-  // 그룹 공개 여부 확인
-  .get(asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const group = await prisma.group.findUniqueOrThrow({
-      where: { id },
-      select: {
-        id: true,
-        isPublic: true,
-      },
-    });
-
-    return res.status(200).send(group);
-  }));
-
 groupRouter.route('/:id/like')
 
   // 그룹 공감하기

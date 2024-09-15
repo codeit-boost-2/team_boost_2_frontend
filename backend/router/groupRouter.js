@@ -113,6 +113,7 @@ groupRouter.route('/:id')
     let isPublic = req.body.isPublic;
     if (isPublic === 'true') isPublic = true;
     else isPublic = false;
+    
     const image = `${req.file.filename}`;
 
     console.log(id);

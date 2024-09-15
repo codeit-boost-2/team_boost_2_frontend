@@ -1,9 +1,7 @@
 import CardMemory from "../components/Card_memory.js";
 import Info from "../components/Info.js";
 import Button from "../components/Button.js";
-import Tab from "../components/Tab_memory.js";
-import Search from "../components/Search.js";
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useLocation, useParams, Link } from 'react-router-dom';
 import axios from "axios";
 import NoMemory from "../components/No_memory.js";
@@ -61,24 +59,14 @@ function GroupPage() {
   
   //Link 태그로 받은 mock items -> 그룹 아이디 받아야 됨
   const location = useLocation();
-  const mock = location.state;
-
+  const groupInstance = location.state;
   const { GroupId } = useParams();
-
   const [order, setOrder] = useState ("createdAt");
   const [searchTerm, setSearchTerm] = useState("");
   const [info, setInfo] = useState("");
   const [memories, setMemories] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [isPublic,setIsPublic] = useState(true);
-
-  // const filteredItems = filteredItems.filter(
-  //   (item) => item.groupid === mock.item.id
-  // );
-
-  const handleFilter = useCallback((filteredItems) => {
-    setFilteredItems(filteredItems);
-  }, []);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -103,23 +91,23 @@ function GroupPage() {
   }
   //grouppage (그룹정보 추억 : 그룹 id필요)
   const handleLoads = async () =>{
-    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/771bb589-e76f-4ba1-bb2d-3e82008bc251/1/1?isPublic=${!isPublic}`;
+    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
     axios.get(url)
     .then((res)=>{
       setInfo(res.data.group);
       setMemories(res.data.memories.data);
-      console.log(info);
-      console.log(memories);
+      setFilteredItems(res.data.memories.data)
     })
     .catch(error => {console.log(error)})
   }
+
   useEffect(()=>{
     handleLoads();
   },[isPublic])
   
   return (
     <div style={pageStyle}>
-      <Info items={info}/>
+      <Info items={groupInstance.item} length={memories.length}/>
       <hr />
       <div style={style}>
         <div
@@ -137,7 +125,20 @@ function GroupPage() {
         </Link>
       </div>
       <div style={{display: 'grid', width:'85%', gridTemplateColumns: '1fr 8fr 1fr', margin: '0 auto', gap:"50px", justifyContent:"center"}}>
-        <Tab items={filteredItems} handleTrue={handleTabTrue} handleFalse={handleTabFalse} isPublic={isPublic} />
+      <div className="publicOptionTab">
+        <button
+          onClick={handleTabTrue}
+          className={isPublic === true ? "active" : ""}
+        >
+          공개
+        </button>
+        <button
+          onClick={handleTabFalse}
+          className={isPublic === false ? "active" : ""}
+        >
+          비공개
+        </button>
+      </div>
         <SearchBar onSearch={handleSearch}
         placeholderprop="제목을 입력해 주세요" />
           <Dropdown
@@ -147,7 +148,7 @@ function GroupPage() {
       </div>
       <div className="cardGroupList">
       {filteredItems.length === 0 ? (
-            <NoMemory />
+            <NoMemory GroupId={GroupId}/>
           ) : (
             <CardMemory items={sortedItems} />
           )}

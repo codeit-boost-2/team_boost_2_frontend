@@ -17,11 +17,17 @@
 .cardImg{
     text-align: center;
 }
-
+.groupIMG{
+    width: 325px;
+    height: 325px;
+    object-fit: cover;
+    margin-top: 5px;
+    
+}
 .cardStatus{
     display: flex;
     flex-direction: row;
-    margin: 10px 0;
+    margin: 14px 0;
     font-size: 13px;
 }
 .writer{
@@ -45,12 +51,12 @@
 
 .cardTitle{
     font-weight: 700;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .cardBody{
     font-weight: 300;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .cardFooter{

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// import { postReply } from "../api/api.js";
+import axios from "axios";
 import "./Reply_popup.css";
 
 const inputStyle = {
@@ -12,10 +14,10 @@ const inputStyle = {
   marginTop: "10px",
 };
 
-function ReplyMemoryPopup({ onClose, onChange }) {
+function ReplyMemoryPopup({ onClose, memoryId }) {
   const [values, setValues] = useState({
     nickname: "",
-    replyContent: "",
+    content: "",
     password: "",
   });
 
@@ -25,12 +27,42 @@ function ReplyMemoryPopup({ onClose, onChange }) {
       ...prevValues,
       [name]: value,
     }));
-    onChange({ ...values, [name]: value });
   };
 
-  const handleSubmit = () => {
-    console.log({ values });
-    onClose(); // 팝업 닫기
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const { nickname, content, password } = values;
+
+    const formData = new FormData();
+    formData.append("memoryId", memoryId);
+    formData.append("nickname", nickname);
+    formData.append("content", content);
+    formData.append("password", password);
+
+    axios
+      .post(
+        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/comments`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        onClose();
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log("서버 응답 오류:", error.response.status);
+        } else if (error.request) {
+          console.log("오류", error.request); // 요청은 보내졌지만 응답을 받지 못한 경우
+        } else {
+          console.log("기타 오류:", error.message);
+        }
+      });
   };
 
   return (
@@ -41,7 +73,7 @@ function ReplyMemoryPopup({ onClose, onChange }) {
         </button>
         <div>
           <h2 className="ReplyPopup-title">댓글 등록</h2>
-          <div className="ReplyPopup-inner">
+          <form className="ReplyPopup-inner">
             <div className="Reply-nickname">
               <p>닉네임</p>
               <input
@@ -59,9 +91,9 @@ function ReplyMemoryPopup({ onClose, onChange }) {
               <textarea
                 style={inputStyle}
                 type="text"
-                name="replyContent"
+                name="content"
                 placeholder="댓글을 입력해주세요."
-                value={values.replyContent}
+                value={values.content}
                 onChange={handleChange}
                 required={true}
               />
@@ -78,7 +110,7 @@ function ReplyMemoryPopup({ onClose, onChange }) {
                 required={true}
               />
             </div>
-          </div>
+          </form>
 
           <button className="Reply-button" onClick={handleSubmit}>
             등록하기

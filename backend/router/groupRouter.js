@@ -5,7 +5,6 @@ import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js';
 import { getMemoryList } from './memoryRouter.js';
 import { upload } from '../utils/multer.js';
-import fs from 'fs';
 
 const prisma = new PrismaClient();
 const groupRouter = express.Router();
@@ -43,7 +42,7 @@ groupRouter.route('/:page/:pageSize')
       prisma.group.findMany({
         where,
         skip: (page - 1) * pageSize,
-        take: Number(pageSize),
+        take: pageSize,
         orderBy,
         select: {
           id: true,
@@ -77,12 +76,16 @@ groupRouter.route('/:page/:pageSize')
     });
   }));
 
-  groupRouter.route('')
+groupRouter.route('')
 
   // 그룹 등록
   .post(upload.single("image"), asyncHandler(async (req, res) => {
-    const { groupName, groupDescription, isPublic, password } = req.body;
-    const image = `/images/${req.file.name}`;
+    const { groupName, groupDescription, password } = req.body;
+    let isPublic = req.body.isPublic;
+    if (isPublic === 'true') isPublic = true;
+    else isPublic = false;
+
+    const image = `${req.file.filename}`;
 
     if (!groupName  || !groupDescription || isPublic === undefined || !password) {
       return res.status(400).send({ message: "잘못된 요청입니다" });
@@ -138,14 +141,6 @@ groupRouter.route('/:id')
   .delete(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;
-    if (fs.existsSync("/backend/images/" + file_name)) {
-      try {
-        fs.unlinkSync("/images" + file_name);
-        console.log("image delete")
-      } catch (error) {
-        console.log(error)
-      }
-    }
 
     if (!password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
@@ -156,18 +151,18 @@ groupRouter.route('/:id')
     });
 
     if (!group) {
-      res.status(404).send({ message: "존재하지 않습니다 "});
+      return res.status(404).send({ message: "존재하지 않습니다 "});
     };
 
     if (group.password !== password) {
-      res.status(403).send({ message: "비밀번호가 틀렸습니다" });
+      return res.status(403).send({ message: "비밀번호가 틀렸습니다" });
     };
 
     await prisma.group.delete({
       where: { id },
     });
 
-    res.status(200).send({ message: "그룹 삭제 성공" });
+    return res.status(200).send({ message: "그룹 삭제 성공" });
   }));
 
 groupRouter.route('/:id/isPublic')
@@ -183,7 +178,7 @@ groupRouter.route('/:id/isPublic')
       },
     });
 
-    res.status(200).send(group);
+    return res.status(200).send(group);
   }));
 
 groupRouter.route('/:id/like')
@@ -197,7 +192,7 @@ groupRouter.route('/:id/like')
     });
 
     if (!group) {
-      res.status(404).send({ message: "존재하지 않습니다" });
+      return res.status(404).send({ message: "존재하지 않습니다" });
     };
     
     await prisma.group.update({
@@ -209,7 +204,7 @@ groupRouter.route('/:id/like')
       },
     });
 
-    res.status(200).send({ message: "그룹 공감하기 성공" });
+    return res.status(200).send({ message: "그룹 공감하기 성공" });
   }));
 
 groupRouter.route('/:id/verifyPassword')
@@ -226,22 +221,27 @@ groupRouter.route('/:id/verifyPassword')
     });
 
     if (group.password === password) {
-      res.status(200).send({ message: "비밀번호가 확인되었습니다" });
+      return res.status(200).send({ message: "비밀번호가 확인되었습니다" });
     } else {
-      res.status(401).send({ message: "비밀번호가 틀렸습니다" });
+      return res.status(401).send({ message: "비밀번호가 틀렸습니다" });
     };
   }));
 
-groupRouter.route('/:id/:page/:pageSize')
+  groupRouter.route('/:id/:page/:pageSize')
 
   // 그룹 상세 정보 조회 (추억 목록 조회)
   .get(asyncHandler(async (req, res) => {
+    console.log("그룹 상세 정보 조회");
     const { id } = req.params;
     const page = Number(req.params.page);
     const pageSize = Number(req.params.pageSize);
     const { sortBy, isPublic, keyword } = req.query;
 
-    if (!id || !page || !pageSize || isPublic === undefined) {
+    console.log(id);
+    console.log(page);
+    console.log(pageSize);
+
+    if (!id || !page || !pageSize) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
 
@@ -256,65 +256,61 @@ groupRouter.route('/:id/:page/:pageSize')
       },
     });
 
+    console.log(group);
+
     const memoriesResult = await getMemoryList({
-      id: id,
+      groupId: id,
       page: Number(page),
       pageSize: Number(pageSize),
-      sortBy: sortBy,
+      sortBy,
       keyword: keyword === 'null' ? '' : keyword,
       isPublic: isPublic === 'true',
     });
 
-    res.status(200).json({
+    console.log(memoriesResult);
+
+    return res.status(200).json({
       group,
       memories: {
-        currentPage: Number(page),
-        totalPages: Math.ceil(memoriesResult.totalItemCount / Number(pageSize)),
+        currentPage: page,
+        totalPages: Math.ceil(memoriesResult.totalItemCount / pageSize),
         totalItemCount: memoriesResult.totalItemCount,
         data: memoriesResult.data,
       },
     }); 
   }));
 
-groupRouter.route('/:id/posts')
+groupRouter.route('/:groupId/posts')
 
   // 추억 등록
-  .post(asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { nickname, title, content, password, image, location, moment, isPublic } = req.body;
+  .post(upload.single("image"), asyncHandler(async (req, res) => {
+    console.log("추억 등록");
+    const { groupId } = req.params;
+    const { nickname, title, content, password, location, moment } = req.body;
+    let isPublic = req.body.isPublic;
+    if (isPublic === 'true') isPublic = true;
+    else isPublic = false;
+
+    const image = `${req.file.filename}`;
 
     if (!nickname || !title || !content || isPublic === undefined || !password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
 
-    const newMemory = await prisma.memory.create({
+    const memory = await prisma.memory.create({
       data: {
-        id: Number(id),
+        groupId,
         nickname,
         title,
-        content,
         image,
+        content,
         location,
         isPublic,
-        password,
         moment: new Date(moment),
-      }
+        password,
+      },
     });
-
-    res.status(200).json({
-      id: newMemory.id,
-      id: newMemory.id,
-      nickname: newMemory.nickname,
-      title: newMemory.title,
-      content: newMemory.content,
-      image: newMemory.image,
-      location: newMemory.location,
-      moment: newMemory.moment.toISOString(),
-      isPublic: newMemory.isPublic,
-      likeCount: newMemory.likeCount,
-      commentCount: 0,
-      createdAt: newMemory.createdAt.toISOString()
-    });
+    return res.status(201).send(memory);
   }));
 
 export default groupRouter;

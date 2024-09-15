@@ -106,13 +106,14 @@ groupRouter.route('')
 groupRouter.route('/:id')
 
   // 그룹 수정
-  .put(asyncHandler(async (req, res) => {
+  .put(upload.single("image"), asyncHandler(async (req, res) => {
     console.log("그룹 수정");
     const { id } = req.params;
-    const { name, password, image, description } = req.body;
+    const { name, password, description } = req.body;
     let isPublic = req.body.isPublic;
     if (isPublic === 'true') isPublic = true;
     else isPublic = false;
+    const image = `${req.file.filename}`;
 
     console.log(id);
     console.log(name);

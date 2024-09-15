@@ -111,7 +111,12 @@ groupRouter.route('/:id')
     const { id } = req.params;
     const { name, password, image, isPublic, description } = req.body;
 
+    console.log(id);
+    console.log(name);
     console.log(password);
+    console.log(image);
+    console.log(isPublic);
+    console.log(description);
 
     if (!password) {
       return res.status(400).json({ message: '잘못된 요청입니다' });

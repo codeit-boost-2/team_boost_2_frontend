@@ -114,6 +114,9 @@ groupRouter.route('/:id')
       return res.status(400).json({ message: '잘못된 요청입니다' });
     }
 
+    if (isPublic === 'true') isPublic = true;
+    else isPublic = false;
+
     const group = await prisma.group.findUnique({
       where: { id },
       select: {

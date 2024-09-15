@@ -1,29 +1,50 @@
 import { useState } from "react";
 import FileInput from "./FileInput";
 import Toggle from "./Toggle";
+import axios from "axios";
 //그룹 정보 수정 모달 창 열기
 function InfoChangeModal({ setModal, items }){
   const [values, setValues] = useState(items);
   const [isPublic, setisPublic] = useState(values.isPublic);
+  const [isChanged, setisChanged] = useState(false);
+  const [password, setPassword] = useState('');
     const closeModal= () => {
           setModal(false);
       }
-
-    const handleChange = (name, value) => {
+    const handleImageChange = (name, value) => {
       setValues((prevValues) => ({
         ...prevValues,
         [name]: value,
       }));
+      setisChanged(true);
     }
-
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      handleChange(name, value);
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
     };  
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log({values});
+
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("description", values.introduction);
+      formData.append("isPublic", isPublic);
+      formData.append("password", values.password);
+      if(isChanged){
+        formData.append("image", values.image);
+      }
+      for (const x of formData) {
+        console.log(x);
+       };
+       const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${items.id}`
+       console.log(url);
+       axios.put(url,formData)
+       .then(res => {console.log(res);})
+       .catch(error => {console.log(error);})
     };
 
     return(
@@ -41,10 +62,10 @@ function InfoChangeModal({ setModal, items }){
                 <FileInput 
                     name="image" 
                     value={values.image} 
-                    onChange={handleChange}
+                    onChange={handleImageChange}
                     isChange={true}/> 
                 <div className="MPinputDsc">그룹 소개</div>
-                <input className='MPinput' name="description" value={values.description} onChange={handleInputChange} style={{margin: '10px'}}/>
+                <input className='MPinput' name="introduction" value={values.introduction} onChange={handleInputChange} style={{margin: '10px'}}/>
                 
                 <div className="MPinputDsc">그룹 공개 선택</div>
                 <div style={{marginLeft: '10px'}}>
@@ -52,7 +73,7 @@ function InfoChangeModal({ setModal, items }){
                 </div>
                 
                 <div className="MPinputDsc">수정 권한 인증</div>
-                <input className='MPinput' style={{margin: '10px'}}/>
+                <input className='MPinput' style={{margin: '10px'}} name="password" value={values.password} onChange={handleInputChange}/>
                 
                 <button className='submitButton' style={{margin: '10px'}}>제출하기</button>
             </form>

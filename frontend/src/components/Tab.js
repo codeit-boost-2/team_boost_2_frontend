@@ -4,7 +4,7 @@ import axios from "axios";
 import "./Tab.css";
 
 async function getGroupsAxios(currentPage, itemsPerPage, isPublic) {
-  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups//${currentPage}/${itemsPerPage}?isPublic=${isPublic}`;
+  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=${isPublic}`;
   const res = await axios.get(url);
   const data = res.data;
   return data;

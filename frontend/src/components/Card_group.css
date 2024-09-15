@@ -4,21 +4,19 @@
 }
 
 .cardGroupItem {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 375px;
   break-inside: avoid;
   margin-bottom: 20px;
   border: 1px solid #b8b8b8;
   border-radius: 6px;
   padding: 15px;
   gap: 10px;
+  width: 375px;
 }
 
-.cardGroupItem-img {
-  object-fit: cover;
-}
 
 .cardGroupItem-info {
   display: flex;

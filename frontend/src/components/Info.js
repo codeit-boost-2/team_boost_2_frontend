@@ -66,7 +66,7 @@ function Info({ items, length }){
                     }
                     <button className='infoButton' style={{color:"gray"}} onClick={() => setDeleteModal(!deleteModal)}>그룹 삭제하기</button>
                     {
-                        deleteModal === true ? <InfoDeleteModal setModal={setDeleteModal} /> : null
+                        deleteModal === true ? <InfoDeleteModal setModal={setDeleteModal} id={items.id} /> : null
                     }
                     </div>
                 </div>

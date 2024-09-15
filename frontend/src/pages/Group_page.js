@@ -5,7 +5,6 @@ import { useState, useMemo, useEffect } from "react";
 import { useLocation, useParams, Link } from 'react-router-dom';
 import axios from "axios";
 import NoMemory from "../components/No_memory.js";
-import memories from "../api/memorymock.json";
 import SearchBar from "../components/Search_bar.js";
 import Dropdown from "../components/Dropdown_menu.js";
 
@@ -20,13 +19,13 @@ const style = {
   alignItems: "center",
 };
 
-const feedstyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(4, 1fr)",
-  gridAutoRows: "561px",
-  margin: "12px",
-  gap: "10px",
-};
+// const feedstyle = {
+//   display: "grid",
+//   gridTemplateColumns: "repeat(4, 1fr)",
+//   gridAutoRows: "561px",
+//   margin: "12px",
+//   gap: "10px",
+// };
 
 const pageStyle = {
   marginTop: "150px",
@@ -38,7 +37,8 @@ const getSortedItems = (items, order) => {
   return [...items].sort((a, b) => {
     if (order === "createdAt") {
       return new Date(b.createdAt) - new Date(a.createdAt);
-    } else if (order === "likeCount") {
+    } 
+    else if (order === "likeCount") {
       return b.likeCount - a.likeCount;
     } 
   });
@@ -67,7 +67,6 @@ function GroupPage() {
   const [memories, setMemories] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [isPublic,setIsPublic] = useState(true);
-
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
@@ -90,20 +89,32 @@ function GroupPage() {
     setIsPublic(false);
   }
   //grouppage (그룹정보 추억 : 그룹 id필요)
-  const handleLoads = async () =>{
-    const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
-    axios.get(url)
-    .then((res)=>{
-      setInfo(res.data.group);
-      setMemories(res.data.memories.data);
-      setFilteredItems(res.data.memories.data)
-    })
-    .catch(error => {console.log(error)})
-  }
+  // const handleLoad = async () =>{
+  //   const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
+  //   axios.get(url)
+  //   .then((res)=>{
+  //     setInfo(res.data.group);
+  //     setMemories(res.data.memories.data);
+  //     setFilteredItems(res.data.memories.data)
+  //   })
+  //   .catch(error => {console.log(error)})
+  // }
+
+  
+  const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
 
   useEffect(()=>{
-    handleLoads();
-  },[isPublic])
+    const handleLoad = async () =>{
+      axios.get(url)
+      .then((res)=>{
+        setInfo(res.data.group);
+        setMemories(res.data.memories.data);
+        setFilteredItems(res.data.memories.data)
+      })
+      .catch(error => {console.log(error)})
+    }
+    handleLoad();
+  },[url, isPublic])
   
   return (
     <div style={pageStyle}>

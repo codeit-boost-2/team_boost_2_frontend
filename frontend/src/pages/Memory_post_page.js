@@ -44,7 +44,7 @@ function MemoryPostPage(){
         password: ''
       });
     const location = useLocation();
-    const { GroupId } = location.state;
+    const GroupId = location.state;
     console.log(GroupId);
     const [isPublic, setisPublic] = useState(true);
       
@@ -63,33 +63,37 @@ function MemoryPostPage(){
       // 이전 페이지로 이동
     const navigate = useNavigate();
     const onCancel = () => {
-    navigate(-1); 
+        navigate(-1); 
     }
-    //제출 함수 기능 추가하기
+
     const handleSubmit = (e) => {
-        e.preventDefault();
+
+      e.preventDefault();
        
 
-        const formData = new FormData();
-        formData.append('groupId', GroupId)
-        formData.append('nickname', values.nickname);
-        formData.append('title', values.title);
-        formData.append('content', values.body);
-        // formData.append('tag', values.tag);
-        formData.append('image', values.image);
-        formData.append('location', values.place);
-        formData.append('moment', values.date);
-        formData.append('isPublic',isPublic);
-        formData.append('password', values.password);
-
-        for (const x of formData) {
-          console.log(x);
-         };
+      const formData = new FormData();
+      formData.append('groupId', GroupId)
+      formData.append('nickname', values.nickname);
+      formData.append('title', values.title);
+      formData.append('content', values.body);
+      // formData.append('tag', values.tag);
+      formData.append('image', values.image);
+      formData.append('location', values.place);
+      formData.append('moment', values.date);
+      formData.append('isPublic',isPublic);
+      formData.append('password', values.password);
          
-      axios.post(`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/posts`
+      axios.post(
+        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/posts`
         ,formData)
-      .then((res)=>{alert("올리기 성공!");}) 
-      .catch(error => {console.log(error)});
+      .then(
+        (res)=>{
+          alert("올리기 성공!");
+        }) 
+      .catch(
+        error => {
+          console.log(error);
+        });
 
       };
 

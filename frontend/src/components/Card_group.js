@@ -51,7 +51,7 @@ function CardGroupItem({ item }) {
       <div className="cardGroupItem">
         {isPublic === true && image && (
           <img
-            style={{ width: "325px", height: "325px", objectFit: "cover" }}
+            style={{ width: "343px", height: "343px", objectFit: "cover" }}
             src={imageUrl}
             alt={name}
             className="cardGroupItem-img"

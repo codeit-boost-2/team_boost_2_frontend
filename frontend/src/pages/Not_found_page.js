@@ -1,4 +1,3 @@
-import notfound from "../assets/404.png";
 import { useNavigate } from "react-router-dom";
 const style={
     position: 'absolute',
@@ -22,7 +21,7 @@ function NotFoundPage(){
     };
     return (
     <>
-    <img style={style}src={notfound} alt="페이지없음" />
+    <img style={style} src="../imgs/404.svg" alt="페이지없음" />
     <button onClick={onClickButton} className="submitButton" style={Buttonstyle}>메인 페이지로 돌아가기</button>
     </>
     )

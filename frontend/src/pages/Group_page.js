@@ -57,7 +57,7 @@ const filterItemsBySearch = (items, searchTerm) => {
 
 function GroupPage() {
   
-  //Link 태그로 받은 mock items -> 그룹 아이디 받아야 됨
+  //Link 태그로 받은 items -> 그룹 아이디 받아야 됨
   const location = useLocation();
   const groupInstance = location.state;
   const { GroupId } = useParams();
@@ -70,7 +70,6 @@ function GroupPage() {
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
-
   const sortedItems = useMemo(() => {
     const itemsAfterFilter = filterItemsBySearch(filteredItems, searchTerm);
     return getSortedItems(itemsAfterFilter, order);
@@ -88,6 +87,7 @@ function GroupPage() {
   const handleTabFalse = () =>{
     setIsPublic(false);
   }
+  
   //grouppage (그룹정보 추억 : 그룹 id필요)
   // const handleLoad = async () =>{
   //   const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
@@ -115,10 +115,11 @@ function GroupPage() {
     }
     handleLoad();
   },[url, isPublic])
+  console.log(memories)//공개 비공개 추억 합산 필요
   
   return (
     <div style={pageStyle}>
-      <Info items={groupInstance.item} length={memories.length}/>
+      <Info items={groupInstance.item}/>
       <hr />
       <div style={style}>
         <div
@@ -135,7 +136,7 @@ function GroupPage() {
           <Button />
         </Link>
       </div>
-      <div style={{display: 'grid', width:'85%', gridTemplateColumns: '1fr 8fr 1fr', margin: '0 auto', gap:"50px", justifyContent:"center"}}>
+      <div style={{display: 'grid', width:'85%', gridTemplateColumns: '1fr 8fr 1fr', margin: '0 auto 20px', gap:"50px", justifyContent:"center"}}>
       <div className="publicOptionTab">
         <button
           onClick={handleTabTrue}

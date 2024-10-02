@@ -43,8 +43,16 @@ function InfoChangeModal({ setModal, items }){
        const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${items.id}`
        console.log(url);
        axios.put(url,formData)
-       .then(res => {console.log(res);})
-       .catch(error => {console.log(error);})
+       .then(res=>{
+        if(res.status === 200)
+        {
+          alert("수정에 성공했습니다!")
+        }})
+       .catch(error => {
+        if(error.status === 403)
+        {
+          alert("잘못된 비밀번호 입니다.")
+        }})
     };
 
     return(

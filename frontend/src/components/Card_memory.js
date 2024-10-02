@@ -1,15 +1,5 @@
-import sampleImg from "../assets/img1.png";
 import "./Card_memory.css";
 import { Link } from "react-router-dom";
-
-const feedstyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(4, 1fr)",
-  gridTemplateRows:"auto auto auto",
-  gridAutoRows: "561px",
-  gap: "50px",
-  margin: "auto",
-};
 
 function formatDate(value) {
   const date = new Date(value);
@@ -28,9 +18,11 @@ function CardMemoryItems( { item }){
     createdAt,
     commentCount,
   } = item;
+
   const uploadDate = formatDate(createdAt);
   const isPublicPath = isPublic === true ? `/MemoryPage/${item.id}` : "/AutPage";
   const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
+
   return(
     <>
     <Link
@@ -77,9 +69,9 @@ function CardMemoryItems( { item }){
 // card/memory 컴포넌트
 function CardMemory( { items } ) {
   return (
-      <ul className="cardGroup">
+      <ul className="feed">
       {items.map((item) => (
-        <li key={item.id}>
+        <li style ={{height: '500px'}}key={item.id}>
           <CardMemoryItems item={item} />
         </li>
       ))}

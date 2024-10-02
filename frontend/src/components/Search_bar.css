@@ -16,7 +16,7 @@
 }
 
 .searchBar::placeholder{
-  background : url('../assets/search.png') no-repeat;
+  background : url('../../public/imgs/icon_search.svg') no-repeat;
   background-position: 2px;
   text-indent: 28px;
 }

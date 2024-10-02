@@ -33,7 +33,7 @@ function InfoChangeModal({ setModal, items }){
       formData.append("name", values.name);
       formData.append("description", values.introduction);
       formData.append("isPublic", isPublic);
-      formData.append("password", values.password);
+      formData.append("password", password);
       if(isChanged){
         formData.append("image", values.image);
       }
@@ -81,7 +81,8 @@ function InfoChangeModal({ setModal, items }){
                 </div>
                 
                 <div className="MPinputDsc">수정 권한 인증</div>
-                <input className='MPinput' style={{margin: '10px'}} name="password" value={values.password} onChange={handleInputChange}/>
+                <input className='MPinput' style={{margin: '10px'}} name="password" value={password} 
+                onChange={(e) => {setPassword(e.target.value)}}/>
                 
                 <button className='submitButton' style={{margin: '10px'}}>제출하기</button>
             </form>

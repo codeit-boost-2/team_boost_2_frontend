@@ -12,7 +12,7 @@ function calculateDaysDifference(createdAt) {
 
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));
 
-  if (days === 0) {
+  if (days <= 0) {
     return "D+0";
   } else {
     return `D+${days}`;
@@ -71,7 +71,7 @@ function CardGroupItem({ item }) {
             <div>{postCount}</div>
           </div>
           <div>
-            <div style={categoryNameStyle}>그룹 공감</div>
+            <div style={categoryNameStyle}>그룹 공감 </div>
             <div>
               <img alt="공감아이콘" src="./imgs/logo_16x16.svg" />
               {likeCount}

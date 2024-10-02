@@ -88,18 +88,6 @@ function GroupPage() {
   const handleTabFalse = () =>{
     setIsPublic(false);
   }
-  
-  //grouppage (그룹정보 추억 : 그룹 id필요)
-  // const handleLoad = async () =>{
-  //   const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
-  //   axios.get(url)
-  //   .then((res)=>{
-  //     setInfo(res.data.group);
-  //     setMemories(res.data.memories.data);
-  //     setFilteredItems(res.data.memories.data)
-  //   })
-  //   .catch(error => {console.log(error)})
-  // }
 
   const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
   useEffect(()=>{

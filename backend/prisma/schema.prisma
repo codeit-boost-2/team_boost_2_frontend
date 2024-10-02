@@ -48,8 +48,12 @@ model Memory {
   location     String?
   // 추억 공개 여부
   isPublic     Boolean
+  // 추억의 순간
+  moment       DateTime
+  // 추억 비밀번호
+  password     String
   // 추억 좋아요 수
-  likeCount   Int     @default(0)
+  likeCount    Int     @default(0)
 
   group    Group     @relation(fields: [groupId], references: [id])
   comments Comment[] // Memory와 Comment의 1:N 관계

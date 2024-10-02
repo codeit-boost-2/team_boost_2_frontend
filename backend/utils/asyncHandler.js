@@ -9,7 +9,7 @@ function asyncHandler(handler) {
         e.name === 'StructError' ||
         e instanceof Prisma.PrismaClientValidationError
       ) {
-        res.status(400).send({ message: "잘못된 요청입니다" });
+        res.status(400).send({ message: "잘못된 요청입니다(StructError)" });
       } else if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2025'

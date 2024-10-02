@@ -1,4 +1,3 @@
-
 //import LoadMoreButton from "../components/Loadmore_button.js";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import "./Grouplist_page.css";
@@ -49,8 +48,7 @@ function GroupListPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleItems, setVisibleItems] = useState(LIMIT);
   const [isPublic, setIsPublic] = useState(true);
-
-
+  
   const handleSearch = (term) => {
     setSearchTerm(term);
     setVisibleItems(LIMIT);

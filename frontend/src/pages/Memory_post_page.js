@@ -70,7 +70,6 @@ function MemoryPostPage(){
 
       e.preventDefault();
        
-
       const formData = new FormData();
       formData.append('groupId', GroupId)
       formData.append('nickname', values.nickname);
@@ -94,7 +93,6 @@ function MemoryPostPage(){
         error => {
           console.log(error);
         });
-
       };
 
     return(

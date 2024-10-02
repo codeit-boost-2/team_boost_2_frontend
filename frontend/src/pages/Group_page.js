@@ -67,6 +67,7 @@ function GroupPage() {
   const [memories, setMemories] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [isPublic,setIsPublic] = useState(true);
+
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
@@ -100,9 +101,7 @@ function GroupPage() {
   //   .catch(error => {console.log(error)})
   // }
 
-  
   const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
-
   useEffect(()=>{
     const handleLoad = async () =>{
       axios.get(url)

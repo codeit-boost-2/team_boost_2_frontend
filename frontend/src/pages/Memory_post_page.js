@@ -88,6 +88,7 @@ function MemoryPostPage(){
       .then(
         (res)=>{
           alert("올리기 성공!");
+          onCancel();
         }) 
       .catch(
         error => {

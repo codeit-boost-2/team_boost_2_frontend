@@ -41,18 +41,6 @@ function MakeGroupPage() {
     .then((res)=>{console.log(res.data);}) .catch(error => {console.log(error);
     });
     
-    for (const x of formData) {
-      console.log(x);
-     };
-
-    // console.log("Form submitted:", {
-    //   groupName,
-    //   groupImage,
-    //   groupDescription,
-    //   isPublic,
-    //   password: password,
-    // });
-
     const success = true; // 그룹 생성 성공 예시
 
     setIsSuccess(success);
@@ -72,10 +60,10 @@ function MakeGroupPage() {
           <div className="inputItems">
             <InputText label="그룹명" onChange={setGroupName} required={true} />
 
-            {/* <div>
+            <div>
               <div style={{ marginBottom: "10px" }}>대표 이미지</div>
               <FileInput onFileChange={setGroupImage} required={true} />
-            </div> */}
+            </div> 
 
             <InputBox
               label="그룹 소개"

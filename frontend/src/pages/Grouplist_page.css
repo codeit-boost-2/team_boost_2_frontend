@@ -1,7 +1,17 @@
 .cardGroupPage {
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 20px;
+}
+
+.header{
+  display: grid;
+  width:85%;
+  grid-template-columns: 1fr 8fr 1fr;
+  margin: 120px auto 0;
+  gap: 50px;
+  justify-content: center;
+
 }
 
 .sortBar {

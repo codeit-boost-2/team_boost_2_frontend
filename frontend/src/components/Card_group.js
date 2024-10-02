@@ -31,6 +31,7 @@ function CardGroupItem({ item }) {
     createdAt,
   } = item;
   const daysDifference = calculateDaysDifference(createdAt);
+  const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
 
   const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
 
@@ -65,7 +66,7 @@ function CardGroupItem({ item }) {
           </div>
         </div>
         <div style={nameStyle}>{name}</div>
-        {isPublic === true && postCount && <div>{introduction}</div>}
+        {isPublic === true && <div>{introduction}</div>}
         <div className="cardGroupItem-info">
           <div>
             <div style={categoryNameStyle}>추억</div>

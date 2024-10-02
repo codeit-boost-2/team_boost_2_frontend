@@ -25,7 +25,7 @@ const style={
 };
 
 //그룹 정보 나타내는 info 컴포넌트
-function Info({ items, length }){
+function Info({ items }){
     const{
         name,
         image,
@@ -33,6 +33,7 @@ function Info({ items, length }){
         isPublic,
         likeCount,
         createdAt,
+        postCount,
       } = items;
     const [like, setLike] = useState(likeCount);
     const [changeModal, setChangeModal] = useState(false);
@@ -66,14 +67,14 @@ function Info({ items, length }){
                     }
                     <button className='infoButton' style={{color:"gray"}} onClick={() => setDeleteModal(!deleteModal)}>그룹 삭제하기</button>
                     {
-                        deleteModal === true ? <InfoDeleteModal setModal={setDeleteModal} /> : null
+                        deleteModal === true ? <InfoDeleteModal setModal={setDeleteModal} id={items.id} /> : null
                     }
                     </div>
                 </div>
                 <div className='infoTitle'>
                     <h2>{name}</h2>
                     <div className='titleHeader'>
-                        <div style={{padding:'0 20px'}}>추억 {length}</div>
+                        <div style={{padding:'0 20px'}}>추억 {postCount}</div>
                         <div className='line'></div>
                         <div style={{paddingLeft:'10px'}}>그룹 공감 {like}</div>
                     </div>

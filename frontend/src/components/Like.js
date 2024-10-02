@@ -1,4 +1,3 @@
-import LikeIcon from "../assets/LikeIcon.jpg"
 import "./Like.css";
 const style={
     display: "flex",
@@ -20,7 +19,7 @@ function Like({handleLikeClick}){
              className={`fade ${isVisible ? 'visible' : ''}`} 
             /> */}
         <button className="gonggam" onClick={handleLikeClick}>
-            <img style={{padding : "4px"}} alt="icon" src={LikeIcon} />
+            <img style={{padding : "4px"}} alt="icon" src='../imgs/logo_16x16.svg' />
             공감 보내기
         </button>
         </>

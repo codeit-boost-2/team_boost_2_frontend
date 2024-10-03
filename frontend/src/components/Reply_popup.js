@@ -14,7 +14,7 @@ const inputStyle = {
   marginTop: "10px",
 };
 
-function ReplyMemoryPopup({ onClose, memoryId }) {
+function ReplyMemoryPopup({ onClose /* ,memoryId */ }) {
   const [values, setValues] = useState({
     nickname: "",
     content: "",
@@ -35,10 +35,18 @@ function ReplyMemoryPopup({ onClose, memoryId }) {
     const { nickname, content, password } = values;
 
     const formData = new FormData();
-    formData.append("memoryId", memoryId);
+    //formData.append("memoryId", memoryId);
     formData.append("nickname", nickname);
     formData.append("content", content);
     formData.append("password", password);
+
+    // 콘솔에 출력
+    console.log("Form submitted:", {
+      //memoryId,
+      nickname,
+      content,
+      password: password,
+    });
 
     axios
       .post(

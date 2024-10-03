@@ -33,7 +33,11 @@ function AuthenticationPage(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/${groupId}/verifyPassword`, password)
+        console.log(password)
+        axios.post(`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${groupId}/verifyPassword`, 
+            {
+                'password' : password
+            })
         .then((res) => {console.log(res);})
         .catch((error) => {console.log(error);})
       };

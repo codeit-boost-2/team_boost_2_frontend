@@ -130,7 +130,7 @@ function MemoryPostPage() {
           <h3>추억 올리기</h3>
           <button className="close" onClick={onCancel}></button>
         </div>
-        <form>
+        <form onKeyDown={handleKeyDown}>
           <div className="MPform">
             <div className="MPformLeft" style={{ flexBasis: "50%" }}>
               <div className="MPinputDsc">닉네임</div>

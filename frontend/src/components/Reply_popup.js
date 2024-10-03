@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 // import { postReply } from "../api/api.js";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./Reply_popup.css";
 
@@ -14,7 +15,8 @@ const inputStyle = {
   marginTop: "10px",
 };
 
-function ReplyMemoryPopup({ onClose /* ,memoryId */ }) {
+function ReplyMemoryPopup({ onClose }) {
+  const { MemoryId } = useParams();
   const [values, setValues] = useState({
     nickname: "",
     content: "",
@@ -42,7 +44,7 @@ function ReplyMemoryPopup({ onClose /* ,memoryId */ }) {
 
     // 콘솔에 출력
     console.log("Form submitted:", {
-      //memoryId,
+      MemoryId,
       nickname,
       content,
       password: password,
@@ -50,7 +52,7 @@ function ReplyMemoryPopup({ onClose /* ,memoryId */ }) {
 
     axios
       .post(
-        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/comments`,
+        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/${MemoryId}/comments`,
         formData,
         {
           headers: {

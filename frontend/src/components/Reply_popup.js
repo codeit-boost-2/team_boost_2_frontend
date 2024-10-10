@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { postReply } from "../api/api.js";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./Reply_popup.css";
@@ -52,12 +51,11 @@ function ReplyMemoryPopup({ onClose }) {
 
     axios
       .post(
-        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/${MemoryId}/comments`,
-        formData,
+        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          nickname,
+          content,
+          password,
         }
       )
       .then((res) => {
@@ -65,13 +63,7 @@ function ReplyMemoryPopup({ onClose }) {
         onClose();
       })
       .catch((error) => {
-        if (error.response) {
-          console.log("서버 응답 오류:", error.response.status);
-        } else if (error.request) {
-          console.log("오류", error.request); // 요청은 보내졌지만 응답을 받지 못한 경우
-        } else {
-          console.log("기타 오류:", error.message);
-        }
+        console.log(error);
       });
   };
 

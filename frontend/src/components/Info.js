@@ -44,12 +44,16 @@ function Info({ items }){
         setLike(afterLike);
     }
     const dday = calculateDaysDifference(createdAt);
-    const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
-    return(
+    let imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
+    if(image === null)
+    {
+        imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/default.jpg`;
+    }
+      return(
         <>
         <div style={style}>
             <div className='infoImage'>
-                {isPublic === true && image && (
+                {isPublic === true && (
                 <img style={{width:'262px', height:'273px',objectFit:"cover"}}src={imageUrl} alt='그룹이미지' />
                 )}
             </div>     

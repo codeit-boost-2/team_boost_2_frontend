@@ -17,12 +17,15 @@ function InfoDeleteModal({ setModal, id }){
     const handleSubmit = (e)=>{
         e.preventDefault();
         const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${id}`
-        axios.delete(url,
-            {
-                password
+        console.log(url)
+        console.log(password)
+        axios.delete(url,{
+            data :{
+                password,
             },
-        )
-        .then(() => {navigate('/')})
+        })
+        .then((res) => {console.log(res);navigate('/')})
+        .catch(error =>{console.log(error)})
 
     }
     return(

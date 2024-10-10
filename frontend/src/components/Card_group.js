@@ -31,7 +31,11 @@ function CardGroupItem({ item }) {
     createdAt,
   } = item;
   const daysDifference = calculateDaysDifference(createdAt);
-  const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
+  let imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
+  if(image === null)
+  {
+      imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/default.jpg`;
+  }
 
   //스타일
   const categoryNameStyle = { color: "#B8B8B8" };
@@ -48,7 +52,7 @@ function CardGroupItem({ item }) {
       style={{ textDecoration: "none", color: "inherit" }}
     >
       <div className="cardGroupItem">
-        {isPublic === true && image && (
+        {isPublic === true && (
           <img
             style={{ width: "343px", height: "343px", objectFit: "cover" }}
             src={imageUrl}

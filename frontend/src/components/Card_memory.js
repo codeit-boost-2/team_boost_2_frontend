@@ -20,7 +20,7 @@ function CardMemoryItems( { item }){
   } = item;
 
   const uploadDate = formatDate(createdAt);
-  const isPublicPath = isPublic === true ? `/MemoryPage/${item.id}` : "/AutPage";
+  const isPublicPath = isPublic === true ? `/MemoryPage/${item.id}` : `/AutPage${item.id}`;
   const imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
 
   return(

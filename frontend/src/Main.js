@@ -22,7 +22,10 @@ function Main() {
           <Route path="/MemoryPage">
             <Route path=":MemoryId" element={<MemoryDetailPage />} />
           </Route>
-          <Route path="/AutPage" element={<AuthenticationPage />} />
+          <Route path="/AutPage">
+            <Route path=":GroupId" element={<AuthenticationPage />} />
+            <Route path=":MemoryId" element={<AuthenticationPage />} />
+          </Route>
           <Route path="MemoryPost" element={<MemoryPostPage />} />
           <Route path="*" element={<NotFoundPage />} />
           {/* Route path="다른페이지" element={<다른페이지 />} */}

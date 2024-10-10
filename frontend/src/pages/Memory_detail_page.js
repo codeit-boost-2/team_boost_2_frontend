@@ -130,7 +130,7 @@ function MemoryDetailPage() {
         console.error("좋아요 상태 업데이트 요청이 실패했습니다.");
       }
     } catch (error) {
-      console.error("좋아요 상태 업데이트 중 오류 발생:", error);
+      console.error("좋아요 상태 업데이트 중 오류 발생:", error.response.data.message);
     }
   };
 
@@ -193,8 +193,9 @@ function MemoryDetailPage() {
   // Memory 삭제 진행
   const handleDelete = async (password) => {
     const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${memory.id}`;
-
+    console.log(password)
     try {
+      
       const response = await axios.delete(url, {
         data: { password },
       });

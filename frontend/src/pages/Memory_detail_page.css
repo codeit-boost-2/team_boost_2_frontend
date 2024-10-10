@@ -68,7 +68,7 @@
   position: relative;
   margin: 50px auto;
   width: 700px;
-  height: 700px;
+  height: auto;
   display: block;
 }
 

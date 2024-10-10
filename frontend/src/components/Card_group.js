@@ -32,11 +32,11 @@ function CardGroupItem({ item }) {
   } = item;
   const daysDifference = calculateDaysDifference(createdAt);
   let imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
- /* 디폴트 이미지 삽입 나중에 수정하기 ^^* if(image === null)
+  if(image === null)
   {
       imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/default.jpg`;
   }
-*/
+
   //스타일
   const categoryNameStyle = { color: "#B8B8B8" };
   const nameStyle = { fontWeight: "bold" };
@@ -44,7 +44,6 @@ function CardGroupItem({ item }) {
 
   //공개 여부에 따라 경로 변경
   const isPublicPath = isPublic === true ? `/GroupPage/${item.id}` : "/AutPage";
-  //console.log(imageUrl);
 
   return (
     <Link
@@ -53,7 +52,7 @@ function CardGroupItem({ item }) {
       style={{ textDecoration: "none", color: "inherit" }}
     >
       <div className="cardGroupItem">
-        {isPublic === true && image && (
+        {isPublic === true && (
           <img
             style={{ width: "343px", height: "343px", objectFit: "cover" }}
             src={imageUrl}

@@ -94,6 +94,7 @@ function GroupPage() {
     const handleLoad = async () =>{
       axios.get(url)
       .then((res)=>{
+        console.log(res.data);
         setInfo(res.data.group);
         setMemories(res.data.memories.data);
         setFilteredItems(res.data.memories.data)
@@ -102,7 +103,6 @@ function GroupPage() {
     }
     handleLoad();
   },[url, isPublic])
-  console.log(memories)//공개 비공개 추억 합산 필요
   
   return (
     <div style={pageStyle}>

@@ -1,5 +1,6 @@
 //import LoadMoreButton from "../components/Loadmore_button.js";
 import { useEffect, useState, useMemo, useCallback } from "react";
+import { Link } from "react-router-dom";
 import "./Grouplist_page.css";
 import axios from "axios";
 import Dropdown from "../components/Dropdown_menu.js";
@@ -80,9 +81,14 @@ function GroupListPage() {
     const handleLoad = async () =>{
       axios.get(url)
       .then((res)=>{
+        console.log(res.data)
         setFilteredItems(res.data.data)
       })
-      .catch(error => {console.log(error)})
+      .catch(error => {if(error.message === "Network Error")
+      {
+        <Link to='/*' />
+        console.log("서버가 펑! 터져버렸어...!")
+      }})
     }
     handleLoad();
   },[url, isPublic])

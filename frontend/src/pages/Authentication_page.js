@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const pageStyle = {
     marginTop: "300px",
@@ -26,15 +26,16 @@ const inputStyle={
 
 function AuthenticationPage(){
     const location = useLocation();
-    const items = location.state;
-    const groupId = items.item.id;
+    const items = location.state;   
+    const { GroupId } = useParams();
+    //const groupId = items.item.id;
     const where = "페이지"
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(password)
-        axios.post(`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${groupId}/verifyPassword`, 
+        axios.post(`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/verifyPassword`, 
             {
                 'password' : password
             })
@@ -50,6 +51,7 @@ function AuthenticationPage(){
             <form onSubmit={handleSubmit}>
             <input 
             style={inputStyle} 
+            type="password"
             placeholder='비밀번호를 입력해 주세요.'
             value={password}
             onChange={e => {setPassword(e.target.value)}}/>

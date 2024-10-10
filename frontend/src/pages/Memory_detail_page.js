@@ -44,24 +44,6 @@ function MemoryDetailMainContent({ memory }) {
   );
 }
 
-// 추억 상세 페이지 댓글
-/*
-function Reply(comment) {
-  const { nickname, content, createdAt } = comment;
-
-  return (
-    <div className="Reply">
-      <div className="ReplyInfo">
-        <div className="ReplyHeader">
-          <span className="ReplyName">{nickname}</span>
-          <span className="ReplyDate">{createdAt}</span>
-        </div>
-      </div>
-      <div className="ReplyContent">{content}</div>
-    </div>
-  );
-}
-*/
 
 function MemoryDetailPage() {
   const { MemoryId } = useParams(); // url에서 MemoryId 가져오기
@@ -76,29 +58,7 @@ function MemoryDetailPage() {
   const [isDeleteReplyPopupOpen, setIsDeleteReplyPopupOpen] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-  ///////////////////////////////////////
   //Memory받아오기
-  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
-  // const handleLoad = async (memoryId) => {
-  //   try {
-  //     const data = await getPostAxios(memoryId); // 서버에서 데이터 가져오기
-  //     if (data) {
-  //       setMemory(data.memory);
-  //       setComments(data.comments.data);
-  //       console.log(comments)
-  //       setLikeCount(data.memory.likeCount); // 좋아요 개수 설정
-  //     } else {
-  //       console.error("메모리 데이터를 불러오지 못했습니다.");
-  //     }
-  //   } catch (error) {
-  //     console.error("데이터를 불러오는 중 오류 발생:", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (MemoryId) {
-  //     handleLoad(MemoryId);
-  //   }
-  // }, [MemoryId]);
   const handleLoad = async ()=>{
     const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
     axios.get(url)
@@ -162,8 +122,6 @@ function MemoryDetailPage() {
   const openDeleteReplyPopup = () => {
     setIsDeleteReplyPopupOpen(true);
   };
-
-  ///////////* 댓글 등록 핸들 *///////////
 
   ///////////* 수정, 삭제 핸들 *//////////
   // Memory 수정 진행

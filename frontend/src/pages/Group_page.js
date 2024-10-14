@@ -58,12 +58,13 @@ const filterItemsBySearch = (items, searchTerm) => {
 function GroupPage() {
   
   //Link 태그로 받은 items -> 그룹 아이디 받아야 됨
-  const location = useLocation();
-  const groupInstance = location.state;
+  //const location = useLocation();
+  //const groupInstance = location.state;
   const { GroupId } = useParams();
   const [order, setOrder] = useState ("createdAt");
   const [searchTerm, setSearchTerm] = useState("");
   const [info, setInfo] = useState("");
+  const [badges, setBadges] = useState("");
   const [memories, setMemories] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [isPublic,setIsPublic] = useState(true);
@@ -96,6 +97,7 @@ function GroupPage() {
       .then((res)=>{
         console.log(res.data);
         setInfo(res.data.group);
+        setBadges(res.data.badge);
         setMemories(res.data.memories.data);
         setFilteredItems(res.data.memories.data)
       })
@@ -105,7 +107,7 @@ function GroupPage() {
   },[url, isPublic])
   return (
     <div style={pageStyle}>
-      <Info items={info}/>
+      <Info items={info} badge={badges} />
       <hr />
       <div style={style}>
         <div

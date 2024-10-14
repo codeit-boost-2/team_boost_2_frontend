@@ -44,7 +44,7 @@ h2{
 
 .badge{
     display: flex;
-    justify-content: space-between;
+    gap: 5px;
 }
 
 /*modal.css만들어서 이동 필요함*/

@@ -30,9 +30,9 @@ const inputContentStyle = {
 function EditMemoryPopup({ items, onClose }) {
   const { MemoryId } = useParams();
   const [isChanged, setisChanged] = useState(false);
-  const [isPublic, setIsPublic] = useState(values.isPublic);
   const [password, setPassword] = useState("");
   const [values, setValues] = useState(items);
+  const [isPublic, setIsPublic] = useState(values.isPublic);
 
   const handleImageChange = (name, value) => {
     setValues((prevValues) => ({
@@ -50,39 +50,26 @@ function EditMemoryPopup({ items, onClose }) {
     }));
   };
 
-  // 폼 유효성 검사
-  const validateForm = () => {
-    const requiredFields = ["name", "title", "body", "date", "password"];
-    for (let field of requiredFields) {
-      if (!values[field]) {
-        alert("내용을 입력해 주세요.");
-        return false;
-      }
-    }
-    return true;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 폼 유효성 검사 실행
-    if (!validateForm()) {
-      return;
-    }
-
     const formData = new FormData();
-    formData.append("name", values.name);
+    formData.append("nickname", values.nickname);
     formData.append("title", values.title);
     if (isChanged) {
       formData.append("image", values.image);
     }
-    formData.append("body", values.body);
-    formData.append("tag", values.tag);
-    formData.append("place", values.place);
-    formData.append("date", values.date);
+    formData.append("content", values.content);
+    formData.append("tag", []);
+    formData.append("location", values.location);
+    formData.append("moment", values.moment);
     formData.append("isPublic", isPublic);
     formData.append("password", password);
-
+    for(const x of formData)
+    {
+      console.log(x)
+    }
     axios
       .put(
         `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}`,
@@ -97,6 +84,9 @@ function EditMemoryPopup({ items, onClose }) {
       .catch((error) => {
         if (error.status === 403) {
           alert("잘못된 비밀번호 입니다.");
+        }
+        else{
+          console.log(error)
         }
       });
   };
@@ -114,8 +104,8 @@ function EditMemoryPopup({ items, onClose }) {
               닉네임
               <input
                 style={inputStyle}
-                name="name"
-                value={values.name}
+                name="nickname"
+                value={values.nickname}
                 onChange={handleChange}
                 placeholder="닉네임을 입력해주세요."
                 required
@@ -145,8 +135,8 @@ function EditMemoryPopup({ items, onClose }) {
               본문
               <textarea
                 style={inputContentStyle}
-                name="body"
-                value={values.body}
+                name="content"
+                value={values.content}
                 onChange={handleChange}
                 placeholder="본문 내용을 입력 해 주세요."
                 required
@@ -155,21 +145,21 @@ function EditMemoryPopup({ items, onClose }) {
           </div>
           <div className="EditMemoryPopup-Right">
             <div>
-              태그
-              <input
+              {/* 태그
+              <inputTag
                 style={inputStyle}
                 name="tag"
                 value={values.tag}
                 onChange={handleChange}
                 placeholder="태그를 입력 해 주세요."
-              />
+              /> */}
             </div>
             <div>
               장소
               <input
                 style={inputStyle}
-                name="place"
-                value={values.place}
+                name="location"
+                value={values.location}
                 onChange={handleChange}
                 placeholder="장소를 입력 해 주세요."
               />
@@ -179,8 +169,8 @@ function EditMemoryPopup({ items, onClose }) {
               <input
                 style={inputStyle}
                 type="date"
-                name="date"
-                value={values.date}
+                name="moment"
+                value={values.moment}
                 onChange={handleChange}
                 placeholder="YYYY-MM-DD"
                 required
@@ -196,8 +186,8 @@ function EditMemoryPopup({ items, onClose }) {
                 type="password"
                 style={inputStyle}
                 name="password"
-                value={values.password}
-                onChange={handleChange}
+                value={password}
+                onChange={(e) => {setPassword(e.target.value)}}
                 placeholder="비밀번호를 입력해 주세요."
                 required
               />

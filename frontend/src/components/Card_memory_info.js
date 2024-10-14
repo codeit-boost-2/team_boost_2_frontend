@@ -21,11 +21,13 @@ function formatDate(createdAt) {
   );
 }
 
+
 function CardMemoryInfo({ item , replylength }) {
   const { nickname, isPublic, title, hashtag = [], location, createdAt, likeCount, commentCount } =
     item;//Link로 아이템 받아오도록 적용함
 
-    // 추억 작성 날짜
+
+  // 추억 작성 날짜
   const PublishedOn = formatDate(createdAt);
   return (
     <div className="CardMemoryInfo">
@@ -48,6 +50,7 @@ function CardMemoryInfo({ item , replylength }) {
         ))}
 
         </ul>
+
       </div>
       <div className="MemoryInfoFooter">
         <div className="MemoryStatus">
@@ -64,6 +67,7 @@ function CardMemoryInfo({ item , replylength }) {
             <div className="repliesCount">
               <img alt="댓글" src="../imgs/icon_bubble.svg" />
               <div>{commentCount}</div> 
+
             </div>
           </div>
         </div>

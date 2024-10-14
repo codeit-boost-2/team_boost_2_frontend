@@ -30,7 +30,8 @@ const inputContentStyle = {
 function EditMemoryPopup({ items, onClose }) {
   const { MemoryId } = useParams();
   const [isChanged, setisChanged] = useState(false);
-  const [isPublic, setIsPublic] = useState(items.isPublic);
+  const [isPublic, setIsPublic] = useState(values.isPublic);
+  const [password, setPassword] = useState("");
   const [values, setValues] = useState(items);
 
   const handleImageChange = (name, value) => {
@@ -69,31 +70,23 @@ function EditMemoryPopup({ items, onClose }) {
       return;
     }
 
-    const { name, title, image, body, tag, place, date, isPublic, password } =
-      values;
-
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("title", title);
+    formData.append("name", values.name);
+    formData.append("title", values.title);
     if (isChanged) {
       formData.append("image", values.image);
     }
-    formData.append("body", body);
-    formData.append("tag", tag);
-    formData.append("place", place);
-    formData.append("date", date);
+    formData.append("body", values.body);
+    formData.append("tag", values.tag);
+    formData.append("place", values.place);
+    formData.append("date", values.date);
     formData.append("isPublic", isPublic);
     formData.append("password", password);
 
     axios
       .put(
         `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formData
       )
       .then((res) => {
         if (res.status === 200) {

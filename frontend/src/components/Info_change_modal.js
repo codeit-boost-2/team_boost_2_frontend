@@ -2,8 +2,10 @@ import { useState } from "react";
 import FileInput from "./FileInput";
 import Toggle from "./Toggle";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 //그룹 정보 수정 모달 창 열기
 function InfoChangeModal({ setModal, items }){
+  const navigate = useNavigate();
   const [values, setValues] = useState(items);
   const [isPublic, setisPublic] = useState(values.isPublic);
   const [isChanged, setisChanged] = useState(false);
@@ -46,13 +48,18 @@ function InfoChangeModal({ setModal, items }){
        .then(res=>{
         if(res.status === 200)
         {
-          alert("수정에 성공했습니다!")
+          alert("수정에 성공했습니다!");
+          navigate(0);   
         }})
        .catch(error => {
         if(error.status === 403)
         {
           alert("잘못된 비밀번호 입니다.")
-        }})
+        }
+        else{
+          console.log(error);
+        }
+      })
     };
 
     return(

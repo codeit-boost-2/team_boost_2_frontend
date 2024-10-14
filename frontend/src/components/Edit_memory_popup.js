@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import "./Edit_memory_popup.css";
 import Toggle from "./Toggle.js";
-import FileInput from "./Input_img.js";
+import FileInput from "./FileInput.js";
 
 const inputStyle = {
   display: "flex",
@@ -25,19 +27,19 @@ const inputContentStyle = {
   marginTop: "10px",
 };
 
-function EditMemoryPopup({ onClose }) {
-  const [isPublic, setIsPublic] = useState(true);
-  const [values, setValues] = useState({
-    name: "",
-    title: "",
-    image: "",
-    body: "",
-    tag: "",
-    place: "",
-    date: "",
-    option: "",
-    password: "",
-  });
+function EditMemoryPopup({ items, onClose }) {
+  const { MemoryId } = useParams();
+  const [isChanged, setisChanged] = useState(false);
+  const [isPublic, setIsPublic] = useState(items.isPublic);
+  const [values, setValues] = useState(items);
+
+  const handleImageChange = (name, value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    setisChanged(true);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,13 +61,51 @@ function EditMemoryPopup({ onClose }) {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      console.log({ values });
-      onClose();
+    // 폼 유효성 검사 실행
+    if (!validateForm()) {
+      return;
     }
+
+    const { name, title, image, body, tag, place, date, isPublic, password } =
+      values;
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("title", title);
+    if (isChanged) {
+      formData.append("image", values.image);
+    }
+    formData.append("body", body);
+    formData.append("tag", tag);
+    formData.append("place", place);
+    formData.append("date", date);
+    formData.append("isPublic", isPublic);
+    formData.append("password", password);
+
+    axios
+      .put(
+        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          alert("수정에 성공했습니다!");
+          onClose();
+        }
+      })
+      .catch((error) => {
+        if (error.status === 403) {
+          alert("잘못된 비밀번호 입니다.");
+        }
+      });
   };
 
   return (
@@ -101,7 +141,12 @@ function EditMemoryPopup({ onClose }) {
             </div>
             <div>
               이미지
-              <FileInput />
+              <FileInput
+                name="image"
+                value={values.image}
+                onChange={handleImageChange}
+                isChange={true}
+              />
             </div>
             <div>
               본문
@@ -155,6 +200,7 @@ function EditMemoryPopup({ onClose }) {
             <div>
               수정 권한 인증
               <input
+                type="password"
                 style={inputStyle}
                 name="password"
                 value={values.password}

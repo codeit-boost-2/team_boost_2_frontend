@@ -189,7 +189,7 @@ function MemoryDetailPage() {
       )}
 
       {isEditPopupOpen && (
-        <EditMemoryPopup onClose={() => setIsEditPopupOpen(false)} />
+        <EditMemoryPopup items = {memory} onClose={() => setIsEditPopupOpen(false)} />
       )}
 
       {isDeletePopupOpen && (

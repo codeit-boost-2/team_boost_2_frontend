@@ -27,8 +27,6 @@ function CardMemoryInfo({ item , replylength }) {
 
     // 추억 작성 날짜
   const PublishedOn = formatDate(createdAt);
-  const names = hashtag.map(item => item);
-  console.log(names); // ['John', 'Jane', 'Jim']
   return (
     <div className="CardMemoryInfo">
       <div className="MemoryInfoHeader">

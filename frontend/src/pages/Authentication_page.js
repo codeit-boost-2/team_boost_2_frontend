@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 const pageStyle = {
     marginTop: "300px",
@@ -28,8 +28,9 @@ function AuthenticationPage(){
     const location = useLocation();
     const items = location.state;   
     const { GroupId } = useParams();
+    const navigate = useNavigate();
     //const groupId = items.item.id;
-    const where = "페이지"
+    let where = "페이지"
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
@@ -39,8 +40,18 @@ function AuthenticationPage(){
             {
                 'password' : password
             })
-        .then((res) => {console.log(res);})
-        .catch((error) => {console.log(error);})
+        .then((res) => {
+            if(res.status === 200)
+            {
+                navigate(`/GroupPage/${GroupId}`)
+            }
+        })
+        .catch((error) => {
+            if(error.status === 401)
+            {
+                alert("잘못된 비밀번호 입니다.")
+            }
+        })
       };
       
     return(

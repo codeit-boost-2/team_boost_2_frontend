@@ -24,7 +24,9 @@ function InfoDeleteModal({ setModal, id }){
                 password,
             },
         })
-        .then((res) => {console.log(res);navigate('/')})
+        .then((res) => {
+            alert("그룹이 삭제되었습니다.");
+            navigate('/')})
         .catch(error =>{console.log(error)})
 
     }

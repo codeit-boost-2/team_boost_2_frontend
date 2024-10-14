@@ -2,6 +2,7 @@ import './Info.css';
 import { useState } from "react";
 import InfoChangeModal from "./Info_change_modal.js"
 import InfoDeleteModal from "./Info_delete_modal.js"
+import Badge from './Badge.js';
 
 //D day 계산
 function calculateDaysDifference(createdAt) {
@@ -24,7 +25,7 @@ const style={
 };
 
 //그룹 정보 나타내는 info 컴포넌트
-function Info({ items }){
+function Info({ items, badge }){
     const{
         name,
         image,
@@ -34,6 +35,12 @@ function Info({ items }){
         createdAt,
         postCount,
       } = items;
+    let badgeName = [];
+    if(badge.length !== 0)
+    {
+        badgeName = badge.map(items => items.badgeName)
+    }
+
     const [changeModal, setChangeModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     
@@ -79,7 +86,10 @@ function Info({ items }){
                     {description}
                 </div>
                 <div className='badge'>
-                    
+                    <Badge badgeName={badgeName[0]}/>
+                    <Badge badgeName={badgeName[1]}/>
+                    <Badge badgeName={badgeName[2]}/>
+
                 </div>
                 
             </div>

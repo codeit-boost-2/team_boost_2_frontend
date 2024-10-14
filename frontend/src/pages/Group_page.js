@@ -103,10 +103,9 @@ function GroupPage() {
     }
     handleLoad();
   },[url, isPublic])
-  
   return (
     <div style={pageStyle}>
-      <Info items={groupInstance.item}/>
+      <Info items={info}/>
       <hr />
       <div style={style}>
         <div

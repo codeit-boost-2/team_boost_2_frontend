@@ -1,4 +1,3 @@
-import Like from './Like.js';
 import './Info.css';
 import { useState } from "react";
 import InfoChangeModal from "./Info_change_modal.js"
@@ -29,20 +28,15 @@ function Info({ items }){
     const{
         name,
         image,
-        introduction,
+        description,
         isPublic,
         likeCount,
         createdAt,
         postCount,
       } = items;
-    const [like, setLike] = useState(likeCount);
     const [changeModal, setChangeModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     
-    const handleLikeClick = () => {
-        const afterLike = like +1;
-        setLike(afterLike);
-    }
     const dday = calculateDaysDifference(createdAt);
     let imageUrl = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/images/${image}`;
     if(image === null)
@@ -52,10 +46,8 @@ function Info({ items }){
       return(
         <>
         <div style={style}>
-            <div className='infoImage'>
-                {isPublic === true && (
-                <img style={{width:'262px', height:'273px',objectFit:"cover"}}src={imageUrl} alt='그룹이미지' />
-                )}
+            <div className='infoImage'>   
+                <img style={{width:'262px', height:'273px',objectFit:"cover"}}src={imageUrl} alt='그룹이미지' />    
             </div>     
             <div style={{flexGrow:'1', margin:'10px'}}>
                 <div className='groupInfo'>
@@ -80,15 +72,14 @@ function Info({ items }){
                     <div className='titleHeader'>
                         <div style={{padding:'0 20px'}}>추억 {postCount}</div>
                         <div className='line'></div>
-                        <div style={{paddingLeft:'10px'}}>그룹 공감 {like}</div>
+                        <div style={{paddingLeft:'10px'}}>그룹 공감 {likeCount}</div>
                     </div>
                 </div>
                 <div className='infoBody'>
-                    {introduction}
+                    {description}
                 </div>
                 <div className='badge'>
-                    <div />
-                    <Like handleLikeClick={handleLikeClick}/>
+                    
                 </div>
                 
             </div>

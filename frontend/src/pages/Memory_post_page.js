@@ -88,25 +88,19 @@ function MemoryPostPage() {
     formData.append("nickname", values.nickname);
     formData.append("title", values.title);
     formData.append("content", values.body);
-    formData.append("tag", values.tag);
+    if(values.tag.length === 0){
+      formData.append("hashtag[]", values.tag);
+    }
+    else{
+      for(let tag of values.tag){
+        formData.append("hashtag", tag);
+        console.log(tag);
+      }}
     formData.append("image", values.image);
     formData.append("location", values.place);
     formData.append("moment", values.date);
     formData.append("isPublic", isPublic);
     formData.append("password", values.password);
-
-    // 콘솔에 출력
-    console.log("Form submitted:", {
-      nickname: values.nickname,
-      title: values.title,
-      content: values.body,
-      tag: values.tag,
-      image: values.image,
-      place: values.place,
-      date: values.date,
-      isPublic: isPublic,
-      password: values.password,
-    });
 
     axios
       .post(
@@ -114,6 +108,7 @@ function MemoryPostPage() {
         formData
       )
       .then((res) => {
+        console.log(res);
         alert("올리기 성공!");
           onCancel();
       })

@@ -21,7 +21,7 @@ function InfoDeleteModal({ setModal, id }){
         console.log(password)
         axios.delete(url,{
             data :{
-                password,
+                'password' : password,
             },
         })
         .then((res) => {

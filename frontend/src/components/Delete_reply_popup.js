@@ -1,12 +1,39 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 import "./Delete_reply_popup.css";
 
-function DeleteReplyPopup({ onClose, onConfirm }) {
+function DeleteReplyPopup({ index, onClose }) {
+  const navigate = useNavigate();
+  const { MemoryId } = useParams();
   const [password, setPassword] = useState("");
+  console.log(MemoryId);
 
-  const handleConfirm = () => {
-    onConfirm(password);
-    onClose(); // 팝업 닫기
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/comments/${MemoryId}`;
+    console.log(password);
+    axios
+      .delete(url, {
+        data: {
+          password: password,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          alert("삭제에 성공했습니다!");
+          onClose();
+          navigate();
+        }
+      })
+      .catch((error) => {
+        if (error.status === 403) {
+          alert("잘못된 비밀번호 입니다.");
+        } else {
+          alert(error);
+          console.log(error);
+        }
+      });
   };
 
   return (
@@ -27,7 +54,7 @@ function DeleteReplyPopup({ onClose, onConfirm }) {
               placeholder="비밀번호를 입력해 주세요."
             />
           </div>
-          <button className="Delete-button" onClick={handleConfirm}>
+          <button className="Delete-button" onClick={handleSubmit}>
             삭제하기
           </button>
         </div>

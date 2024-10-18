@@ -8,9 +8,9 @@ import CardGroup from "../components/Card_group.js";
 import SearchBar from "../components/Search_bar.js";
 import MakeGroupButton from "../components/Makegroup_button.js";
 import NoGroup from "../components/No_group.js";
-import"../components/Tab.css";
+import "../components/Tab.css";
 
-const LIMIT = 10;
+const LIMIT = 30;
 
 async function getGroupsAxios(currentPage, itemsPerPage, isPublic) {
   const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=${isPublic}`;
@@ -45,11 +45,11 @@ const filterItemsBySearch = (items, searchTerm) => {
 
 function GroupListPage() {
   const [order, setOrder] = useState("createdAt");
-  const [filteredItems, setFilteredItems] = useState('');
+  const [filteredItems, setFilteredItems] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleItems, setVisibleItems] = useState(LIMIT);
   const [isPublic, setIsPublic] = useState(true);
-  
+
   const handleSearch = (term) => {
     setSearchTerm(term);
     setVisibleItems(LIMIT);
@@ -65,33 +65,35 @@ function GroupListPage() {
     else if (option === "게시글 많은순") setOrder("postCount");
     else if (option === "공감순") setOrder("likeCount");
   };
-  const handleTabTrue = () =>{
+  const handleTabTrue = () => {
     setIsPublic(true);
-  }
+  };
 
-  const handleTabFalse = () =>{
+  const handleTabFalse = () => {
     setIsPublic(false);
-  }
+  };
 
-  const currentPage = 1
-  const itemsPerPage = 10
-  const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=${isPublic}`;
+  const currentPage = 1;
+  const itemsPerPage = 30;
+  const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${currentPage}/${itemsPerPage}?isPublic=${isPublic}`;
 
-  useEffect(()=>{
-    const handleLoad = async () =>{
-      axios.get(url)
-      .then((res)=>{
-        console.log(res.data)
-        setFilteredItems(res.data.data)
-      })
-      .catch(error => {if(error.message === "Network Error")
-      {
-        <Link to='/*' />
-        console.log("서버가 펑! 터져버렸어...!")
-      }})
-    }
+  useEffect(() => {
+    const handleLoad = async () => {
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res.data);
+          setFilteredItems(res.data.data);
+        })
+        .catch((error) => {
+          if (error.message === "Network Error") {
+            <Link to="/*" />;
+            console.log("서버가 펑! 터져버렸어...!");
+          }
+        });
+    };
     handleLoad();
-  },[url, isPublic])
+  }, [url, isPublic]);
 
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
@@ -112,11 +114,11 @@ function GroupListPage() {
               비공개
             </button>
           </div>
-            <SearchBar onSearch={handleSearch} />
-            <Dropdown
-              options={["최신순", "게시글 많은순", "공감순"]}
-              onSelect={handleSelect}
-            />
+          <SearchBar onSearch={handleSearch} />
+          <Dropdown
+            options={["최신순", "게시글 많은순", "공감순"]}
+            onSelect={handleSelect}
+          />
         </div>
         <div className="cardGroupList">
           {sortedItems.length === 0 ? (

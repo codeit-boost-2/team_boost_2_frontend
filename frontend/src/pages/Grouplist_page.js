@@ -1,6 +1,6 @@
 //import LoadMoreButton from "../components/Loadmore_button.js";
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Grouplist_page.css";
 import axios from "axios";
 import Dropdown from "../components/Dropdown_menu.js";
@@ -49,6 +49,7 @@ function GroupListPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleItems, setVisibleItems] = useState(LIMIT);
   const [isPublic, setIsPublic] = useState(true);
+  const navigate = useNavigate();
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -87,8 +88,7 @@ function GroupListPage() {
         })
         .catch((error) => {
           if (error.message === "Network Error") {
-            <Link to="/*" />;
-            console.log("서버가 펑! 터져버렸어...!");
+           navigate("/Error")
           }
         });
     };

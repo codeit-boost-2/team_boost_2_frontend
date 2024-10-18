@@ -1,0 +1,13 @@
+.badgeButton{
+    padding: 20px 90px;
+    margin-right: 5px;
+    font-family: Spoqa Han Sans Neo, Sans-Serif;
+    font-weight: 500;
+    font-size: 20px;
+    box-sizing: border-box;
+    background-color: #f2f1f1;
+    border-radius: 9999px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

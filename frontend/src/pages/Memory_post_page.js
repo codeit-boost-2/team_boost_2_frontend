@@ -43,7 +43,6 @@ function MemoryPostPage() {
   });
   const location = useLocation();
   const GroupId = location.state;
-  console.log(GroupId);
   const [isPublic, setisPublic] = useState(true);
 
   /* tag Input 관리 */
@@ -52,7 +51,6 @@ function MemoryPostPage() {
       ...prevValues,
       tag: newTags,
     }));
-    console.log("Updated Tags:", newTags);
   };
 
   const handleChange = (name, value) => {
@@ -93,7 +91,7 @@ function MemoryPostPage() {
     }
     else{
       for(let tag of values.tag){
-        formData.append("hashtag", tag);
+        formData.append("hashtag[]", tag);
         console.log(tag);
       }}
     formData.append("image", values.image);

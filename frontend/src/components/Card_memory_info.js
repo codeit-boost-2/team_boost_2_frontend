@@ -21,7 +21,6 @@ function formatDate(createdAt) {
   );
 }
 
-
 function CardMemoryInfo({ item , replylength }) {
   const { nickname, isPublic, title, hashtag = [], location, createdAt, likeCount, commentCount } =
     item;//Link로 아이템 받아오도록 적용함

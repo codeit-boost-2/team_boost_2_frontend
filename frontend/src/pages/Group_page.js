@@ -68,7 +68,7 @@ function GroupPage() {
   const [memories, setMemories] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [isPublic,setIsPublic] = useState(true);
-
+  const[page, setPage] = useState(1);
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
@@ -89,13 +89,16 @@ function GroupPage() {
   const handleTabFalse = () =>{
     setIsPublic(false);
   }
-
-  const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/1/10?isPublic=${isPublic}`;
+  let perItem = 12;
+  let totalPage = Infinity;
+  const url=`http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/${page}/${perItem}?isPublic=${isPublic}`;
+  
   useEffect(()=>{
     const handleLoad = async () =>{
       axios.get(url)
       .then((res)=>{
-        console.log(res.data);
+        console.log(res.data.memories.totalPages);
+        totalPage = res.data.memories.totalPages;
         setInfo(res.data.group);
         setBadges(res.data.badge);
         setMemories(res.data.memories.data);
@@ -104,7 +107,14 @@ function GroupPage() {
       .catch(error => {console.log(error)})
     }
     handleLoad();
-  },[url, isPublic])
+  },[url, isPublic, page])
+  console.log(page)
+  console.log(totalPage)
+
+  const handleLoadMore = () =>{
+    setPage(page+1);
+  }
+
   return (
     <div style={pageStyle}>
       <Info items={info} badge={badges} />
@@ -153,6 +163,13 @@ function GroupPage() {
             <CardMemory items={sortedItems} />
           )}
           </div>
+      {
+        <button className="submitButton" 
+        style={{width: '80%', margin: '20px auto', display:'flex', justifyContent:'center',alignItems:'center'}}
+        onClick={handleLoadMore}>
+          더보기
+        </button>
+      }
     </div>
   );
 }

@@ -42,6 +42,7 @@ function MemoryDetailPage() {
   const [memory, setMemory] = useState("");
   const [comments, setComments] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [isReplyPopupOpen, setIsReplyPopupOpen] = useState(false);
@@ -110,13 +111,16 @@ function MemoryDetailPage() {
   };
 
   // 댓글 수정 팝업 오픈
-  const openEditReplyPopup = (id) => {
-    setSelectedItemId(id);
+  const openEditReplyPopup = (index) => {
+    setSelectedCommentId(index);
+    // console.log("MemoryId: ", MemoryId);
+    console.log("CommentIndex: ", index);
     setIsEditReplyPopupOpen(true);
   };
 
   // 댓글 삭제 팝업 오픈
-  const openDeleteReplyPopup = () => {
+  const openDeleteReplyPopup = (index) => {
+    setSelectedCommentId(index);
     setIsDeleteReplyPopupOpen(true);
   };
 
@@ -163,20 +167,20 @@ function MemoryDetailPage() {
         <div className="Replies">
           <p className="ReplyCount">댓글 {comments.length}</p>
           <hr style={hrReply} />
-          {comments.map((reply) => (
+          {comments.map((reply, index) => (
             <React.Fragment key={reply.id}>
               <div className="ReplyContents">
                 <Reply comment={reply} />
                 <div className="ReplyControl">
                   <button
                     className="ReplyEdit"
-                    onClick={() => openEditReplyPopup(reply.id)}
+                    onClick={() => openEditReplyPopup(index)}
                   >
                     <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
                   </button>
                   <button
                     className="ReplyDelete"
-                    onClick={() => openDeleteReplyPopup(reply.id)}
+                    onClick={() => openDeleteReplyPopup(index)}
                   >
                     <img alt="댓글 삭제하기" src="../imgs/delete_button.svg" />
                   </button>
@@ -189,7 +193,10 @@ function MemoryDetailPage() {
       )}
 
       {isEditPopupOpen && (
-        <EditMemoryPopup items = {memory} onClose={() => setIsEditPopupOpen(false)} />
+        <EditMemoryPopup
+          items={memory}
+          onClose={() => setIsEditPopupOpen(false)}
+        />
       )}
 
       {isDeletePopupOpen && (
@@ -197,19 +204,22 @@ function MemoryDetailPage() {
       )}
 
       {isReplyPopupOpen && (
-        <ReplyMemoryPopup
-          onClose={() => setIsReplyPopupOpen(false)}
-          memoryId={memory.id}
-          onChange={() => {}}
-        />
+        <ReplyMemoryPopup onClose={() => setIsReplyPopupOpen(false)} />
       )}
 
       {isEditReplyPopupOpen && (
-        <EditReplyPopup onClose={() => setIsEditReplyPopupOpen(false)} />
+        <EditReplyPopup
+          comments={comments}
+          index={selectedCommentId}
+          onClose={() => setIsEditReplyPopupOpen(false)}
+        />
       )}
 
       {isDeleteReplyPopupOpen && (
-        <DeleteReplyPopup onClose={() => setIsDeleteReplyPopupOpen(false)} />
+        <DeleteReplyPopup
+          index={selectedCommentId}
+          onClose={() => setIsDeleteReplyPopupOpen(false)}
+        />
       )}
     </div>
   );

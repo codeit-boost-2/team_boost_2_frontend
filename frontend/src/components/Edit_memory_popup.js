@@ -33,7 +33,8 @@ function EditMemoryPopup({ items, onClose }) {
   const [password, setPassword] = useState("");
   const [values, setValues] = useState(items);
   const [isPublic, setIsPublic] = useState(values.isPublic);
-
+  console.log(MemoryId);
+  console.log(items);
   const handleImageChange = (name, value) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -50,7 +51,6 @@ function EditMemoryPopup({ items, onClose }) {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -66,10 +66,10 @@ function EditMemoryPopup({ items, onClose }) {
     formData.append("moment", values.moment);
     formData.append("isPublic", isPublic);
     formData.append("password", password);
-    for(const x of formData)
-    {
-      console.log(x)
+    for (const x of formData) {
+      console.log(x);
     }
+
     axios
       .put(
         `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}`,
@@ -84,9 +84,8 @@ function EditMemoryPopup({ items, onClose }) {
       .catch((error) => {
         if (error.status === 403) {
           alert("잘못된 비밀번호 입니다.");
-        }
-        else{
-          console.log(error)
+        } else {
+          console.log(error);
         }
       });
   };
@@ -187,7 +186,9 @@ function EditMemoryPopup({ items, onClose }) {
                 style={inputStyle}
                 name="password"
                 value={password}
-                onChange={(e) => {setPassword(e.target.value)}}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
                 placeholder="비밀번호를 입력해 주세요."
                 required
               />

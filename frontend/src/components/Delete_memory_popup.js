@@ -7,7 +7,7 @@ function DeleteMemoryPopup({ onClose }) {
   const navigate = useNavigate();
   const { MemoryId } = useParams();
   const [password, setPassword] = useState("");
-  console.log(MemoryId)
+  console.log(MemoryId);
   const handleInputChange = (e) => {
     setPassword(e.target.value);
   };
@@ -20,19 +20,21 @@ function DeleteMemoryPopup({ onClose }) {
     axios
       .delete(url, {
         data: {
-          'password' : password,
+          password: password,
         },
       })
       .then((res) => {
         if (res.status === 200) {
           alert("삭제에 성공했습니다!");
           onClose();
-          navigate(-1);
+          navigate(0);
         }
       })
       .catch((error) => {
         if (error.status === 403) {
           alert("잘못된 비밀번호 입니다.");
+        } else if (error.status === 500) {
+          alert("댓글이 등록된 추억은 삭제가 불가능합니다. ");
         } else {
           console.log(error);
         }
@@ -50,8 +52,8 @@ function DeleteMemoryPopup({ onClose }) {
           <div className="DeletePopup-inner">
             <p>삭제 권한 인증</p>
             <input
-              className='MPinput'
-              style={{margin : '0'}}
+              className="MPinput"
+              style={{ margin: "0" }}
               type="password"
               name="password"
               value={password}

@@ -27,16 +27,23 @@ function DeleteMemoryPopup({ onClose }) {
         if (res.status === 200) {
           alert("삭제에 성공했습니다!");
           onClose();
-          navigate(0);
+          navigate(-1);
         }
       })
       .catch((error) => {
         if (error.status === 403) {
           alert("잘못된 비밀번호 입니다.");
-        } else if (error.status === 500) {
-          alert("댓글이 등록된 추억은 삭제가 불가능합니다. ");
+        } else if (error.message === "Network Error") {
+          navigate("/Error");
+        } else if (error.status === 404) {
+          alert(error.status);
+          onClose();
+          navigate("*");
         } else {
           console.log(error);
+          alert(error.status);
+          onClose();
+          navigate(0);
         }
       });
   };

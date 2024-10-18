@@ -54,9 +54,14 @@ function MemoryDetailPage() {
   //Memory받아오기
   const handleLoad = async () => {
     const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
+    console.log("memory: ", memory);
     axios
       .get(url)
       .then((res) => {
+        if (!res.data || !res.data.memory) {
+          throw new Error("Memory not found");
+        }
+
         setMemory(res.data.memory);
         console.log(res.data);
         setComments(res.data.comments.data);
@@ -65,12 +70,17 @@ function MemoryDetailPage() {
       .catch((error) => {
         console.log(error);
         setError(true);
+        Navigate("*");
       });
   };
 
   useEffect(() => {
     handleLoad();
   }, []);
+
+  if (error) {
+    return <Navigate to="/Error" />;
+  }
 
   /////////* 공감 보내기 버튼 클릭 핸들*//////////
   const handleLikeClick = async () => {
@@ -80,15 +90,13 @@ function MemoryDetailPage() {
       const response = await axios.post(url);
       if (response.status === 200) {
         setLikeCount((prevLikeCount) => prevLikeCount + 1);
-        console.log("좋아요 상태가 서버에 성공적으로 업데이트되었습니다.");
-      } else {
-        console.error("좋아요 상태 업데이트 요청이 실패했습니다.");
+        console.log("좋아요 업데이트 성공");
+        alert("공감 완료!");
       }
     } catch (error) {
-      console.error(
-        "좋아요 상태 업데이트 중 오류 발생:",
-        error.response.data.message
-      );
+      console.log("Error:", error);
+      alert("좋아요 업데이트 실패");
+      Navigate(0);
     }
   };
 
@@ -124,16 +132,11 @@ function MemoryDetailPage() {
     setIsDeleteReplyPopupOpen(true);
   };
 
-  // 에러 발생시 404페이지 연결
-  if (error) {
-    return <Navigate to="/*" />;
-  }
-
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
       <div style={{ marginBottom: "100px" }}></div>
       <div className="MemoryHeader">
-        <CardMemoryInfo item={memory} />
+        <CardMemoryInfo item={memory} comment={comments} />
         <div className="MemoryButtons">
           <div className="MemoryEdit">
             <button

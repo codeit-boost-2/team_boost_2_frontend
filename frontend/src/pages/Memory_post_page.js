@@ -81,19 +81,34 @@ function MemoryPostPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const requiredFields = [
+      values.nickname,
+      values.title,
+      values.body,
+      values.place,
+      values.date,
+      values.password,
+      values.image,
+    ];
+
+    if (requiredFields.includes("") || values.image === null) {
+      alert("모든 필드를 채워 주세요.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("groupId", GroupId);
     formData.append("nickname", values.nickname);
     formData.append("title", values.title);
     formData.append("content", values.body);
-    if(values.tag.length === 0){
+    if (values.tag.length === 0) {
       formData.append("hashtag[]", values.tag);
-    }
-    else{
-      for(let tag of values.tag){
+    } else {
+      for (let tag of values.tag) {
         formData.append("hashtag[]", tag);
         console.log(tag);
-      }}
+      }
+    }
     formData.append("image", values.image);
     formData.append("location", values.place);
     formData.append("moment", values.date);
@@ -108,10 +123,12 @@ function MemoryPostPage() {
       .then((res) => {
         console.log(res);
         alert("올리기 성공!");
-          onCancel();
+        onCancel();
       })
       .catch((error) => {
+        alert(error.status);
         console.log(error);
+        navigate(-1);
       });
   };
 
@@ -133,6 +150,7 @@ function MemoryPostPage() {
                 value={values.nickname}
                 onChange={handleInputChange}
                 placeholder=" 닉네임을 입력해 주세요."
+                required
                 /* 자동완성 비활성화 : autoComplete="off"*/
               />
 
@@ -143,6 +161,7 @@ function MemoryPostPage() {
                 value={values.title}
                 onChange={handleInputChange}
                 placeholder=" 제목을 입력해 주세요."
+                required
               />
 
               <div className="MPinputDsc">이미지</div>
@@ -163,6 +182,7 @@ function MemoryPostPage() {
                 value={values.body}
                 onChange={handleInputChange}
                 placeholder=" 본문 내용을 입력 해 주세요."
+                required
               />
             </div>
 
@@ -181,6 +201,7 @@ function MemoryPostPage() {
                 value={values.place}
                 onChange={handleInputChange}
                 placeholder=" 장소를 입력 해 주세요."
+                required
               />
 
               <div className="MPinputDsc">추억의 순간</div>
@@ -191,6 +212,7 @@ function MemoryPostPage() {
                 value={values.date}
                 onChange={handleInputChange}
                 placeholder=" YYYY-MM-DD"
+                required
               />
 
               <div className="MPinputDsc">추억 공개 선택</div>
@@ -206,6 +228,7 @@ function MemoryPostPage() {
                 value={values.password}
                 onChange={handleInputChange}
                 placeholder=" 추억 비밀번호를 생성해 주세요."
+                required
               />
             </div>
           </div>

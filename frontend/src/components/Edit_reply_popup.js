@@ -31,6 +31,8 @@ function EditReplyPopup({ comments, setModal }) {
   const [content, setContent] = useState(comments.content);
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
   const onClose = () =>{
     setModal(false);
   }
@@ -58,6 +60,7 @@ function EditReplyPopup({ comments, setModal }) {
         if (res.status === 200) {
           alert("수정에 성공했습니다!");
           onClose();
+          navigate(0);
         }
       })
       .catch((error) => {
@@ -66,12 +69,12 @@ function EditReplyPopup({ comments, setModal }) {
           alert(error.status);
           console.log(error);
           onClose();
-          Navigate(0);
+          navigate(0);
         } else {
           alert("error.status: ", error.status);
           console.log(error);
           onClose();
-          Navigate(0);
+          navigate(0);
         }
       });
   };

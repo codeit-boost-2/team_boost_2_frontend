@@ -1,7 +1,8 @@
 import React from "react";
 import "./Reply.css";
-// import { Link } from "react-router-dom";
-import /* getMemories 함수 만들기 */ "../api/api.js";
+import { useState } from "react";
+import EditReplyPopup from "./Edit_reply_popup";
+import DeleteReplyPopup from "./Delete_reply_popup";
 
 // 날짜 계산 함수
 function formatDate(createdAt) {
@@ -19,11 +20,26 @@ function formatDate(createdAt) {
   );
 }
 
+
 // 추억 상세 페이지 댓글
-function Reply({ comment: { nickname, content, createdAt } }) {
+function Reply({ comment }) {
+  const [changeModal, setChangeModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const{ id, nickname, content, createdAt } = comment
   const publishedOn = formatDate(createdAt);
 
+    // // 댓글 수정 팝업 오픈
+    // const openEditReplyPopup = () => {
+    //   setChangeModal(true)
+    // };
+  
+    // // 댓글 삭제 팝업 오픈
+    // const openDeleteReplyPopup = (index) => {
+    //   setDeleteModal(true)
+    // };
+
   return (
+    <>
     <div className="Reply">
       <div className="ReplyInfo">
         <div className="ReplyHeader">
@@ -31,8 +47,36 @@ function Reply({ comment: { nickname, content, createdAt } }) {
           <span className="ReplyDate">{publishedOn}</span>
         </div>
       </div>
-      <div className="ReplyContent">{content}</div>
-    </div>
+      <div className="ReplyContent">
+        <div>
+        {content}
+        </div>
+        <div>
+        <button
+        style={{right: '10px'}}
+          className="ReplyEdit"
+          onClick={() => setChangeModal(!changeModal)}>
+          <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
+        </button>
+          {
+            changeModal === true ? <EditReplyPopup comments={comment} setModal={setChangeModal}/> : null
+          }
+        <button
+          className="ReplyDelete"
+          onClick={() => setDeleteModal(!deleteModal)}>
+          <img alt="댓글 삭제하기" src="../imgs/delete_button.svg" />
+        </button>
+          {
+            deleteModal === true ? <DeleteReplyPopup id={id} setModal={setDeleteModal}/> : null
+          }
+          </div>
+        </div>
+      </div>
+
+      
+        
+    
+    </>
   );
 }
 export default Reply;

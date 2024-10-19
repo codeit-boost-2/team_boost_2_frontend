@@ -58,7 +58,6 @@ function MemoryDetailPage() {
       .get(url)
       .then((res) => {
         setMemory(res.data.memory);
-        console.log(res.data);
         setComments(res.data.comments.data);
         setLikeCount(res.data.memory.likeCount);
       })
@@ -71,7 +70,7 @@ function MemoryDetailPage() {
   useEffect(() => {
     handleLoad();
   }, []);
-
+  
   /////////* 공감 보내기 버튼 클릭 핸들*//////////
   const handleLikeClick = async () => {
     const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/like`;
@@ -110,19 +109,7 @@ function MemoryDetailPage() {
     setIsReplyPopupOpen(true);
   };
 
-  // 댓글 수정 팝업 오픈
-  const openEditReplyPopup = (index) => {
-    setSelectedCommentId(index);
-    // console.log("MemoryId: ", MemoryId);
-    console.log("CommentIndex: ", index);
-    setIsEditReplyPopupOpen(true);
-  };
 
-  // 댓글 삭제 팝업 오픈
-  const openDeleteReplyPopup = (index) => {
-    setSelectedCommentId(index);
-    setIsDeleteReplyPopupOpen(true);
-  };
 
   // 에러 발생시 404페이지 연결
   if (error) {
@@ -171,20 +158,7 @@ function MemoryDetailPage() {
             <React.Fragment key={reply.id}>
               <div className="ReplyContents">
                 <Reply comment={reply} />
-                <div className="ReplyControl">
-                  <button
-                    className="ReplyEdit"
-                    onClick={() => openEditReplyPopup(index)}
-                  >
-                    <img alt="댓글 수정하기" src="../imgs/edit_button.svg" />
-                  </button>
-                  <button
-                    className="ReplyDelete"
-                    onClick={() => openDeleteReplyPopup(index)}
-                  >
-                    <img alt="댓글 삭제하기" src="../imgs/delete_button.svg" />
-                  </button>
-                </div>
+                
               </div>
               <hr style={hrStyle} />
             </React.Fragment>

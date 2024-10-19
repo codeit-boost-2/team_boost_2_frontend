@@ -25,12 +25,16 @@ const inputContentStyle = {
   marginTop: "10px",
 };
 
-function EditReplyPopup({ comments, index, onClose }) {
-  const { MemoryId } = useParams();
+function EditReplyPopup({ comments, setModal }) {
 
-  const [nickname, setNickname] = useState(comments[index].nickname);
-  const [content, setContent] = useState(comments[index].content);
+  const [nickname, setNickname] = useState(comments.nickname);
+  const [content, setContent] = useState(comments.content);
   const [password, setPassword] = useState("");
+
+
+  const onClose = () =>{
+    setModal(false);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,14 +44,16 @@ function EditReplyPopup({ comments, index, onClose }) {
     formData.append("nickname", nickname);
     formData.append("content", content);
     formData.append("password", password);
-    for (const x of formData) {
-      console.log(x);
-    }
+
 
     axios
       .put(
-        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/comments/${MemoryId}`,
-        { formData }
+        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/comments/${comments.id}`,
+        {
+          nickname,
+          content,
+          password,
+        }
       )
       .then((res) => {
         if (res.status === 200) {
@@ -56,28 +62,8 @@ function EditReplyPopup({ comments, index, onClose }) {
         }
       })
       .catch((error) => {
-        if (error.response) {
-          // 서버가 응답했지만, 4xx나 5xx 에러인 경우
-          if (error.response.status === 404) {
-            alert("해당 댓글을 찾을 수 없습니다.");
-            console.log(error);
-          } else if (error.response.status === 500) {
-            alert("서버에서 문제가 발생했습니다.");
-            console.log(error);
-          } else {
-            alert("오류가 발생했습니다. 상태 코드: " + error.response.status);
-            console.log(error);
-          }
-        } else if (error.request) {
-          // 요청은 서버로 전송되었으나, 응답을 받지 못한 경우
-          alert("서버로부터 응답이 없습니다. 다시 시도해 주세요.");
-          console.log(error);
-        } else {
-          // 요청 설정 자체에서 문제가 있는 경우
-          alert("요청을 보내는 중 문제가 발생했습니다: " + error.message);
-          console.log(error);
-        }
-      });
+        console.log(error)
+        });
   };
   return (
     <div className="EditPopupOverlay">

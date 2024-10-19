@@ -111,7 +111,7 @@ function MemoryPostPage() {
           onCancel();
       })
       .catch((error) => {
-        console.log(error);
+        alert("올리기 실패!")
       });
   };
 

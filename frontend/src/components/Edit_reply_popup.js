@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Edit_reply_popup.css";
 
@@ -25,12 +25,11 @@ const inputContentStyle = {
   marginTop: "10px",
 };
 
-function EditReplyPopup({ comments, setModal }) {
 
+function EditReplyPopup({ comments, setModal }) {
   const [nickname, setNickname] = useState(comments.nickname);
   const [content, setContent] = useState(comments.content);
   const [password, setPassword] = useState("");
-
 
   const onClose = () =>{
     setModal(false);
@@ -62,8 +61,19 @@ function EditReplyPopup({ comments, setModal }) {
         }
       })
       .catch((error) => {
-        console.log(error)
-        });
+
+        if (error.response.status === 404) {
+          alert(error.status);
+          console.log(error);
+          onClose();
+          Navigate(0);
+        } else {
+          alert("error.status: ", error.status);
+          console.log(error);
+          onClose();
+          Navigate(0);
+        }
+      });
   };
   return (
     <div className="EditPopupOverlay">

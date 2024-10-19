@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./Edit_memory_popup.css";
 import Toggle from "./Toggle.js";
 import FileInput from "./FileInput.js";
@@ -33,6 +33,8 @@ function EditMemoryPopup({ items, onClose }) {
   const [password, setPassword] = useState("");
   const [values, setValues] = useState(items);
   const [isPublic, setIsPublic] = useState(values.isPublic);
+  const Navigate = useNavigate();
+
   console.log(MemoryId);
   console.log(items);
   const handleImageChange = (name, value) => {
@@ -79,13 +81,22 @@ function EditMemoryPopup({ items, onClose }) {
         if (res.status === 200) {
           alert("수정에 성공했습니다!");
           onClose();
+          Navigate(0);
         }
       })
       .catch((error) => {
         if (error.status === 403) {
           alert("잘못된 비밀번호 입니다.");
+        } else if (error.status === 404) {
+          alert(error.status);
+          onClose();
+          Navigate("*");
+        } else if (error.status === 500) {
+          alert("모든 정보를 입력해주세요.");
         } else {
+          alert(error.status);
           console.log(error);
+          Navigate(0);
         }
       });
   };

@@ -31,9 +31,14 @@ function DeleteReplyPopup({ id, setModal }) {
       .catch((error) => {
         if (error.status === 403) {
           alert("잘못된 비밀번호 입니다.");
+        } else if ((error.message = "Network Error")) {
+          alert(error.status);
+          console.log(error);
+          navigate("/Error");
         } else {
           alert(error);
           console.log(error);
+          navigate(0);
         }
       });
   };

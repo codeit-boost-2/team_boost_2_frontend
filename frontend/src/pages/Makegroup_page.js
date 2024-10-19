@@ -8,6 +8,7 @@ import InputBox from "../components/Input_box";
 import InputPW from "../components/Input_password";
 import Toggle from "../components/Toggle";
 import Popup from "../components/Popup";
+import { useNavigate } from "react-router-dom";
 
 function MakeGroupPage() {
   const titleStyle = {
@@ -23,10 +24,10 @@ function MakeGroupPage() {
   const [password, setPassword] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // formData로 서버로 전송할 데이터
     const formData = new FormData();
     formData.append("groupName", groupName);
@@ -36,7 +37,6 @@ function MakeGroupPage() {
     formData.append("password", password);
 
     // formData를 서버로 전송
-    /*********************/
     axios.post("http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups", formData)
     .then((res)=>{console.log(res.data);}) .catch(error => {console.log(error);
     });
@@ -49,6 +49,7 @@ function MakeGroupPage() {
 
   const handleClosePopup = () => {
     setIsPopupVisible(false);
+    navigate(-1);
   };
 
   return (

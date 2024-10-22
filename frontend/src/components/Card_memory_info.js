@@ -1,7 +1,6 @@
 // 추억 상세 페이지 상단
 import React from "react";
 import "./Card_memory_info.css";
-// import { Link } from "react-router-dom";
 import /* getMemories 함수 만들기 */ "../api/api.js";
 
 // 날짜 계산 함수

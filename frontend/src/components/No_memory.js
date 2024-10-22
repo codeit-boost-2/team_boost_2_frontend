@@ -10,7 +10,7 @@ const NoMemoryStyle = {
 
 function NoGroup(GroupId) {
   return (
-    <Link to="/MemoryPost" state={GroupId}>
+    <Link to="/MemoryPost" state={GroupId} style={{textDecoration:'none'}}>
     <div style={NoMemoryStyle}>
       <img style={{marginBottom : "50px"}} src='../imgs/no_memory.svg' alt="등록된 공개 그룹이 없습니다" />
       <Button />

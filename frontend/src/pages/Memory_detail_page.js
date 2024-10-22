@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import "./Memory_detail_page.css";
 // import { editMemory, deleteMemory, editReply, deleteReply, updateLikeCount } from "../api/api.js";
 import axios from "axios";
@@ -50,7 +50,7 @@ function MemoryDetailPage() {
   const [isDeleteReplyPopupOpen, setIsDeleteReplyPopupOpen] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [error, setError] = useState(false);
-
+  const navigate = useNavigate();
   //Memory받아오기
   const handleLoad = async () => {
     const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
@@ -91,6 +91,7 @@ function MemoryDetailPage() {
         setLikeCount((prevLikeCount) => prevLikeCount + 1);
         console.log("좋아요 업데이트 성공");
         alert("공감 완료!");
+        navigate(0);
       }
     } catch (error) {
       console.log("Error:", error);

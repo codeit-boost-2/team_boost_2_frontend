@@ -97,22 +97,20 @@ function GroupPage() {
     const handleLoad = async () =>{
       axios.get(url)
       .then((res)=>{
-        console.log(res.data.memories.totalPages);
+        console.log(res.data);
         totalPage = res.data.memories.totalPages;
         setInfo(res.data.group);
         setBadges(res.data.badge);
-        setMemories(res.data.memories.data);
+        setMemories(res.data.memories);
         setFilteredItems(res.data.memories.data)
       })
       .catch(error => {console.log(error)})
     }
     handleLoad();
   },[url, isPublic, page])
-  console.log(page)
-  console.log(totalPage)
-
+  
   const handleLoadMore = () =>{
-    setPage(page+1);
+    setPage(page + 1);
   }
 
   return (

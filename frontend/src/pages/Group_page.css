@@ -1,0 +1,16 @@
+.pageButton {
+  display: flex;
+  font-family: "Spoqa Han Sans Neo", sans-serif;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: white;
+}
+.pageButton:hover {
+  background-color: black;
+  color: white;
+}

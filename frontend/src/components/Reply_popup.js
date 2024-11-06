@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./Reply_popup.css";
 
@@ -15,6 +15,7 @@ const inputStyle = {
 };
 
 function ReplyMemoryPopup({ onClose }) {
+  const navigate = useNavigate();
   const { MemoryId } = useParams();
   const [values, setValues] = useState({
     nickname: "",
@@ -59,7 +60,8 @@ function ReplyMemoryPopup({ onClose }) {
         }
       )
       .then((res) => {
-        console.log(res.data);
+        alert("댓글을 등록했습니다.");
+        navigate(0);
         onClose();
       })
       .catch((error) => {

@@ -42,7 +42,7 @@ function MemoryPostPage() {
     password: "",
   });
   const location = useLocation();
-  const GroupId = location.state;
+  const { GroupId } = location.state;
   const [isPublic, setisPublic] = useState(true);
 
   /* tag Input 관리 */
@@ -77,7 +77,6 @@ function MemoryPostPage() {
       e.preventDefault();
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -106,7 +105,6 @@ function MemoryPostPage() {
     } else {
       for (let tag of values.tag) {
         formData.append("hashtag[]", tag);
-        console.log(tag);
       }
     }
     formData.append("image", values.image);

@@ -24,6 +24,7 @@
   top: 15px;
   cursor: grab;
   color: #282828;
+  cursor: pointer;
 }
 
 .ReplyPopup-title {

@@ -27,7 +27,7 @@ function DeleteMemoryPopup({ onClose }) {
         if (res.status === 200) {
           alert("삭제에 성공했습니다!");
           onClose();
-          navigate(-1);
+          navigate("/");
         }
       })
       .catch((error) => {

@@ -25,7 +25,6 @@ const inputContentStyle = {
   marginTop: "10px",
 };
 
-
 function EditReplyPopup({ comments, setModal }) {
   const [nickname, setNickname] = useState(comments.nickname);
   const [content, setContent] = useState(comments.content);
@@ -33,9 +32,9 @@ function EditReplyPopup({ comments, setModal }) {
 
   const navigate = useNavigate();
 
-  const onClose = () =>{
+  const onClose = () => {
     setModal(false);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,7 +44,6 @@ function EditReplyPopup({ comments, setModal }) {
     formData.append("nickname", nickname);
     formData.append("content", content);
     formData.append("password", password);
-
 
     axios
       .put(
@@ -64,14 +62,12 @@ function EditReplyPopup({ comments, setModal }) {
         }
       })
       .catch((error) => {
-
         if (error.response.status === 404) {
           alert(error.status);
           console.log(error);
           onClose();
           navigate(0);
         } else {
-          alert("error.status: ", error.status);
           console.log(error);
           onClose();
           navigate(0);

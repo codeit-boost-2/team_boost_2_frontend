@@ -24,10 +24,10 @@ const inputStyle = {
   marginTop: "10px",
 };
 
-function AuthenticationPage() {
-  const { GroupId } = useParams();
+function AuthenticationMemoryPage() {
+  const { MemoryId } = useParams();
   const navigate = useNavigate();
-  let where = "그룹";
+  let where = "추억";
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
@@ -35,14 +35,14 @@ function AuthenticationPage() {
     console.log(password);
     axios
       .post(
-        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/groups/${GroupId}/verifyPassword`,
+        `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/verifyPassword`,
         {
           password: password,
         }
       )
       .then((res) => {
         if (res.status === 200) {
-          navigate(`/GroupPage/${GroupId}`);
+          navigate(`/memoryPage/${MemoryId}`);
         }
       })
       .catch((error) => {
@@ -85,4 +85,4 @@ function AuthenticationPage() {
     </>
   );
 }
-export default AuthenticationPage;
+export default AuthenticationMemoryPage;

@@ -34,7 +34,7 @@
   right: 20px;
   background-color: #fff;
   border: none;
-  cursor: grab;
+  cursor: pointer;
 }
 
 .EditMemoryPopup-Form {

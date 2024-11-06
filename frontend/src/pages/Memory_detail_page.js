@@ -54,7 +54,6 @@ function MemoryDetailPage() {
   //Memory받아오기
   const handleLoad = async () => {
     const url = `http://ec2-43-201-103-14.ap-northeast-2.compute.amazonaws.com:3000/memories/${MemoryId}/comments`;
-    console.log("memory: ", memory);
     axios
       .get(url)
       .then((res) => {
@@ -76,7 +75,7 @@ function MemoryDetailPage() {
   useEffect(() => {
     handleLoad();
   }, []);
-  
+
   if (error) {
     return <Navigate to="/Error" />;
   }
@@ -117,8 +116,6 @@ function MemoryDetailPage() {
   const openReplyPopup = () => {
     setIsReplyPopupOpen(true);
   };
-
-
 
   return (
     <div style={{ fontFamily: "Spoqa Han Sans Neo, Sans-Serif" }}>
@@ -162,7 +159,6 @@ function MemoryDetailPage() {
             <React.Fragment key={reply.id}>
               <div className="ReplyContents">
                 <Reply comment={reply} />
-                
               </div>
               <hr style={hrStyle} />
             </React.Fragment>
